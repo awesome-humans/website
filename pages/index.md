@@ -6,7 +6,7 @@
 
 <p class="ah-hero__kicker">[ ] awesome-humans.net</p>
 
-# What good code looks like, right now.
+# Distilled guidance, thanks to awesome humans.
 
 Opinions distilled from people with a proven track record of writing about each ecosystem: cited, current, and ready for your agent.
 
