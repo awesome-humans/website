@@ -5,7 +5,7 @@ The source of [awesome-humans.net](https://awesome-humans.net), which publishes 
 Each ecosystem's content lives in its own repository. This repository owns everything specific to publishing it: the [Zensical](https://zensical.org) configuration, the theme, the home and shared pages, the source images, the "Want in or out?" intake, and the Cloudflare deployment.
 
 > [!NOTE]
-> This repository is being set up. Until the cutover, awesome-humans.net still deploys from [awesome-humans/dotnet](https://github.com/awesome-humans/dotnet), and the `Site` workflow here deploys only pull request previews. For the steps and their state, see [PLAN.md](PLAN.md).
+> This repository is being set up. For the steps and their state, see [PLAN.md](PLAN.md).
 
 ## Ecosystems
 
@@ -76,7 +76,7 @@ uv run scripts/stage.py stage --local dotnet=../../dotnet/main
 | A pull request here                        | `site.yml` builds and deploys a preview, `pr-website-<number>`                                                   |
 | A pull request in an ecosystem             | Its `site-preview.yml` calls `build.yml` and `deploy.yml` with its head commit, for a preview `pr-<id>-<number>` |
 
-Every build takes every live ecosystem at `main`, except the one a preview names. Until the cutover, only previews deploy from here.
+Every build takes every live ecosystem at `main`, except the one a preview names.
 
 ## Repository layout
 

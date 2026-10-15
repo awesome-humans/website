@@ -31,10 +31,6 @@ jobs:
 
   deploy:
     needs: build
-    # Until the cutover (PLAN.md: Phase 2 step 6), awesome-humans.net deploys from
-    # awesome-humans/dotnet, so only a pull request's preview deploys from here. The
-    # cutover drops this condition.
-    if: github.event_name == 'pull_request'
     uses: ./.github/workflows/deploy.yml
     with:
       preview-alias: ${{ github.event_name == 'pull_request' && format('pr-website-{0}', github.event.pull_request.number) || '' }}
