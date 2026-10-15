@@ -36,7 +36,7 @@
           "minLength": 1
         },
         "kind": {
-          "description": "person gets a portrait, with permission. publication never does.",
+          "description": "A person can have a portrait, and a publication a logo, each only with the permission data/consent.toml records.",
           "enum": ["person", "publication"]
         },
         "url": {
