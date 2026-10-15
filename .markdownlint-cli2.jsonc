@@ -1,0 +1,21 @@
+{
+  // Markdown linting for this repository. Run via `npm run check`, which uses the
+  // versions pinned in package.json, never `npx markdownlint-cli2` (see AGENTS.md).
+  // Formatting is Prettier's job (--prose-wrap preserve). This file only turns
+  // off the rules that conflict with that or misfire on our content.
+  "config": {
+    "default": true,
+
+    // Prose is one sentence per line, unwrapped. Prettier preserves it, and the
+    // diffs stay readable. A hard column limit would conflict with that on every edit.
+    "MD013": false,
+
+    // Misfires on headings that end in "#", such as "## C# and F#". markdownlint
+    // reads the trailing # as closed-atx syntax, and ecosystem names use it.
+    "MD020": false,
+  },
+  "globs": ["**/*.md"],
+  // .venv is uv's environment. build/ holds the pages staged from the ecosystems,
+  // which each ecosystem lints at source.
+  "ignores": ["node_modules", ".venv", "build"],
+}

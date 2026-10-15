@@ -1,0 +1,37 @@
+# The ecosystems the site publishes. Each one stages its own pages into
+# build/docs/<id>/ (see README.md: Staging contract), and the site does the rest.
+#
+# id          The URL segment (/<id>/), and the name of the ecosystem's accent
+#             token in the design system.
+# name        The display name.
+# repository  The GitHub repository that holds the ecosystem's content.
+# toolchain   What CI sets up before it runs `stage`. Each toolchain is one
+#             setup step in build.yml.
+# stage       Run from the ecosystem's repository root. {out} is replaced with
+#             the staging directory.
+# status      live: built and published. soon: shown on the home page as coming,
+#             and never checked out.
+
+[[ecosystem]]
+id = "dotnet"
+name = ".NET"
+repository = "awesome-humans/dotnet"
+toolchain = "dotnet"
+stage = "dotnet run scripts/build-site.cs -- --out {out}"
+status = "live"
+
+[[ecosystem]]
+id = "rust"
+name = "Rust"
+repository = "awesome-humans/rust"
+toolchain = "rust"
+stage = ""
+status = "soon"
+
+[[ecosystem]]
+id = "typescript"
+name = "TypeScript"
+repository = "awesome-humans/typescript"
+toolchain = "node"
+stage = ""
+status = "soon"

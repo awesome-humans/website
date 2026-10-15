@@ -1,0 +1,16 @@
+# Markdown tooling (package.json): devDependencies only
+node_modules/
+
+# Python: uv's project environment and bytecode
+.venv/
+__pycache__/
+
+# The staged sources and the built site
+build/
+public/
+
+# Wrangler's local state from `wrangler dev` and dry runs
+.wrangler/
+
+# lychee link-check result cache
+.lycheecache
