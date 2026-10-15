@@ -14,18 +14,17 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 ## Next session
 
-Stopped 2026-10-15, with Phase 0 down to step 7, and Phase 2 down to step 6, the cutover. Pick up here:
+Stopped 2026-10-16, with Phase 2 done and Phase 0 down to step 7. Pick up here:
 
-1. **Phase 2 step 6, the cutover,** with the owner, in one sitting. awesome-humans.net still deploys from `dotnet`'s `Site` workflow, and `website` already builds the same site and deploys previews. For the full steps and their order, see [step 6](#phase-2-create-website-and-move-the-site-into-it). Before it starts, check that `dotnet`'s `protect-main` ruleset's required checks are swapped, or the removal pull request can't merge.
-2. **Phase 0 step 7:** the owner creates the `.github` repository in the web UI. The agent then drafts `profile/README.md` and `SECURITY.md`, and moves `PULL_REQUEST_TEMPLATE.md` from `dotnet`.
-3. **The `katex` alert on `website`** (Dependabot alert 2, low, fixed in 0.18.2) is still open. Renovate's first run made the Dependency Dashboard (#5), but no fix. Find which dev dependency pulls `katex` in with `npm ls katex`, and bump it or add an `overrides` entry.
-4. **Then Phase 3,** the design system.
+1. **Phase 0 step 7:** the owner creates the `.github` repository in the web UI. The agent then drafts `profile/README.md` and `SECURITY.md`, and moves `PULL_REQUEST_TEMPLATE.md` from `dotnet`.
+2. **Then Phase 3,** the design system.
+3. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`. It wasn't a Dependabot alert on 2026-10-16. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
 
 `gh` is signed in as `si618`, an organisation admin, with the `admin:org` scope added for Phase 0. Remove it with `gh auth refresh -h github.com --remove-scopes admin:org` once step 7 is done.
 
 **Agent notes:** Read the repository's `AGENTS.md` before the first commit. Commits and pull request descriptions carry no agent attribution: no `Co-Authored-By` trailer and no "Generated with" line. `npm ci` before `npm run check` in a fresh worktree. The agent can merge a pull request with `gh pr merge` when the owner asks, but can't write secrets.
 
-## Where things stand (checked 2026-10-15)
+## Where things stand (checked 2026-10-16)
 
 | Item                          | State                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -34,7 +33,7 @@ Stopped 2026-10-15, with Phase 0 down to step 7, and Phase 2 down to step 6, the
 | Local `.NET` clone            | At `~/Projects/github/awesome-humans/dotnet/`. `origin` points at `awesome-humans/dotnet`, and the `main` worktree is repaired and up to date                                                                                                                                                                                                                                                                                |
 | Local `website` clone         | At `~/Projects/github/awesome-humans/website/`, with `.bare/` and a `main` worktree tracking `origin/main`                                                                                                                                                                                                                                                                                                                   |
 | Local Rust clone              | At `~/Projects/github/awesome-humans/rust/`, with `origin` set to `awesome-humans/rust`, which exists and is empty. It has no commits, and only an untracked `PLAN.md`                                                                                                                                                                                                                                                       |
-| The site                      | Production still deploys from `dotnet`'s `Site` workflow, through `site/` and `build-site.cs`'s no-argument mode. `website`'s `Site` workflow builds the same site from every ecosystem's staged pages, on a push, a dispatch from `dotnet`, a schedule, or a pull request, and deploys only previews. Both repositories' pull requests get a `website`-built preview, and `dotnet`'s also get its old one                   |
+| The site                      | Deploys from `website` since 2026-10-16. `website`'s `Site` workflow builds every live ecosystem's staged pages and deploys to production on a push to `main`, a dispatch from an ecosystem, the weekly schedule, or a manual run. Each pull request in `website` or `dotnet` gets a `website`-built preview. `dotnet` no longer holds `site/` or its own `Site` workflow                                                    |
 | The design system             | Tokens, the cited-human logo, eight components, and a placeholder montage. Its README names `scripts/build_montage.py` and a theme layer to copy: `stylesheets/awesome-humans.css`, `javascripts/ecosystem.js`, and `assets/brand/`                                                                                                                                                                                          |
 
 ## Decisions
@@ -255,6 +254,15 @@ The site keeps deploying from `dotnet` until the cutover in step 6, so awesome-h
    4. **`website` `feat/cutover`:** in `site.yml`, drop the deploy job's `if: github.event_name == 'pull_request'`, so `main`, dispatches, and the schedule deploy to production. Update README.md's note, which says only previews deploy. Merging it deploys awesome-humans.net from `website`.
    5. **Check** awesome-humans.net: the home page, `/dotnet/`, a few opinion pages, `/how-it-works/` with its diagrams, `/llms.txt`, and `/dotnet/llms.txt`. The Worker name in `wrangler.jsonc` doesn't change, so the domain and routes stay as they are. To roll back, revert the `website` pull request and redeploy with Wrangler's `rollback`.
    6. **Tidy:** remove README.md's note that the repository is being set up, and update "Where things stand".
+
+   **Progress (2026-10-16):** Done, in the order above.
+
+   - **6.1:** The diff matched the expected differences exactly. The only changed pages were `/dotnet/` and `/how-it-works/`, both for the diagram paths.
+   - **6.2:** The owner swapped the check with `gh api -X PUT` on ruleset `20728052`. `protect-main` now requires `format-and-lint`, `links`, `validate`, and `build / build`.
+   - **6.3:** Merged as [awesome-humans/dotnet#140](https://github.com/awesome-humans/dotnet/pull/140). `npm run verify` stages into `artifacts/site/`, which `.gitignore` already covers, and the staged `dotnet/` output was byte-identical to before.
+   - **6.4:** Merged as #9. Its push to `main` deployed production.
+   - **6.5:** All 44 built pages returned 200 on awesome-humans.net, apart from `/404.html`, which redirects. The diagrams load from `/dotnet/assets/diagrams/`, and `/llms.txt` is the new root version.
+   - **Also:** #8 and [awesome-humans/dotnet#141](https://github.com/awesome-humans/dotnet/pull/141) closed the `katex` alerts in both repositories with an `overrides` entry. `micromark-extension-math` allows only `katex` `^0.16`, so no bump could fix it.
 
 ## Phase 3: Apply the design system
 
