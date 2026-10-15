@@ -1,0 +1,88 @@
+name: Build
+
+# Builds awesome-humans.net and uploads it as the site artifact. Reusable: site.yml here
+# calls it, and so does each ecosystem's site-preview.yml, which passes its own id and
+# the pull request's head commit as ecosystem and ref. Every other live ecosystem in
+# ecosystems.toml builds at main, so a preview shows one change against the live site.
+#
+# For the steps, see README.md: Build the site. This workflow runs the same scripts.
+on:
+  workflow_call:
+    inputs:
+      ecosystem:
+        description: An ecosystem id from ecosystems.toml, to build at ref instead of main.
+        type: string
+        default: ""
+      ref:
+        description: The branch or commit to build the ecosystem at.
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+# Set explicitly rather than inherited, as in the ecosystems' own workflows.
+env:
+  DOTNET_NOLOGO: "true"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # A reusable workflow runs in the caller's repository, so name this one. Called from
+      # here, it builds the commit that triggered the run. Called from an ecosystem, it
+      # builds website at main.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: awesome-humans/website
+          ref: ${{ github.repository == 'awesome-humans/website' && github.sha || 'main' }}
+
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+
+      - name: Fetch the ecosystems
+        id: fetch
+        env:
+          ECOSYSTEM: ${{ inputs.ecosystem }}
+          REF: ${{ inputs.ref }}
+        run: |
+          if [ -n "$ECOSYSTEM" ] && [ -n "$REF" ]; then
+            uv run scripts/stage.py fetch --ref "$ECOSYSTEM=$REF"
+          elif [ -n "$ECOSYSTEM$REF" ]; then
+            echo "::error::Pass both ecosystem and ref, or neither."
+            exit 2
+          else
+            uv run scripts/stage.py fetch
+          fi
+
+      # One setup step per toolchain in ecosystems.toml, each run only when a live
+      # ecosystem needs it. stage.py fails on a toolchain this file has no step for.
+      # The ecosystem's own global.json decides the SDK.
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6
+        if: contains(format(' {0} ', steps.fetch.outputs.toolchains), ' dotnet ')
+        with:
+          global-json-file: ${{ steps.fetch.outputs.dotnet-global-json }}
+
+      - name: Stage the ecosystems and the shared pages
+        run: uv run scripts/stage.py stage
+
+      - name: Merge the navigation
+        run: uv run scripts/merge_nav.py
+
+      - name: Collate the sources
+        run: uv run scripts/collate_sources.py
+
+      # --strict fails the build on a link or anchor that resolves to nothing, whichever
+      # repository the page came from.
+      - name: Build the site
+        run: |
+          uv sync --locked
+          uv run zensical build --strict -f build/zensical.toml
+
+      - name: Keep the built site for the deploy job
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: site
+          path: build/public
+          retention-days: 1
+          if-no-files-found: error

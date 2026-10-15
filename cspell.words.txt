@@ -3,6 +3,8 @@
 # case-insensitively. Never add an American spelling.
 javascripts
 lede
+llms
+llmstxt
 lycheecache
 lycheeverse
 NOLOGO

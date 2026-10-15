@@ -5,7 +5,7 @@ The source of [awesome-humans.net](https://awesome-humans.net), which publishes 
 Each ecosystem's content lives in its own repository. This repository owns everything specific to publishing it: the [Zensical](https://zensical.org) configuration, the theme, the home and shared pages, the source images, the "Want in or out?" intake, and the Cloudflare deployment.
 
 > [!NOTE]
-> This repository is being set up. Until the cutover, awesome-humans.net still builds and deploys from [awesome-humans/dotnet](https://github.com/awesome-humans/dotnet), and the copied `Site` workflow here is disabled. For the steps and their state, see [PLAN.md](PLAN.md).
+> This repository is being set up. Until the cutover, awesome-humans.net still deploys from [awesome-humans/dotnet](https://github.com/awesome-humans/dotnet), and the `Site` workflow here deploys only pull request previews. For the steps and their state, see [PLAN.md](PLAN.md).
 
 ## Ecosystems
 
@@ -44,15 +44,51 @@ npm install   # Prettier, markdownlint, and cspell, at the versions in package.j
 npm run check # formatting, Markdown lint, and spelling
 ```
 
+Each live ecosystem also needs its toolchain, such as the .NET SDK for `dotnet`.
+
+## Build the site
+
+The `Site` workflow runs these steps through [`build.yml`](.github/workflows/build.yml), so a local build matches CI:
+
+```sh
+uv run scripts/stage.py fetch     # clone each live ecosystem into build/repos/, at main
+uv run scripts/stage.py stage     # stage the shared pages and every ecosystem into build/docs/
+uv run scripts/merge_nav.py       # check each nav.json, and write build/zensical.toml
+uv run scripts/collate_sources.py # check each sources.json, and write build/sources.json
+uv run zensical build --strict -f build/zensical.toml
+```
+
+The site lands in `build/public/`. To preview it, run `uv run zensical serve -f build/zensical.toml` instead of the last step.
+
+To preview a change to an ecosystem before you push it, stage from your checkout instead of `build/repos/`:
+
+```sh
+uv run scripts/stage.py stage --local dotnet=../../dotnet/main
+```
+
+### How the site updates
+
+| Trigger                                    | What runs                                                                                                        |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| A push to `main` here                      | `site.yml` builds and deploys to awesome-humans.net                                                              |
+| A push to an ecosystem's `main`            | Its `site-dispatch.yml` sends `ecosystem-updated` to `site.yml`                                                  |
+| Weekly, Mondays 06:00 UTC, or a manual run | `site.yml` builds and deploys, catching anything missed                                                          |
+| A pull request here                        | `site.yml` builds and deploys a preview, `pr-website-<number>`                                                   |
+| A pull request in an ecosystem             | Its `site-preview.yml` calls `build.yml` and `deploy.yml` with its head commit, for a preview `pr-<id>-<number>` |
+
+Every build takes every live ecosystem at `main`, except the one a preview names. Until the cutover, only previews deploy from here.
+
 ## Repository layout
 
 ```text
+├── .github/workflows/ ← build.yml and deploy.yml, which ecosystems call too, site.yml, and markdown.yml
 ├── AGENTS.md          ← how agents work in this repository
 ├── ecosystems.toml    ← the ecosystem registry
 ├── pages/             ← the shared pages, the theme, and the brand assets
 ├── PLAN.md            ← the organisation and website plan, deleted when it's done
 ├── pyproject.toml     ← the site's Python dependencies
 ├── schemas/           ← the staging contract's JSON schemas
+├── scripts/           ← stage, merge the navigation, and collate the sources
 ├── wrangler.jsonc     ← the Cloudflare Worker that serves the site
 └── zensical.toml      ← the site configuration
 ```
