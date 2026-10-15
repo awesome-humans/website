@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/awesome-humans/website/blob/main/schemas/sources.schema.json",
+  "title": "Ecosystem sources",
+  "description": "One ecosystem's roster, exported from its AWESOME-HUMANS.md. The roster stays the source of truth. The site combines every ecosystem's export with data/consent.toml to draw the source images and the montage.",
+  "type": "object",
+  "required": ["version", "sources"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": {
+      "description": "The contract version. Version 1 is the only one.",
+      "const": 1
+    },
+    "sources": {
+      "description": "Every source in the roster's Citable and Watch list tables, sorted by id. The site rejects a duplicate or out-of-order id.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/source" }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": ["id", "name", "kind", "url", "standing", "focus", "since"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "description": "The roster id. The same person or publication has the same id in every ecosystem. house is reserved and never exported.",
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "not": { "const": "house" }
+        },
+        "name": {
+          "description": "The display name: a person's name, or a publication's title.",
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "description": "person gets a portrait, with permission. publication never does.",
+          "enum": ["person", "publication"]
+        },
+        "url": {
+          "description": "Where to read the source: the first link in its roster row.",
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "standing": {
+          "description": "The roster table the source is in.",
+          "enum": ["citable", "watch-list"]
+        },
+        "marking": {
+          "description": "A reserved marking from the source's notes. Leave it out for an unmarked source.",
+          "enum": ["corroborate", "discovery-only"]
+        },
+        "focus": {
+          "description": "The roster row's Focus column.",
+          "type": "string",
+          "minLength": 1
+        },
+        "since": {
+          "description": "The roster row's Since column: a year, a year prefixed with ~ when approximate, or null when the roster has a dash.",
+          "type": ["string", "null"],
+          "pattern": "^~?\\d{4}$"
+        },
+        "github": {
+          "description": "A GitHub login that suggests a portrait. It's a hint for the consent request, never permission: only data/consent.toml grants that.",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$"
+        }
+      },
+      "if": {
+        "required": ["marking"]
+      },
+      "then": {
+        "properties": { "standing": { "const": "citable" } }
+      }
+    }
+  }
+}
