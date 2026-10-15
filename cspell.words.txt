@@ -2,6 +2,7 @@
 # names, identifiers, and terms the dictionaries lack. One per line, sorted
 # case-insensitively. Never add an American spelling.
 javascripts
+katex
 lede
 llms
 llmstxt
