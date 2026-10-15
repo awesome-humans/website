@@ -7,6 +7,7 @@ This repository builds and publishes [awesome-humans.net](https://awesome-humans
 - **The site, not the content.** Opinions, templates, skills, and source rosters live in each ecosystem's repository, listed in [`ecosystems.toml`](ecosystems.toml). Change them there, never in a staged copy here.
 - **The site owns publishing.** The Zensical configuration, the theme, the home and shared pages under `pages/`, the source images, issue intake, and the Cloudflare deployment all live here.
 - **The design system is canonical for the look.** Colours, type, the logo, and the components come from the [Awesome Humans design system](https://claude.ai/artifact/QfYm5d57sbJxs3W3jMyGiy). Take a token from it instead of inventing a value. An ecosystem's accent appears only in the header stripe, the heading tick, the active navigation item, and the ecosystem chip, and never recolours the logo.
+- **The theme is one stylesheet.** `pages/stylesheets/awesome-humans.css` holds the tokens as `--ah-*` properties, maps them onto Zensical's `--md-*` variables, and ports the design system's `ah-` component classes. Change a value in the design system first, then copy it here. `pages/javascripts/ecosystem.js` sets the accent from the URL.
 
 ## Maintaining this repository
 

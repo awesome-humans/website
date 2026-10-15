@@ -6,7 +6,7 @@ Each ecosystem's content lives in its own repository. This repository owns every
 
 ## Ecosystems
 
-[`ecosystems.toml`](ecosystems.toml) lists every ecosystem the site knows. Adding one takes an entry there and an accent token in the theme.
+[`ecosystems.toml`](ecosystems.toml) lists every ecosystem the site knows. Adding one takes an entry there, which also gives it a card on the home page, and its accent colours in [`pages/stylesheets/awesome-humans.css`](pages/stylesheets/awesome-humans.css), copied from the design system.
 
 | Ecosystem  | Repository                                                        | Status |
 | ---------- | ----------------------------------------------------------------- | ------ |

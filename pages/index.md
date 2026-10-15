@@ -1,4 +1,18 @@
-# Awesome Humans
+<!-- The hero and the ecosystem cards are the design system's Hero and EcosystemCard,
+     written as HTML. The hero's h1 is the page title and ends with a full stop. -->
+<!-- markdownlint-disable MD026 MD033 MD041 -->
+
+<section class="ah-hero" markdown>
+
+<p class="ah-hero__kicker">[ ] awesome-humans.net</p>
+
+# What good code looks like, right now.
+
+Opinions distilled from people with a proven track record of writing about each ecosystem: cited, current, and ready for your agent.
+
+<div class="ah-row"><a class="ah-btn ah-btn--primary" href="dotnet/">Browse .NET</a><a class="ah-btn" href="how-it-works/">How it works</a></div>
+
+</section>
 
 This project shows you what good code looks like today, and keeps that answer current as each ecosystem changes. Recommendations come from awesome humans: people and publications with at least two years of accurate, independent writing on the subject.
 
@@ -6,9 +20,9 @@ Every opinion states its recommendation first, cites its sources, and targets th
 
 ## Ecosystems
 
-- **[.NET](dotnet/index.md):** C#, F#, ASP.NET Core, EF Core, the runtime, and the libraries around them.
+<!-- ecosystem-cards -->
 
-Rust and TypeScript are next. Each ecosystem has the same parts:
+Each ecosystem has the same parts:
 
 - **Opinions:** One topic per page, each with its recommendation, rationale, and sources.
 - **Templates:** Copy-paste-ready files that encode the opinions.

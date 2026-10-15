@@ -25,6 +25,7 @@ class Ecosystem:
     toolchain: str
     stage: str
     status: str
+    scope: str
 
 
 def require_root() -> None:
@@ -34,11 +35,15 @@ def require_root() -> None:
         sys.exit(2)
 
 
-def live() -> list[Ecosystem]:
-    """The live ecosystems, in registry order, which is the order the site shows them in."""
+def registry() -> list[Ecosystem]:
+    """Every ecosystem, live or soon, in registry order, which is the order the site shows them in."""
     with REGISTRY.open("rb") as file:
-        entries = tomllib.load(file)["ecosystem"]
-    return [Ecosystem(**entry) for entry in entries if entry["status"] == "live"]
+        return [Ecosystem(**entry) for entry in tomllib.load(file)["ecosystem"]]
+
+
+def live() -> list[Ecosystem]:
+    """The live ecosystems, in registry order."""
+    return [ecosystem for ecosystem in registry() if ecosystem.status == "live"]
 
 
 def load_json(path: Path, errors: list[str]) -> dict | None:

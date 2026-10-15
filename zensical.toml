@@ -13,16 +13,20 @@ repo_url = "https://github.com/awesome-humans/dotnet"
 repo_name = "awesome-humans/dotnet"
 docs_dir = "docs"
 site_dir = "public"
-extra_css = ["stylesheets/extra.css"]
-extra_javascript = ["javascripts/open-details.js"]
+extra_css = ["stylesheets/awesome-humans.css"]
+extra_javascript = ["javascripts/ecosystem.js", "javascripts/open-details.js"]
 
 [project.theme]
-# Classic draws the header and tabs in the primary colour; the modern variant keeps
-# them neutral, which leaves the brand colour only on links.
-variant = "classic"
-# System fonts: the default loads Roboto from Google Fonts, a third-party request on
-# every page view.
+# The look comes from the Awesome Humans design system, through
+# stylesheets/awesome-humans.css. The modern variant keeps the header and tabs on the
+# page background, so the brand green stays on links and each ecosystem's accent on its
+# stripe, tick, active link, and chip.
+variant = "modern"
+# IBM Plex, self-hosted by awesome-humans.css. The default loads Roboto from Google
+# Fonts, a third-party request on every page view.
 font = false
+logo = "assets/brand/mark-cited-human.svg"
+favicon = "assets/brand/favicon.svg"
 language = "en"
 features = [
   "content.code.copy",
@@ -34,8 +38,8 @@ features = [
 ]
 
 # Light and dark mode, defaulting to the reader's system preference, with a toggle that
-# cycles through system, light and dark. The colours are custom, the .NET brand purple
-# set in stylesheets/extra.css.
+# cycles through system, light and dark. The colours are custom, set in
+# stylesheets/awesome-humans.css.
 [[project.theme.palette]]
 media = "(prefers-color-scheme)"
 toggle.icon = "lucide/sun-moon"

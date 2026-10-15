@@ -14,9 +14,9 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 ## Next session
 
-Stopped 2026-10-16, with Phases 0, 1, and 2 done. Pick up here:
+Stopped 2026-10-16, with Phases 0, 1, and 2 done, and Phase 3 down to step 4. Pick up here:
 
-1. **Phase 3,** the design system.
+1. **Phase 3 step 4,** OpinionMeta: extend the staging contract so an ecosystem writes each opinion's metadata as a `{ .ah-meta }` strip of chips, and change `dotnet`'s `build-site.cs` to match. Steps 1 to 3 and 5 to 8 are done.
 2. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`. It wasn't a Dependabot alert on 2026-10-16. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
 
 `gh` is signed in as `si618`, an organisation admin. It still has the `admin:org` scope added for Phase 0, which nothing needs now. The owner removes it with `gh auth refresh -h github.com --remove-scopes admin:org`.
@@ -290,6 +290,17 @@ Branch `feat/design-system` in `website`. The design system is the reference: co
 6. **Fonts:** Add the self-hosted IBM Plex `woff2` files and the `@font-face` rules. Keep `font = false` in `zensical.toml`.
 7. **Home page:** Use the hero (headline under 18 characters, lede under 46) and replace the Ecosystems list with EcosystemCards, with Rust and TypeScript as `ah-card--soon` until they go live.
 8. **Check** text contrast of 4.5:1 in both themes on every component, a focus ring of 3:1, `prefers-reduced-motion`, no horizontal scroll at 360px, and `zensical build --strict`.
+
+**Progress (2026-10-16):** Steps 1 to 3 and 5 to 8 are done in `feat/design-system`. Step 4 is next. The work differs from the steps above in six ways:
+
+- **The design system has no theme layer to copy.** Its README names `stylesheets/awesome-humans.css`, `javascripts/ecosystem.js`, and `assets/brand/`, but it holds only `tokens.json`, `components/bundle.css`, and the assets. So `pages/stylesheets/awesome-humans.css` is written from those two files, with the tokens renamed `--ah-*`, and replaces `extra.css`.
+- **No template overrides.** The `modern` variant already keeps the header and tabs on the page background. CSS draws the stripe on `.md-header::after`, the tick on `h1`, and the accent on the active tab and navigation link. The hero is HTML in `pages/index.md`, through `md_in_html`.
+- **The design system's favicon is broken.** Its asset (`e5b0a59c…`) colours its paths with a class but has no `<style>`, so the brackets don't draw. `pages/assets/brand/favicon.svg` uses the same paths with the colours inline, switching to `#3DD392` in dark mode. Fix the asset in the design system too.
+- **No montage yet.** The design system's montage uses generated placeholder faces, and the hero credit says the faces are cited sources, so the hero ships without one until Phase 4 builds the real montage.
+- **`stage.py` writes the ecosystem cards** from `ecosystems.toml`, which gained a `scope` line per ecosystem, so a status change there updates the home page. Each card's chip says `live` or `next`, so the state doesn't rest on colour.
+- **The fonts are IBM's Latin-1 subsets,** with IBM's own `unicode-range`: six faces, 136 KB in all, under `pages/assets/fonts/` with the OFL.
+
+The checks: every token pair passes in both themes, at 4.5:1 for text and 3:1 for the focus ring and accents. Firefox screenshots at 1280px and 360px, light and dark, of the home page, an opinion page, the roster, and How it works show no horizontal page scroll, and a scratch page showed the admonitions, CodeCompare, and the `{ .ah-meta }` strip. `dotnet` doesn't use the `house` and `preview` admonitions or the CodeCompare fences yet, so those styles wait for content that uses them.
 
 ## Phase 4: Collate sources and generate their images
 
