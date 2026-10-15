@@ -14,7 +14,7 @@ outputs, so build.yml sets up only those.
 
 stage copies pages/ into build/docs/, runs each ecosystem's stage command with {out}
 set to build/docs/, and writes the root llms.txt, which links to each ecosystem's
-own. --local stages from a checkout on disk instead of build/repos/<id>/, to preview
+own. It also fills the home page's ecosystem cards from ecosystems.toml. --local stages from a checkout on disk instead of build/repos/<id>/, to preview
 an ecosystem change before pushing it.
 
 Exit codes: 0 done, 1 an ecosystem failed to fetch or stage, or staged outside its
@@ -28,12 +28,16 @@ import shutil
 import subprocess
 import sys
 import tomllib
+from html import escape
 from pathlib import Path
 
-from ecosystems import DOCS, REPOS, Ecosystem, live, report, require_root
+from ecosystems import DOCS, REPOS, Ecosystem, live, registry, report, require_root
 
 PAGES = Path("pages")
 SITE_CONFIG = Path("zensical.toml")
+
+# The line in pages/index.md that the ecosystem cards replace.
+CARDS_MARKER = "<!-- ecosystem-cards -->"
 
 # The toolchains build.yml has a setup step for. A new one needs a step there too.
 TOOLCHAINS = {"dotnet"}
@@ -131,7 +135,37 @@ def stage(ecosystems: list[Ecosystem], local: dict[str, str]) -> int:
 
     if not errors:
         write_llms(ecosystems, errors)
+        write_cards(errors)
     return report(errors)
+
+
+def write_cards(errors: list[str]) -> None:
+    """Replace the home page's marker with a card per ecosystem, as the design system's
+    EcosystemCard shows: a link for a live one, and a muted card for one coming soon. The
+    chip says which in words, so the state doesn't rest on colour alone."""
+    path = DOCS / "index.md"
+    text = path.read_text(encoding="utf-8")
+    if text.count(CARDS_MARKER) != 1:
+        errors.append(f"{PAGES / 'index.md'}: expected one {CARDS_MARKER} line")
+        return
+
+    cards = []
+    for ecosystem in registry():
+        name, scope = escape(ecosystem.name), escape(ecosystem.scope)
+        if ecosystem.status == "live":
+            cards.append(
+                f'<a class="ah-card ah-eco-{ecosystem.id}" href="{ecosystem.id}/">'
+                f'<span class="ah-chip ah-chip--eco ah-chip--dot">live</span>'
+                f"<h3>{name}</h3><p>{scope}</p></a>"
+            )
+        else:
+            cards.append(
+                f'<div class="ah-card ah-card--soon ah-eco-{ecosystem.id}">'
+                f'<span class="ah-chip ah-chip--eco ah-chip--dot">next</span>'
+                f"<h3>{name}</h3><p>{scope}</p></div>"
+            )
+    block = '<div class="ah-cards">\n' + "\n".join(cards) + "\n</div>"
+    path.write_text(text.replace(CARDS_MARKER, block), encoding="utf-8")
 
 
 def write_llms(ecosystems: list[Ecosystem], errors: list[str]) -> None:

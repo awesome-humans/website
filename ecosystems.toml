@@ -11,6 +11,7 @@
 #             the staging directory.
 # status      live: built and published. soon: shown on the home page as coming,
 #             and never checked out.
+# scope       One line for the ecosystem's card on the home page.
 
 [[ecosystem]]
 id = "dotnet"
@@ -19,6 +20,7 @@ repository = "awesome-humans/dotnet"
 toolchain = "dotnet"
 stage = "dotnet run scripts/build-site.cs -- --out {out}"
 status = "live"
+scope = "C#, F#, ASP.NET Core, EF Core, the runtime, and the libraries around them."
 
 [[ecosystem]]
 id = "rust"
@@ -27,6 +29,7 @@ repository = "awesome-humans/rust"
 toolchain = "rust"
 stage = ""
 status = "soon"
+scope = "Sources being vetted."
 
 [[ecosystem]]
 id = "typescript"
@@ -35,3 +38,4 @@ repository = "awesome-humans/typescript"
 toolchain = "node"
 stage = ""
 status = "soon"
+scope = "Sources being vetted."
