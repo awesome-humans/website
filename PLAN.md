@@ -14,14 +14,13 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 ## Next session
 
-Stopped 2026-10-15, with Phase 1 and Phase 2 steps 1 to 3 done, step 4 in review, and Phase 0 waiting on the web UI. Pick up here:
+Stopped 2026-10-15, with Phase 1 and Phase 2 steps 1 to 4 done, and Phase 0 waiting on the web UI. Pick up here:
 
 1. **Phase 0, in the web UI:**
-   - **Step 2:** the organisation's profile picture is set. Upload `pages/assets/brand/mark-cited-human-512.png` as the app's logo too, if it isn't already. The API doesn't show an app's logo, so check the app's settings page.
    - **Step 3:** the Cloudflare organisation secrets. Their values can't be read back from the .NET repository, so take them from Cloudflare.
    - **Step 4:** turn on "Allow GitHub Actions to create and approve pull requests". It's still off.
    - **Steps 6 and 7:** Renovate and the `.github` repository.
-2. **Phase 2 step 4:** merge [awesome-humans/dotnet#138](https://github.com/awesome-humans/dotnet/pull/138). Then step 5, the site workflows, which needs the Cloudflare organisation secrets to deploy.
+2. **Phase 2 step 5:** the site workflows, which need the Cloudflare organisation secrets to deploy.
 
 `gh` is signed in as `si618`, an organisation admin, with the `admin:org` scope added for Phase 0. Remove it with `gh auth refresh -h github.com --remove-scopes admin:org` once Phase 0 is done.
 
@@ -60,7 +59,7 @@ These are settled unless the owner says otherwise. Each gives one line on what l
 | Publication logos             | Opt-in, like portraits. A publication gets the initials tile unless `data/consent.toml` records a grant: the publisher's written permission, or a link to brand guidelines that allow this use. Logos appear on per-source images only, never in the montage, which shows people. They're downloaded at build time and never committed. Logos by default lost because many publishers restrict them: Microsoft's trademark guidelines allow its names in text but not its logos without a licence, and a row of company logos reads as endorsement |
 | Intake goes through `website` | The "Suggest a source" and "Opt out" issue forms live in `website`, with an ecosystem dropdown. A workflow transfers each suggestion to its ecosystem repository, where `vet-source` runs. Opt-outs stay in `website` because they cross ecosystems. One link from the home page lost nothing, and per-repository forms would scatter the opt-out register                                                                                                                                                                                         |
 | Fonts                         | Self-host IBM Plex Sans and Mono (SIL Open Font License) as `woff2` under `website/pages/assets/fonts/`. This keeps the current rule of no third-party request on page view. Google Fonts lost for that reason                                                                                                                                                                                                                                                                                                                                     |
-| Logo                          | The cited-human mark (concept A), provisionally. The owner isn't a fan, and will revisit it before Phase 3. Concepts B (prompt human) and C (the "ah" monogram) lost to it                                                                                                                                                                                                                                                                                                                                                                         |
+| Logo                          | The cited-human mark (concept A). The owner wasn't a fan at first, but it has grown on them since it went on the app and the organisation, so Phase 3 uses it. Concepts B (prompt human) and C (the "ah" monogram) lost to it                                                                                                                                                                                                                                                                                                                      |
 | Heading case                  | The section is titled "Want in or out?", in sentence case, as the design system's content rules require for headings                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ## Target layout of `awesome-humans/website`
@@ -109,7 +108,7 @@ These are settled unless the owner says otherwise. Each gives one line on what l
 The owner does these in the GitHub web UI.
 
 1. ~~**Require two-factor authentication** for members.~~ Done 2026-10-15.
-2. **Create the GitHub App** `awesome-humans-app`, owned by the organisation, and install it on all repositories. Grant only what the workflows need:
+2. ~~**Create the GitHub App** `awesome-humans-app`, owned by the organisation, and install it on all repositories.~~ Done 2026-10-15. Grant only what the workflows need:
    - Contents: read and write (montage and consent pull requests)
    - Pull requests: read and write
    - Issues: read and write (transferring and labelling intake issues)
@@ -118,7 +117,7 @@ The owner does these in the GitHub web UI.
 
    Store its app ID as the organisation variable `APP_ID`, and its private key as the organisation secret `APP_PRIVATE_KEY`.
 
-   **Progress (2026-10-15):** Created with App ID `5322859`, transferred to the organisation, and installed on all repositories with the permissions above. `APP_ID` and `APP_PRIVATE_KEY` are set, and the key was tested by signing an app token. **Still to do:** the logo.
+   **Progress (2026-10-15):** Created with App ID `5322859`, transferred to the organisation, and installed on all repositories with the permissions above. `APP_ID` and `APP_PRIVATE_KEY` are set, and the key was tested by signing an app token. The owner uploaded the logo the same day.
 
    **Logo:** The app's avatar appears on every commit, comment, and pull request it makes, so give it the cited-human mark rather than GitHub's generated identicon.
    1. Download `mark-cited-human.svg` from the design system's Logos asset group.
@@ -128,7 +127,7 @@ The owner does these in the GitHub web UI.
 
    **Progress (2026-10-15):** Steps 1 and 2 are done. `brand/mark-cited-human-512.png` is 512×512 and 5 KB, rendered with `resvg` from the design system's asset `7b66d8d843b3175c2778c20a279857b7`. The SVG's 32-unit viewBox already holds the clear space: the mark spans 4 to 28, a margin of a sixth on each side, so the PNG has 64 pixels on every side.
 
-   **Logo is provisional (2026-10-15):** The owner isn't a fan of the cited-human mark, but prefers it to the design system's alternates: B, "prompt human", is lopsided in a square frame, and C, the "ah" monogram, doesn't say "humans". So keep A for now, and revisit the mark before Phase 3 spreads it across the site. A new mark means changing the design system's Logo component and its asset, and rendering the app logo, the organisation picture, and `pages/assets/brand/` again. The live site uses Zensical's default book icon, so there's no existing logo to keep.
+   **Logo kept (2026-10-15):** The owner wasn't a fan of the cited-human mark at first, but preferred it to the design system's alternates: B, "prompt human", is lopsided in a square frame, and C, the "ah" monogram, doesn't say "humans". Once it was on the app and the organisation, it grew on them, so A stays. A new mark would still mean changing the design system's Logo component and its asset, and rendering the app logo, the organisation picture, and `pages/assets/brand/` again. The live site uses Zensical's default book icon, so there's no existing logo to keep.
 
    Phase 3 step 5 brings the same SVG into `website`, so keep one copy of the rendered PNG there, in `pages/assets/brand/`, as its source of truth.
 
@@ -212,7 +211,7 @@ The site keeps deploying from `dotnet` until the cutover in step 6, so awesome-h
    - **Move what the site root holds today into `<dir>/dotnet/`:** the diagrams (`assets/diagrams/`) and `llms.txt`. `pages/how-it-works.md` in `website` then links to `dotnet/assets/diagrams/`, in step 5.
    - **Export `sources.json` from the roster.** The roster has no person-or-publication column, so add one to the Citable and Watch list tables, or a marking in each source's notes, and have `validate-sources.cs` check it.
 
-   **Progress (2026-10-15):** In review as [awesome-humans/dotnet#138](https://github.com/awesome-humans/dotnet/pull/138). It differs from the steps above in four ways:
+   **Progress (2026-10-15):** Merged as [awesome-humans/dotnet#138](https://github.com/awesome-humans/dotnet/pull/138). It differs from the steps above in four ways:
    - **No `--standalone` flag.** With no arguments, `build-site.cs` stages the standalone site as before, so `site.yml` needs no change. The cutover removes that mode instead of a flag.
    - **The roster has a Kind column,** `person` or `publication`, which `validate-sources.cs` checks and `vet-source` sets. It holds 26 people and 14 publications. A person's name is the start of their Source link text, so `code-with-mukesh` became "Mukesh Murugan: CodeWithMukesh".
    - **Since keeps its leading year,** so `~2010s` and `~2016 (docs.microsoft.com era; MSDN before)` export as `~2010` and `~2016`.
