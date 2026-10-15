@@ -14,28 +14,28 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 ## Next session
 
-Stopped 2026-10-15, with Phase 1 and Phase 2 steps 1 to 4 done, Phase 2 step 5 half done, and Phase 0 down to step 7. Pick up here:
+Stopped 2026-10-15, with Phase 0 down to step 7, and Phase 2 down to step 6, the cutover. Pick up here:
 
-1. **Phase 2 step 5, after `website`'s `feat/site-workflows` pull request merges:**
-   - Enable the `Site` workflow, which is still disabled from step 1: `gh workflow enable site.yml -R awesome-humans/website`.
-   - Add `build / build` to the `protect-main` ruleset's required checks, once it has run on `main`.
-   - Open `dotnet`'s `feat/site-workflows` pull request, with `site-dispatch.yml` and `site-preview.yml`.
-2. **Phase 0 step 7, in the web UI:** create the `.github` repository.
-3. **Renovate's first run:** it was installed 2026-10-15. Check for its Dependency Dashboard issue, and for the `katex` security fix on `website`.
+1. **Phase 2 step 6, the cutover,** with the owner, in one sitting. awesome-humans.net still deploys from `dotnet`'s `Site` workflow, and `website` already builds the same site and deploys previews. For the full steps and their order, see [step 6](#phase-2-create-website-and-move-the-site-into-it). Before it starts, check that `dotnet`'s `protect-main` ruleset's required checks are swapped, or the removal pull request can't merge.
+2. **Phase 0 step 7:** the owner creates the `.github` repository in the web UI. The agent then drafts `profile/README.md` and `SECURITY.md`, and moves `PULL_REQUEST_TEMPLATE.md` from `dotnet`.
+3. **The `katex` alert on `website`** (Dependabot alert 2, low, fixed in 0.18.2) is still open. Renovate's first run made the Dependency Dashboard (#5), but no fix. Find which dev dependency pulls `katex` in with `npm ls katex`, and bump it or add an `overrides` entry.
+4. **Then Phase 3,** the design system.
 
-`gh` is signed in as `si618`, an organisation admin, with the `admin:org` scope added for Phase 0. Remove it with `gh auth refresh -h github.com --remove-scopes admin:org` once Phase 0 is done.
+`gh` is signed in as `si618`, an organisation admin, with the `admin:org` scope added for Phase 0. Remove it with `gh auth refresh -h github.com --remove-scopes admin:org` once step 7 is done.
+
+**Agent notes:** Read the repository's `AGENTS.md` before the first commit. Commits and pull request descriptions carry no agent attribution: no `Co-Authored-By` trailer and no "Generated with" line. `npm ci` before `npm run check` in a fresh worktree. The agent can merge a pull request with `gh pr merge` when the owner asks, but can't write secrets.
 
 ## Where things stand (checked 2026-10-15)
 
-| Item                          | State                                                                                                                                                                                                                                                                             |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Organisation `awesome-humans` | Exists, with two-factor authentication required. `awesome-humans-app` (App ID `5322859`) is installed on all repositories, with the `APP_ID` variable and `APP_PRIVATE_KEY` secret set. It holds `dotnet`, `rust`, and `website`, and its profile picture is the cited-human mark |
-| `awesome-humans/dotnet`       | Transferred 2026-10-15. The old URL redirects                                                                                                                                                                                                                                     |
-| Local `.NET` clone            | At `~/Projects/github/awesome-humans/dotnet/`. `origin` points at `awesome-humans/dotnet`, and the `main` worktree is repaired and up to date                                                                                                                                     |
-| Local `website` clone         | At `~/Projects/github/awesome-humans/website/`, with `.bare/` and a `main` worktree tracking `origin/main`                                                                                                                                                                        |
-| Local Rust clone              | At `~/Projects/github/awesome-humans/rust/`, with `origin` set to `awesome-humans/rust`, which exists and is empty. It has no commits, and only an untracked `PLAN.md`                                                                                                            |
-| The site                      | Built from the .NET repository: `site/`, `scripts/build-site.cs` (hard-codes `Ecosystem = "dotnet"`), and `.github/workflows/site.yml`, which deploys to Cloudflare with Wrangler                                                                                                 |
-| The design system             | Tokens, the cited-human logo, eight components, and a placeholder montage. Its README names `scripts/build_montage.py` and a theme layer to copy: `stylesheets/awesome-humans.css`, `javascripts/ecosystem.js`, and `assets/brand/`                                               |
+| Item                          | State                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Organisation `awesome-humans` | Exists, with two-factor authentication required. `awesome-humans-app` (App ID `5322859`, with the cited-human logo) and Renovate are installed on all repositories. It has the `APP_ID` variable, and the `APP_PRIVATE_KEY`, `CLOUDFLARE_API_TOKEN`, and `CLOUDFLARE_ACCOUNT_ID` secrets. GitHub Actions can create pull requests. It holds `dotnet`, `rust`, and `website`, and its profile picture is the cited-human mark |
+| `awesome-humans/dotnet`       | Transferred 2026-10-15. The old URL redirects                                                                                                                                                                                                                                                                                                                                                                                |
+| Local `.NET` clone            | At `~/Projects/github/awesome-humans/dotnet/`. `origin` points at `awesome-humans/dotnet`, and the `main` worktree is repaired and up to date                                                                                                                                                                                                                                                                                |
+| Local `website` clone         | At `~/Projects/github/awesome-humans/website/`, with `.bare/` and a `main` worktree tracking `origin/main`                                                                                                                                                                                                                                                                                                                   |
+| Local Rust clone              | At `~/Projects/github/awesome-humans/rust/`, with `origin` set to `awesome-humans/rust`, which exists and is empty. It has no commits, and only an untracked `PLAN.md`                                                                                                                                                                                                                                                       |
+| The site                      | Production still deploys from `dotnet`'s `Site` workflow, through `site/` and `build-site.cs`'s no-argument mode. `website`'s `Site` workflow builds the same site from every ecosystem's staged pages, on a push, a dispatch from `dotnet`, a schedule, or a pull request, and deploys only previews. Both repositories' pull requests get a `website`-built preview, and `dotnet`'s also get its old one                   |
+| The design system             | Tokens, the cited-human logo, eight components, and a placeholder montage. Its README names `scripts/build_montage.py` and a theme layer to copy: `stylesheets/awesome-humans.css`, `javascripts/ecosystem.js`, and `assets/brand/`                                                                                                                                                                                          |
 
 ## Decisions
 
@@ -195,7 +195,7 @@ The site keeps deploying from `dotnet` until the cutover in step 6, so awesome-h
    - **`PLAN.md` and `brand/` wait for step 2.** `main` is protected from the start, so they go in through the scaffold pull request.
    - **The copied `Site` workflow is disabled.** Its first run failed at `setup-dotnet`, as expected, and skipped the deploy, because `website` has no Cloudflare secrets. Enable it again in step 5, when the new `site.yml` replaces it.
 
-   `website` has `dotnet`'s settings: squash merge only, branches deleted on merge, no wiki or projects, Dependabot alerts and security updates, and topics `zensical` and `cloudflare-workers`. Its `protect-main` ruleset (ID `25145260`) is active, with `dotnet`'s rules. It requires `format-and-lint` and `links` from `markdown.yml`. Add `build` once `build.yml` runs.
+   `website` has `dotnet`'s settings: squash merge only, branches deleted on merge, no wiki or projects, Dependabot alerts and security updates, and topics `zensical` and `cloudflare-workers`. Its `protect-main` ruleset (ID `25145260`) is active, with `dotnet`'s rules. It requires `format-and-lint` and `links` from `markdown.yml`, and `build / build` from `site.yml` since 2026-10-15.
 
 2. **Scaffold** the rest of the target layout: `README.md`, `AGENTS.md` (ported from the .NET repository's writing-style, worktree, commit and attribution sections), `pyproject.toml`, the prose tooling, `renovate.json`, and `ecosystems.toml` with `dotnet` as `live`, `rust` as `soon`, and `typescript` as `soon`.
    **Progress (2026-10-15):** Merged as #1 (`d8bcc51`). It adds `README.md`, `AGENTS.md`, `ecosystems.toml`, `pyproject.toml` with `uv.lock`, the prose tooling and `markdown.yml`, `lychee.toml`, `renovate.json`, `.editorconfig`, `LICENSE`, this plan, and the logo under `pages/assets/brand/`. It deletes `requirements.txt`, which `pyproject.toml` replaces. `zensical.toml` and the disabled `site.yml` are unchanged until step 5.
@@ -223,19 +223,38 @@ The site keeps deploying from `dotnet` until the cutover in step 6, so awesome-h
    - **`site.yml`:** on `push` to `main`, `pull_request`, `repository_dispatch` of type `ecosystem-updated`, a weekly `schedule`, and `workflow_dispatch`. It calls `build.yml`, then keeps the deploy job from today's `site.yml`: production for `main`, dispatch and schedule; a preview alias for a pull request.
    - **In each ecosystem,** add `site-dispatch.yml`, which runs on a push to `main` and sends `ecosystem-updated` to `website` with an app token, and `site-preview.yml`, which runs on a pull request and calls `awesome-humans/website/.github/workflows/build.yml@main` with its own ecosystem and ref, then deploys a preview as `pr-<ecosystem>-<number>`.
 
-   **Progress (2026-10-15):** The `website` half is in `website`'s `feat/site-workflows` pull request. It differs from the steps above in five ways:
+   **Progress (2026-10-15):** Done, as #6 in `website` and [awesome-humans/dotnet#139](https://github.com/awesome-humans/dotnet/pull/139). Both previews worked, and a push to `dotnet`'s `main` dispatched a `website` build. The `Site` workflow is enabled again. It differs from the steps above in five ways:
    - **`deploy.yml` is reusable too.** `site.yml` and each ecosystem's `site-preview.yml` call it with `secrets: inherit`, so the Wrangler steps exist once.
    - **`stage.py` fetches the ecosystems itself,** with a shallow `git fetch` of `main` or the named ref into `build/repos/<id>/`. One checkout step per ecosystem would need a workflow edit for each new ecosystem. It also copies `pages/`, and writes the root `llms.txt` from each ecosystem's summary.
    - **No image scripts yet.** Phase 4 adds them to `build.yml`. `collate_sources.py` already writes `build/sources.json` for them.
    - **Production deploys stay off until the cutover.** `site.yml` deploys only pull request previews, as `pr-website-<number>`, so a dispatch can't replace the live site early. Step 6 drops that condition.
    - **Checked against production:** a local build differs from `dotnet`'s standalone build only in the diagram paths, now under `/dotnet/assets/diagrams/`, and in the root `llms.txt`, which now links to `/dotnet/llms.txt`.
 
-6. **Cut over** in one sitting:
-   1. Merge the `website` scaffold, and check that a `website` preview matches production.
-   2. Merge `chore/remove-site` in `dotnet`: delete `site/` and `site.yml`, drop `build-site.cs`'s no-argument mode, and change `README.md`, `AGENTS.md`, and `npm run verify` to describe staging only.
-   3. Run `site.yml` on `main` by `workflow_dispatch`, and check awesome-humans.net.
+6. **Cut over** in one sitting, in this order. Until step 6.3 merges, nothing changes on awesome-humans.net.
+   1. **Compare.** Stage and build both ways locally, and diff the outputs. The expected differences are the diagrams, under `/dotnet/assets/diagrams/`, the root `llms.txt`, and the new `dotnet/` files `llms.txt`, `nav.json`, and `sources.json`, plus `assets/brand/`. On 2026-10-15 nothing else differed:
 
-   The Cloudflare Worker name in `wrangler.jsonc` doesn't change, so the domain and routes stay as they are.
+      ```sh
+      # in dotnet/main
+      dotnet run scripts/build-site.cs
+      uvx --with-requirements site/requirements.txt zensical build --strict -f site/build/zensical.toml
+      # in a website worktree
+      uv run scripts/stage.py fetch && uv run scripts/stage.py stage
+      uv run scripts/merge_nav.py && uv run scripts/collate_sources.py
+      uv run zensical build --strict -f build/zensical.toml
+      diff -rq ../../dotnet/main/site/build/public build/public
+      ```
+
+   2. **Swap `dotnet`'s required check.** Its `protect-main` ruleset requires `build`, from the old `site.yml`. Replace it with `build / build`, from `site-preview.yml`, through `gh api` on the ruleset (integration ID `15368`, GitHub Actions). Do this first, or the next step's pull request can't merge.
+   3. **`dotnet` `chore/remove-site`:** delete `site/` and `.github/workflows/site.yml`, and drop `build-site.cs`'s no-argument mode, so `--out` is required. Then update what names them:
+      - `README.md` and `AGENTS.md`, to describe staging only. AGENTS.md's Site section names `site/pages`, `site/wrangler.jsonc`, and the `Site` workflow.
+      - `npm run verify` in `package.json`, to stage into a temporary directory with `--out`.
+      - The `site/build` entries in `.gitignore`, `.markdownlint-cli2.jsonc`, `cspell.jsonc`, and `lychee.toml`.
+
+      Merging it dispatches a `website` build, which doesn't deploy yet, so the live site stays as it was.
+
+   4. **`website` `feat/cutover`:** in `site.yml`, drop the deploy job's `if: github.event_name == 'pull_request'`, so `main`, dispatches, and the schedule deploy to production. Update README.md's note, which says only previews deploy. Merging it deploys awesome-humans.net from `website`.
+   5. **Check** awesome-humans.net: the home page, `/dotnet/`, a few opinion pages, `/how-it-works/` with its diagrams, `/llms.txt`, and `/dotnet/llms.txt`. The Worker name in `wrangler.jsonc` doesn't change, so the domain and routes stay as they are. To roll back, revert the `website` pull request and redeploy with Wrangler's `rollback`.
+   6. **Tidy:** remove README.md's note that the repository is being set up, and update "Where things stand".
 
 ## Phase 3: Apply the design system
 
