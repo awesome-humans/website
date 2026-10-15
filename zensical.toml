@@ -1,12 +1,9 @@
-# The awesome-humans.net documentation site. scripts/build-site.cs stages this file into
-# site/build with the navigation added, beside the pages it generates, so build from there:
-#
-#     dotnet run scripts/build-site.cs
-#     uvx --with-requirements site/requirements.txt zensical build --strict -f site/build/zensical.toml
+# The awesome-humans.net site's base configuration. scripts/merge_nav.py writes a copy to
+# build/zensical.toml with the navigation added, beside the staged pages, so build from
+# there. For the steps, see README.md: Build the site.
 #
 # docs_dir and site_dir are relative to the staged copy. Each ecosystem lives under its own
-# path, /dotnet/ for this repository, so the URLs stay put when the site moves to a shared
-# awesome-humans repository and more ecosystems join it.
+# path, such as /dotnet/, which the ecosystem's staging command writes.
 
 [project]
 site_name = "Awesome Humans"

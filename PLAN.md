@@ -14,13 +14,14 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 ## Next session
 
-Stopped 2026-10-15, with Phase 1 and Phase 2 steps 1 to 4 done, and Phase 0 waiting on the web UI. Pick up here:
+Stopped 2026-10-15, with Phase 1 and Phase 2 steps 1 to 4 done, Phase 2 step 5 half done, and Phase 0 down to step 7. Pick up here:
 
-1. **Phase 0, in the web UI:**
-   - **Step 3:** the Cloudflare organisation secrets. Their values can't be read back from the .NET repository, so take them from Cloudflare.
-   - **Step 4:** turn on "Allow GitHub Actions to create and approve pull requests". It's still off.
-   - **Steps 6 and 7:** Renovate and the `.github` repository.
-2. **Phase 2 step 5:** the site workflows, which need the Cloudflare organisation secrets to deploy.
+1. **Phase 2 step 5, after `website`'s `feat/site-workflows` pull request merges:**
+   - Enable the `Site` workflow, which is still disabled from step 1: `gh workflow enable site.yml -R awesome-humans/website`.
+   - Add `build / build` to the `protect-main` ruleset's required checks, once it has run on `main`.
+   - Open `dotnet`'s `feat/site-workflows` pull request, with `site-dispatch.yml` and `site-preview.yml`.
+2. **Phase 0 step 7, in the web UI:** create the `.github` repository.
+3. **Renovate's first run:** it was installed 2026-10-15. Check for its Dependency Dashboard issue, and for the `katex` security fix on `website`.
 
 `gh` is signed in as `si618`, an organisation admin, with the `admin:org` scope added for Phase 0. Remove it with `gh auth refresh -h github.com --remove-scopes admin:org` once Phase 0 is done.
 
@@ -131,10 +132,10 @@ The owner does these in the GitHub web UI.
 
    Phase 3 step 5 brings the same SVG into `website`, so keep one copy of the rendered PNG there, in `pages/assets/brand/`, as its source of truth.
 
-3. **Add the organisation secrets** `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`, limited to `website`, `dotnet`, and `rust`.
-4. **Allow GitHub Actions to create and approve pull requests** at the organisation level. `dotnet-release-watch.yml` needs this, and so will the montage and consent workflows.
+3. ~~**Add the organisation secrets** `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`, limited to `website`, `dotnet`, and `rust`.~~ Done 2026-10-15, with a new token scoped to the account and the `awesome-humans.net` zone. `dotnet`'s repository secrets were deleted, so it deploys with the organisation ones, and the old token can be revoked.
+4. ~~**Allow GitHub Actions to create and approve pull requests** at the organisation level.~~ Done 2026-10-15. `dotnet-release-watch.yml` needs this, and so will the montage and consent workflows.
 5. ~~**Allow reusable workflows** from repositories in the organisation, so ecosystems can call `website`'s `build.yml`.~~ Nothing to do, checked 2026-10-15: the organisation allows all actions, and the Access setting applies only to private repositories. If `website` is ever made private, set its Access to the organisation.
-6. **Install Renovate** on the organisation, for every repository.
+6. ~~**Install Renovate** on the organisation, for every repository.~~ Done 2026-10-15, as Renovate Only, scanning and alerting, on all repositories.
 7. **Create `awesome-humans/.github`**, holding `PULL_REQUEST_TEMPLATE.md` (moved from the .NET repository), `profile/README.md` (the organisation page), and `SECURITY.md`. Ecosystem-specific checklist lines stay in each repository's `AGENTS.md`.
 
 ## Phase 1: Transfer `dotnet`
@@ -221,6 +222,14 @@ The site keeps deploying from `dotnet` until the cutover in step 6, so awesome-h
    - **`build.yml` (reusable):** inputs `ecosystem` and `ref`, both optional. It checks out `website`, then every `live` ecosystem in `ecosystems.toml` at `main`, except the named ecosystem at `ref`. It runs `stage.py`, `merge_nav.py`, `collate_sources.py`, the image scripts, and `zensical build --strict`, and uploads `public/` as an artifact.
    - **`site.yml`:** on `push` to `main`, `pull_request`, `repository_dispatch` of type `ecosystem-updated`, a weekly `schedule`, and `workflow_dispatch`. It calls `build.yml`, then keeps the deploy job from today's `site.yml`: production for `main`, dispatch and schedule; a preview alias for a pull request.
    - **In each ecosystem,** add `site-dispatch.yml`, which runs on a push to `main` and sends `ecosystem-updated` to `website` with an app token, and `site-preview.yml`, which runs on a pull request and calls `awesome-humans/website/.github/workflows/build.yml@main` with its own ecosystem and ref, then deploys a preview as `pr-<ecosystem>-<number>`.
+
+   **Progress (2026-10-15):** The `website` half is in `website`'s `feat/site-workflows` pull request. It differs from the steps above in five ways:
+   - **`deploy.yml` is reusable too.** `site.yml` and each ecosystem's `site-preview.yml` call it with `secrets: inherit`, so the Wrangler steps exist once.
+   - **`stage.py` fetches the ecosystems itself,** with a shallow `git fetch` of `main` or the named ref into `build/repos/<id>/`. One checkout step per ecosystem would need a workflow edit for each new ecosystem. It also copies `pages/`, and writes the root `llms.txt` from each ecosystem's summary.
+   - **No image scripts yet.** Phase 4 adds them to `build.yml`. `collate_sources.py` already writes `build/sources.json` for them.
+   - **Production deploys stay off until the cutover.** `site.yml` deploys only pull request previews, as `pr-website-<number>`, so a dispatch can't replace the live site early. Step 6 drops that condition.
+   - **Checked against production:** a local build differs from `dotnet`'s standalone build only in the diagram paths, now under `/dotnet/assets/diagrams/`, and in the root `llms.txt`, which now links to `/dotnet/llms.txt`.
+
 6. **Cut over** in one sitting:
    1. Merge the `website` scaffold, and check that a `website` preview matches production.
    2. Merge `chore/remove-site` in `dotnet`: delete `site/` and `site.yml`, drop `build-site.cs`'s no-argument mode, and change `README.md`, `AGENTS.md`, and `npm run verify` to describe staging only.
