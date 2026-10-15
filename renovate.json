@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommitTypeAll(chore)",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "timezone": "Australia/Adelaide",
+  "schedule": ["before 9am on monday"],
+  "prConcurrentLimit": 3,
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "description": "Markdown tooling moves together: Prettier, markdownlint, and cspell gate the same checks, so review them in one pull request.",
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "groupName": "markdown tooling"
+    },
+    {
+      "description": "Action digest bumps are mechanical, and the workflows re-run on the pull request, so they need no staged rollout.",
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions"
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "schedule": ["at any time"]
+  }
+}

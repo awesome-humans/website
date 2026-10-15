@@ -1,0 +1,67 @@
+name: Markdown
+
+on:
+  pull_request:
+  # A pull request can only restore caches saved on its own ref or on main, so
+  # without a run on main after each merge, every PR restores the cache from the
+  # last weekly run and discards it as older than --max-cache-age.
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # Weekly, Mondays 06:00 UTC. The link check runs on a schedule, not only on
+    # PRs, because links break even when the repository doesn't change.
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  format-and-lint:
+    # Formatting, structure, and spelling are deterministic and offline, so they gate PRs.
+    # On a push to main they would only repeat what the merged PR already passed.
+    if: github.event_name != 'schedule' && github.event_name != 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: "24"
+          cache: npm
+
+      # ci install, not npm install: it honours package-lock.json exactly and
+      # fails if the lock and manifest disagree, so CI cannot float a version.
+      - run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Lint markdown
+        run: npm run lint
+
+      - name: Check spelling
+        run: npm run spell
+
+  links:
+    runs-on: ubuntu-latest
+    # Blocking everywhere, pull requests included, as in the ecosystems. A
+    # third-party host being down fails an otherwise good pull request.
+    # lychee.toml keeps that rare (retries, a browser user agent, 403 and 429
+    # accepted), and an unrelated outage is a re-run once the host recovers.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      # Restore lychee's result cache, so a run doesn't request every host again.
+      # The action has no cache input of its own — this is the supported way.
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: .lycheecache
+          key: lychee-${{ github.run_id }}
+          restore-keys: lychee-
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2
+        with:
+          args: --config lychee.toml --no-progress --cache --max-cache-age 1d .
+          fail: true

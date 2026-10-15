@@ -1,0 +1,5 @@
+node_modules/
+
+# Machine-written, not authored. npm writes package-lock.json, so gating it on
+# formatting would fail a build that nobody can fix by editing.
+package-lock.json

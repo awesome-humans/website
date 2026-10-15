@@ -1,0 +1,17 @@
+# The site's Python environment. Run the site generator with `uv run zensical`.
+# A script under scripts/ declares its own dependencies inline (PEP 723) and runs
+# with `uv run scripts/<name>.py`.
+[project]
+name = "awesome-humans-website"
+version = "0"
+description = "The awesome-humans.net site"
+requires-python = ">=3.14"
+dependencies = [
+  # Pinned, so a new release arrives as a reviewed Renovate pull request rather
+  # than a change to how the site builds.
+  "zensical==0.0.70",
+]
+
+[tool.uv]
+# This is a site, not a package, so uv installs its dependencies only.
+package = false
