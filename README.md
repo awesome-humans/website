@@ -4,9 +4,6 @@ The source of [awesome-humans.net](https://awesome-humans.net), which publishes 
 
 Each ecosystem's content lives in its own repository. This repository owns everything specific to publishing it: the [Zensical](https://zensical.org) configuration, the theme, the home and shared pages, the source images, the "Want in or out?" intake, and the Cloudflare deployment.
 
-> [!NOTE]
-> This repository is being set up. For the steps and their state, see [PLAN.md](PLAN.md).
-
 ## Ecosystems
 
 [`ecosystems.toml`](ecosystems.toml) lists every ecosystem the site knows. Adding one takes an entry there and an accent token in the theme.
