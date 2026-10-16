@@ -26,7 +26,9 @@ module-name = "awesome_humans_markdown"
 # Pinned like zensical, so a new release arrives as a reviewed Renovate pull request.
 [dependency-groups]
 dev = [
+  "actionlint-py==1.7.12.25",
   "ruff==0.17.1",
+  "zizmor==1.31.1",
 ]
 
 # Ruff formats and lints the Python in scripts/ and src/. Run `uv run ruff format`

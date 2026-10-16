@@ -1,0 +1,7 @@
+# Configuration for zizmor, which audits the workflows for security problems.
+# CI runs it in the format-and-lint job, beside actionlint.
+rules:
+  # Asks for the $/ self-repository form of a local uses:, which GitHub added in
+  # July 2026. actionlint 1.7.12 rejects that form, so keep ./ until it accepts it.
+  self-repository:
+    disable: true
