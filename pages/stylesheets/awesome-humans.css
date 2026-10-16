@@ -647,3 +647,117 @@
     transition: none !important;
   }
 }
+
+/* ---- Diagrams: How it works, drawn by scripts/diagrams.py ----
+   The SVG carries classes only, so these rules colour it from the tokens and the theme
+   toggle switches it. Brand marks what the agents do, house what the owner decides, and
+   muted the report-only lane. No ecosystem accent: a diagram isn't one of its four places.
+   On a narrow screen, the figure scrolls sideways rather than shrinking the labels. */
+.ah-diagram {
+  margin: var(--ah-space-6) 0;
+  overflow-x: auto;
+}
+.ah-diagram svg {
+  display: block;
+  width: 100%;
+  min-width: 760px;
+  height: auto;
+}
+.ah-diagram .bg {
+  fill: var(--ah-bg);
+  stroke: var(--ah-line);
+}
+.ah-diagram .box {
+  fill: var(--ah-surface);
+  stroke: var(--ah-line);
+  stroke-width: 1.2;
+}
+.ah-diagram .chip {
+  fill: var(--ah-raised);
+}
+.ah-diagram .ext {
+  fill: var(--ah-raised);
+  stroke: var(--ah-muted);
+  stroke-width: 1.2;
+}
+.ah-diagram .store {
+  fill: var(--ah-raised);
+  stroke: var(--ah-line);
+  stroke-width: 1.2;
+}
+.ah-diagram .lane {
+  fill: var(--ah-brand);
+}
+.ah-diagram .lane.muted {
+  fill: var(--ah-muted);
+}
+.ah-diagram .lane.tint {
+  opacity: 0.14;
+}
+.ah-diagram text {
+  font-family: var(--ah-font-sans);
+}
+.ah-diagram .t,
+.ah-diagram .tb,
+.ah-diagram .tm {
+  fill: var(--ah-ink);
+  font-size: 14px;
+}
+.ah-diagram .t {
+  font-weight: 500;
+}
+.ah-diagram .tb {
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+.ah-diagram .tm,
+.ah-diagram .th {
+  font-family: var(--ah-font-mono);
+  font-weight: 600;
+}
+.ah-diagram .ts {
+  fill: var(--ah-muted);
+  font-size: 13px;
+}
+.ah-diagram .th {
+  fill: var(--ah-muted);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ah-diagram .edge {
+  stroke: var(--ah-muted);
+  stroke-width: 1.4;
+  fill: none;
+}
+.ah-diagram .edge.dash {
+  stroke-dasharray: 4 4;
+}
+.ah-diagram .arrowhead {
+  fill: var(--ah-muted);
+}
+.ah-diagram .gate,
+.ah-diagram .check,
+.ah-diagram .decision {
+  fill: var(--ah-surface);
+  stroke-width: 2;
+}
+.ah-diagram .gate {
+  stroke: var(--ah-house);
+}
+.ah-diagram .check,
+.ah-diagram .decision {
+  stroke: var(--ah-brand);
+}
+.ah-diagram .gate-t,
+.ah-diagram .check-t {
+  font-weight: 600;
+  font-size: 13px;
+}
+.ah-diagram .gate-t {
+  fill: var(--ah-house);
+}
+.ah-diagram .check-t {
+  fill: var(--ah-brand);
+}

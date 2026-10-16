@@ -14,8 +14,9 @@ outputs, so build.yml sets up only those.
 
 stage copies pages/ into build/docs/, runs each ecosystem's stage command with {out}
 set to build/docs/, and writes the root llms.txt, which links to each ecosystem's
-own. It also fills the home page's ecosystem cards from ecosystems.toml. --local stages from a checkout on disk instead of build/repos/<id>/, to preview
-an ecosystem change before pushing it.
+own. It also fills the home page's ecosystem cards from ecosystems.toml, and draws the
+diagrams on How it works from diagrams.py. --local stages from a checkout on disk
+instead of build/repos/<id>/, to preview an ecosystem change before pushing it.
 
 Exit codes: 0 done, 1 an ecosystem failed to fetch or stage, or staged outside its
 own directory, 2 not run from the repository root or bad arguments.
@@ -23,6 +24,7 @@ own directory, 2 not run from the repository root or bad arguments.
 
 import argparse
 import os
+import re
 import shlex
 import shutil
 import subprocess
@@ -31,6 +33,7 @@ import tomllib
 from html import escape
 from pathlib import Path
 
+import diagrams
 from ecosystems import DOCS, REPOS, Ecosystem, live, registry, report, require_root
 
 PAGES = Path("pages")
@@ -38,6 +41,10 @@ SITE_CONFIG = Path("zensical.toml")
 
 # The line in pages/index.md that the ecosystem cards replace.
 CARDS_MARKER = "<!-- ecosystem-cards -->"
+
+# A line in pages/how-it-works.md that a diagram from diagrams.py replaces.
+DIAGRAM_PAGE = "how-it-works.md"
+DIAGRAM_MARKER = re.compile(r"^<!-- diagram: ([a-z-]+) -->$", re.MULTILINE)
 
 # The toolchains build.yml has a setup step for. A new one needs a step there too.
 TOOLCHAINS = {"dotnet"}
@@ -136,6 +143,7 @@ def stage(ecosystems: list[Ecosystem], local: dict[str, str]) -> int:
     if not errors:
         write_llms(ecosystems, errors)
         write_cards(errors)
+        write_diagrams(errors)
     return report(errors)
 
 
@@ -166,6 +174,25 @@ def write_cards(errors: list[str]) -> None:
             )
     block = '<div class="ah-cards">\n' + "\n".join(cards) + "\n</div>"
     path.write_text(text.replace(CARDS_MARKER, block), encoding="utf-8")
+
+
+def write_diagrams(errors: list[str]) -> None:
+    """Replace each diagram marker on How it works with the diagram's inline SVG, which the
+    theme colours, so the diagrams follow the light and dark toggle."""
+    path = DOCS / DIAGRAM_PAGE
+    text = path.read_text(encoding="utf-8")
+
+    def replace(match: re.Match[str]) -> str:
+        figure = diagrams.figure(match[1])
+        if figure is None:
+            errors.append(f"{PAGES / DIAGRAM_PAGE}: no diagram named {match[1]} in scripts/diagrams.py")
+            return match[0]
+        return figure
+
+    text, count = DIAGRAM_MARKER.subn(replace, text)
+    if count == 0:
+        errors.append(f"{PAGES / DIAGRAM_PAGE}: expected a <!-- diagram: <name> --> line")
+    path.write_text(text, encoding="utf-8")
 
 
 def write_llms(ecosystems: list[Ecosystem], errors: list[str]) -> None:
