@@ -15,6 +15,7 @@ OPTOUT
 scannable
 scratchpad
 smol
+taplo
 tasklist
 unpushed
 Unweaving
