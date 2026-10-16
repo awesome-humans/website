@@ -6,13 +6,16 @@
 
 # Awesome lists, distilled.
 
-An agentic take on curated awesome-* lists: distilled guidance, thanks to awesome humans.
+An agentic take on awesome lists ([awesome-dotnet](https://github.com/quozd/awesome-dotnet), [awesome-rust](https://github.com/rust-unofficial/awesome-rust)): distilled guidance, thanks to awesome humans.
 
-<div class="ah-row"><a class="ah-btn ah-btn--primary" href="dotnet/">Browse .NET</a><a class="ah-btn" href="how-it-works/">How it works</a></div>
+<div class="ah-row">
+<a class="ah-btn" href="how-it-works/">How it works</a>
+<a class="ah-btn ah-btn--primary" href="dotnet/">Browse .NET</a>
+</div>
 
 </section>
 
-This project shows you what good code looks like today, and keeps that answer current as ecosystems change. Recommendations come from awesome humans: people and publications with at least two years of accurate, independent writing on the subject.
+It shows you what good code looks like today, and keeps that answer current as ecosystems change. Recommendations come from awesome humans: people and publications with at least two years of accurate, independent writing on the subject.
 
 Every opinion states its recommendation first, cites its sources, and targets the latest released versions.
 
@@ -23,18 +26,30 @@ Every opinion states its recommendation first, cites its sources, and targets th
 Each ecosystem has the same parts:
 
 - **Opinions:** One topic per page, each with its recommendation, rationale, and sources.
-- **Templates:** Copy-paste-ready files that encode the opinions.
+- **Templates:** Files that encode the opinions.
 - **Skills:** Agent skills that check a project against the opinions and keep the opinions current.
 - **Awesome humans:** The roster of sources that the opinions cite.
 
 ## Usage
 
-- **Point your agent at it.** Tell your coding agent to follow the opinions when it writes code. For example: "Follow the conventions in <https://awesome-humans.net/llms.txt> when you write .NET code." That file links the raw Markdown of every opinion, template, and skill.
-- **Check an existing project.** Clone the repository, and ask your agent to run [`verify-project`](dotnet/skills/verify-project.md) on a local path or a repository URL. It reports each deviation from the opinions with a severity and a one-line fix, and applies the fixes only if you ask. To narrow the review, say so in the request, such as "focus on testing".
+- **Point your agent at it.** Tell your coding agent to follow the opinions when it writes code:
+
+  ```text
+  Follow the conventions at awesome-humans.net when writing .NET code
+  ```
+
+- **Check an existing project.** Ask your coding agent to run [`verify-project`](dotnet/skills/verify-project.md):
+
+  ```text
+  Use the verify project skill at awesome-humans.net against <repo>
+  ```
+
+  To narrow the review, say so in the request, such as "focus on testing".
+
 - **Start a project from the templates.** Copy the [.NET templates](dotnet/templates/index.md) into a new project, and trim what you don't need.
 - **Read the opinions.** Each page gives the recommendation, the rationale, and the sources behind it.
 
-For how sources are vetted and how the opinions stay current, see [How it works](how-it-works.md).
+To understand how sources are vetted and how the opinions stay current, see [How it works](how-it-works.md).
 
 ## Acknowledgement
 

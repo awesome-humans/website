@@ -7,7 +7,7 @@
 
 [project]
 site_name = "Awesome Humans"
-site_description = "An agentic take on curated awesome-* lists: distilled guidance, thanks to awesome humans."
+site_description = "An agentic take on awesome lists: distilled guidance, thanks to awesome humans."
 site_url = "https://awesome-humans.net/"
 # The header's repository link. javascripts/ecosystem.js points it at an ecosystem's own
 # repository under /<id>/, from javascripts/repositories.js, which stage.py writes.
@@ -19,6 +19,8 @@ extra_css = ["stylesheets/awesome-humans.css"]
 extra_javascript = ["javascripts/repositories.js", "javascripts/ecosystem.js", "javascripts/open-details.js"]
 
 [project.theme]
+# Template overrides, relative to the staged copy in build/.
+custom_dir = "../overrides"
 # The look comes from the Awesome Humans design system, through
 # stylesheets/awesome-humans.css. The modern variant keeps the header and tabs on the
 # page background, so the brand green stays on links and each ecosystem's accent on its
