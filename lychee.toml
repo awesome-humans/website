@@ -27,6 +27,8 @@ exclude_path = [
   # Links in pages/ are relative to the built site, not to the repository, so
   # only the strict site build can check them. build/ and public/ are generated.
   "pages",
+  # Template overrides hold Jinja expressions, which only the site build resolves.
+  "overrides",
   "build",
   "public",
 ]
