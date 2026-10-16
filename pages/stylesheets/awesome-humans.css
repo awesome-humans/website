@@ -124,6 +124,7 @@
   --ah-lane-sources: #017b80;
   --ah-lane-research: #955080;
   --ah-lane-opinions: #6d7123;
+  --ah-lane-reports: #8253ac;
 }
 
 [data-md-color-scheme="slate"] {
@@ -148,6 +149,7 @@
   --ah-lane-sources: #6ac9ce;
   --ah-lane-research: #e79bce;
   --ah-lane-opinions: #b9be71;
+  --ah-lane-reports: #c9a5e9;
 }
 
 /* The ecosystem accent. javascripts/ecosystem.js sets data-ecosystem on <html> from the
@@ -674,8 +676,8 @@
    The SVG carries classes only, so these rules colour it from the tokens and the theme
    toggle switches it. Brand marks the CI gate and the outcome the agents work towards,
    and house what the owner decides. Each lane has its own lane-* colour, chosen to stay
-   apart from those two, from stale, and from every ecosystem accent, and the report-only
-   lane is muted. No ecosystem accent appears: a diagram isn't one of its four places.
+   apart from those two and from stale. Reports' lavender sits near .NET's violet, which
+   is safe because no ecosystem accent appears: a diagram isn't one of its four places.
    The figure takes the content's full width, which How it works widens by hiding its
    table of contents, and the prose beside it keeps its usual measure. On a narrow
    screen, the figure scrolls sideways rather than shrinking the labels. The theme
@@ -727,7 +729,7 @@
   --lane: var(--ah-lane-opinions);
 }
 .ah-diagram .reports {
-  --lane: var(--ah-muted);
+  --lane: var(--ah-lane-reports);
 }
 .ah-diagram .lane {
   fill: var(--lane);
