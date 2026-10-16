@@ -1,3 +1,8 @@
+---
+hide:
+  - toc
+---
+
 # How it works
 
 Agent skills maintain each ecosystem's repository, and nothing reaches an opinion without passing CI and the owner's review. The diagrams below are an overview. Where one disagrees with a skill or the roster's admission criteria, follow the skill or the criteria, which each ecosystem's pages link to.
