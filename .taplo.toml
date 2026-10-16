@@ -1,0 +1,10 @@
+# Configuration for taplo, which formats and lints this repository's TOML.
+# Run `uv run taplo fmt` to format, and `uv run taplo fmt --check` to check.
+
+# Only the repository's own files: not .venv, node_modules, or build/.
+include = ["*.toml"]
+
+[formatting]
+# Keep an array on one line per entry when it's written that way, such as a list
+# of pinned dependencies, so adding one is a one-line diff.
+array_auto_collapse = false

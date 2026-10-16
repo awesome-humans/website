@@ -16,7 +16,11 @@ repo_name = "awesome-humans/website"
 docs_dir = "docs"
 site_dir = "public"
 extra_css = ["stylesheets/awesome-humans.css"]
-extra_javascript = ["javascripts/repositories.js", "javascripts/ecosystem.js", "javascripts/open-details.js"]
+extra_javascript = [
+  "javascripts/repositories.js",
+  "javascripts/ecosystem.js",
+  "javascripts/open-details.js",
+]
 
 [project.theme]
 # Template overrides, relative to the staged copy in build/.

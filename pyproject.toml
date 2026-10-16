@@ -31,6 +31,7 @@ dev = [
   # pyright can resolve their imports.
   "jsonschema==4.26.0",
   "ruff==0.17.1",
+  "taplo==0.9.3",
   "zizmor==1.31.1",
 ]
 

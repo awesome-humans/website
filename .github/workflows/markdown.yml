@@ -54,6 +54,9 @@ jobs:
       - name: Lint Python
         run: uv run --locked --only-group dev ruff check
 
+      - name: Check TOML formatting
+        run: uv run --locked --only-group dev taplo fmt --check
+
       # pyright reads the project's environment, so this syncs it, Zensical included.
       - name: Check Python types
         run: |
