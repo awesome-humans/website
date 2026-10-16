@@ -115,16 +115,16 @@ Work in a git worktree, with one branch per directory. The local clone is bare, 
 ### Formatting and linting
 
 - Markdown follows GFM and markdownlint, configured in `.markdownlint-cli2.jsonc`. Spelling follows cspell, configured in `cspell.jsonc` with the `en-GB` dictionary and the repository's word list in `cspell.words.txt`.
-- Run `npm run format` to format, and `npm run check` to check formatting, lint, and spelling together. All three use the versions pinned in `package.json`. Don't run `npx prettier`, `npx markdownlint-cli2`, or `npx cspell` directly, because they resolve the latest version.
-- `npm run lint` lints Markdown with markdownlint, CSS with stylelint (configured in `.stylelintrc.json`), and JavaScript with ESLint (configured in `eslint.config.mjs`). The CSS and JavaScript rules catch mistakes, not style: formatting is Prettier's job.
-- Prettier formats Markdown, JSON, YAML, CSS, and JavaScript. It skips the Jinja template in `overrides/`, which it would break. taplo formats TOML, configured in `.taplo.toml`: run `uv run taplo fmt`. CI checks it.
-- actionlint checks the workflows for mistakes, including shellcheck on their `run:` scripts. zizmor audits them for security problems, configured in `.github/zizmor.yml`. Run `uv run actionlint` and `uv run zizmor .github/workflows`. CI runs both as checks.
+- Run `npm run format` to format every file, and `npm run check` to run every check that CI runs: formatting, linting, types, and spelling. Each tool is pinned, the Node ones in `package.json` and the Python ones in the dev group in `pyproject.toml`. Don't run a tool through `npx` or `uvx`, because they resolve the latest version.
+- `npm run format` runs Prettier on Markdown, JSON, YAML, CSS, and JavaScript, taplo on TOML (configured in `.taplo.toml`), and Ruff on Python. Prettier skips the Jinja template in `overrides/`, which it would break.
+- `npm run lint` runs markdownlint on Markdown, stylelint on CSS (configured in `.stylelintrc.json`), ESLint on JavaScript (configured in `eslint.config.mjs`), and Ruff on Python. The CSS and JavaScript rules catch mistakes, not style: formatting is the formatters' job.
+- It also checks the workflows. actionlint finds mistakes, including shellcheck on their `run:` scripts, and zizmor audits them for security problems (configured in `.github/zizmor.yml`). Without a GitHub token, zizmor skips its online audits and says so. CI passes one.
+- `npm run typecheck` runs pyright on the Python, configured in `pyproject.toml`.
 
 ### Scripts
 
 - Site scripts live in `scripts/` as Python, run with `uv run scripts/<name>.py` from the repository root. Each declares its dependencies inline ([PEP 723](https://peps.python.org/pep-0723/)), with exact pins.
-- Ruff formats and lints the Python in `scripts/` and `src/`, configured in `pyproject.toml`. Run `uv run ruff format` to format, and `uv run ruff check` to lint. CI runs both as checks.
-- pyright checks the Python's types, configured in `pyproject.toml`. Run `uv sync` and then `npm run typecheck`. A script's inline dependencies also go in the dev group in `pyproject.toml`, at the same pin, so pyright can resolve its imports.
+- A script's inline dependencies also go in the dev group in `pyproject.toml`, at the same pin, so pyright can resolve its imports.
 - Python is Zensical's own language, so the site needs one toolchain. Don't add a script in an ecosystem's language here: the ecosystems dogfood their own languages in their own repositories.
 - Exit codes: 0 for success, 1 for findings, and 2 when not run from the repository root, as in the ecosystems' scripts.
 
