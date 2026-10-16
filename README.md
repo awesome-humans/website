@@ -55,7 +55,7 @@ uv run scripts/collate_sources.py # check each sources.json, and write build/sou
 uv run zensical build --strict -f build/zensical.toml
 ```
 
-The site lands in `build/public/`. To preview it, run `uv run zensical serve -f build/zensical.toml` instead of the last step.
+The site lands in `build/public/`. Zensical caches each rendered page in `build/.cache/`, keyed by its content, so after you change `src/`, delete that folder before you build. To preview it, run `uv run zensical serve -f build/zensical.toml` instead of the last step.
 
 To preview a change to an ecosystem before you push it, stage from your checkout instead of `build/repos/`:
 
@@ -83,8 +83,9 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 ├── ecosystems.toml    ← the ecosystem registry
 ├── pages/             ← the shared pages, the theme, and the brand assets
 ├── PLAN.md            ← the organisation and website plan, deleted when it's done
-├── pyproject.toml     ← the site's Python dependencies
+├── pyproject.toml     ← the site's Python dependencies, and its package of Markdown extensions
 ├── schemas/           ← the staging contract's JSON schemas
+├── src/               ← the site's Markdown extensions, which zensical.toml loads
 ├── scripts/           ← stage, draw the How it works diagrams, merge the navigation, and collate the sources
 ├── wrangler.jsonc     ← the Cloudflare Worker that serves the site
 └── zensical.toml      ← the site configuration

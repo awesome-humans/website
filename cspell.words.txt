@@ -1,6 +1,7 @@
 # Words cspell.jsonc accepts on top of its en-GB and software dictionaries:
 # names, identifiers, and terms the dictionaries lack. One per line, sorted
 # case-insensitively. Never add an American spelling.
+inlinehilite
 javascripts
 katex
 lede
@@ -13,6 +14,7 @@ OPTOUT
 scannable
 scratchpad
 smol
+tasklist
 unpushed
 Unweaving
 worktrees
