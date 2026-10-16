@@ -1,6 +1,6 @@
 # awesome-humans.net
 
-The source of [awesome-humans.net](https://awesome-humans.net), which publishes the opinions, templates, skills, and source rosters of every awesome-humans ecosystem.
+The source of [awesome-humans.net](https://awesome-humans.net), a modern take on curated awesome-\* lists for coding agents. It publishes the opinions, templates, skills, and source rosters of every awesome-humans ecosystem.
 
 Each ecosystem's content lives in its own repository. This repository owns everything specific to publishing it: the [Zensical](https://zensical.org) configuration, the theme, the home and shared pages, the source images, the "Want in or out?" intake, and the Cloudflare deployment.
 

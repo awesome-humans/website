@@ -6,9 +6,9 @@
 
 <p class="ah-hero__kicker">[ ] awesome-humans.net</p>
 
-# Distilled guidance, thanks to awesome humans.
+# Awesome lists, distilled.
 
-Opinions distilled from people with a proven track record of writing about each ecosystem: cited, current, and ready for your agent.
+Like a curated awesome-* list, but instead of links you get the guidance itself: opinions distilled from people with a proven track record, each one cited, kept current, and ready for your coding agent.
 
 <div class="ah-row"><a class="ah-btn ah-btn--primary" href="dotnet/">Browse .NET</a><a class="ah-btn" href="how-it-works/">How it works</a></div>
 
