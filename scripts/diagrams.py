@@ -166,11 +166,11 @@ def pipeline() -> str:
         if branch is not None:
             d.add(
                 d.arrow(x_skill + w_skill, cy, x_agent_gate - 2, cy),
-                rect(x_agent_gate, cy - gate_half, w_agent_gate, gate_half * 2, gate_half, "check"),
+                rect(x_agent_gate, cy - gate_half, w_agent_gate, gate_half * 2, 6, "check"),
                 text(x_agent_gate + w_agent_gate / 2, cy - 3, "CI: metadata,", "check-t", "middle"),
                 text(x_agent_gate + w_agent_gate / 2, cy + 13, "sources, links", "check-t", "middle"),
                 d.arrow(x_agent_gate + w_agent_gate, cy, x_human_gate - gate_half - 2, cy),
-                # The human gate is a diamond the height of the agent gate's capsule.
+                # The human gate is a diamond the height of the agent gate's box.
                 diamond(x_human_gate, cy, gate_half, "gate"),
                 d.arrow(x_human_gate + gate_half, cy, x_lands_in - 2, cy),
                 text(x_human_gate + gate_half + 8, cy - 9, human_gate, "gate-t"),
