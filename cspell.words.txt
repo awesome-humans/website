@@ -19,3 +19,4 @@ tasklist
 unpushed
 Unweaving
 worktrees
+zizmor

@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
@@ -52,6 +54,16 @@ jobs:
       - name: Lint Python
         run: uv run --locked --only-group dev ruff check
 
+      - name: Lint workflows
+        run: uv run --locked --only-group dev actionlint
+
+      # The token lets zizmor's online audits look up the actions the workflows pin,
+      # for known vulnerabilities and for commits that aren't on the action's repository.
+      - name: Audit workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: uv run --locked --only-group dev zizmor .github/workflows
+
   links:
     runs-on: ubuntu-latest
     # Blocking everywhere, pull requests included, as in the ecosystems. A
@@ -60,6 +72,8 @@ jobs:
     # accepted), and an unrelated outage is a re-run once the host recovers.
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       # Restore lychee's result cache, so a run doesn't request every host again.
       # The action has no cache input of its own — this is the supported way.

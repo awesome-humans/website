@@ -34,4 +34,6 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       preview-alias: ${{ github.event_name == 'pull_request' && format('pr-website-{0}', github.event.pull_request.number) || '' }}
-    secrets: inherit
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
