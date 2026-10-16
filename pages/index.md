@@ -14,7 +14,7 @@ An agentic take on curated awesome-* lists: distilled guidance, thanks to awesom
 
 </section>
 
-This project shows you what good code looks like today, and keeps that answer current as each ecosystem changes. Recommendations come from awesome humans: people and publications with at least two years of accurate, independent writing on the subject.
+This project shows you what good code looks like today, and keeps that answer current as ecosystems change. Recommendations come from awesome humans: people and publications with at least two years of accurate, independent writing on the subject.
 
 Every opinion states its recommendation first, cites its sources, and targets the latest released versions.
 
