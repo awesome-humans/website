@@ -116,6 +116,7 @@ Work in a git worktree, with one branch per directory. The local clone is bare, 
 
 - Markdown follows GFM and markdownlint, configured in `.markdownlint-cli2.jsonc`. Spelling follows cspell, configured in `cspell.jsonc` with the `en-GB` dictionary and the repository's word list in `cspell.words.txt`.
 - Run `npm run format` to format, and `npm run check` to check formatting, lint, and spelling together. All three use the versions pinned in `package.json`. Don't run `npx prettier`, `npx markdownlint-cli2`, or `npx cspell` directly, because they resolve the latest version.
+- `npm run lint` lints Markdown with markdownlint, CSS with stylelint (configured in `.stylelintrc.json`), and JavaScript with ESLint (configured in `eslint.config.mjs`). The CSS and JavaScript rules catch mistakes, not style: formatting is Prettier's job.
 - Prettier formats Markdown, JSON, YAML, CSS, and JavaScript. It skips the Jinja template in `overrides/`, which it would break. taplo formats TOML, configured in `.taplo.toml`: run `uv run taplo fmt`. CI checks it.
 - actionlint checks the workflows for mistakes, including shellcheck on their `run:` scripts. zizmor audits them for security problems, configured in `.github/zizmor.yml`. Run `uv run actionlint` and `uv run zizmor .github/workflows`. CI runs both as checks.
 
