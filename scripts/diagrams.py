@@ -116,7 +116,7 @@ PIPELINE_LANES = [("sources", "Sources"), ("research", "Research"), ("opinions",
 PIPELINE_ROWS = [
     (
         "sources",
-        ["candidate source,", "or a standing change"],
+        ["candidate source,", "or a change in standing"],
         "vet-source",
         "vet/<source-id>",
         "check evidence",
