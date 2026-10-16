@@ -39,7 +39,7 @@ jobs:
       - name: Check formatting
         run: npm run format:check
 
-      - name: Lint markdown
+      - name: Lint Markdown, CSS, and JavaScript
         run: npm run lint
 
       - name: Check spelling
