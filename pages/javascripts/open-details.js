@@ -8,7 +8,11 @@ function openLinkedDetails() {
     return;
   }
 
-  for (let details = target.closest("details"); details; details = details.parentElement?.closest("details")) {
+  for (
+    let details = target.closest("details");
+    details;
+    details = details.parentElement?.closest("details")
+  ) {
     details.open = true;
   }
 

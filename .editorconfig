@@ -1,9 +1,9 @@
 # Editor settings for this repository's prose, configuration, and scripts.
 #
 # Values here match what `npm run format` (Prettier) produces for the files it
-# owns (Markdown, JSON, JSONC, and YAML), so the editor and the formatter don't
-# undo each other on save. No formatter covers TOML, so this file is the only
-# thing that enforces it.
+# owns (Markdown, JSON, JSONC, YAML, CSS, and JavaScript), so the editor and the
+# formatter don't undo each other on save. No formatter covers TOML, so this file
+# is the only thing that enforces it.
 
 root = true
 

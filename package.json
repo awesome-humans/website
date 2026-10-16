@@ -3,8 +3,8 @@
   "private": true,
   "description": "Prose and configuration checks for this repository. The site itself builds with Python: see pyproject.toml.",
   "scripts": {
-    "format": "prettier --prose-wrap preserve --write \"**/*.{md,json,jsonc,yml,yaml}\"",
-    "format:check": "prettier --prose-wrap preserve --check \"**/*.{md,json,jsonc,yml,yaml}\"",
+    "format": "prettier --prose-wrap preserve --write \"**/*.{md,json,jsonc,yml,yaml,css,js}\"",
+    "format:check": "prettier --prose-wrap preserve --check \"**/*.{md,json,jsonc,yml,yaml,css,js}\"",
     "lint": "markdownlint-cli2",
     "spell": "cspell lint --no-progress --dot \"**/*.{md,py,yml,yaml,json,jsonc,toml,css,js,html}\"",
     "check": "npm run format:check && npm run lint && npm run spell"
