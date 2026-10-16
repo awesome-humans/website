@@ -12,6 +12,12 @@ dependencies = [
   "zensical==0.0.70",
 ]
 
-[tool.uv]
-# This is a site, not a package, so uv installs its dependencies only.
-package = false
+# The package is the site's own Markdown extensions, in src/awesome_humans_markdown/,
+# which zensical.toml loads by name. uv installs it into the environment.
+[build-system]
+# Pinned like zensical, so Renovate's pep621 manager bumps it in a reviewed pull request.
+requires = ["uv_build==0.13.1"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "awesome_humans_markdown"
