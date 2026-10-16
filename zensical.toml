@@ -7,7 +7,7 @@
 
 [project]
 site_name = "Awesome Humans"
-site_description = "A modern take on curated awesome-* lists for coding agents: distilled guidance, thanks to awesome humans."
+site_description = "An agentic take on curated awesome-* lists: distilled guidance, thanks to awesome humans."
 site_url = "https://awesome-humans.net/"
 repo_url = "https://github.com/awesome-humans/dotnet"
 repo_name = "awesome-humans/dotnet"
