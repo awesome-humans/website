@@ -54,6 +54,12 @@ jobs:
       - name: Lint Python
         run: uv run --locked --only-group dev ruff check
 
+      # pyright reads the project's environment, so this syncs it, Zensical included.
+      - name: Check Python types
+        run: |
+          uv sync --locked
+          npm run typecheck
+
       - name: Lint workflows
         run: uv run --locked --only-group dev actionlint
 

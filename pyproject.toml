@@ -27,6 +27,9 @@ module-name = "awesome_humans_markdown"
 [dependency-groups]
 dev = [
   "actionlint-py==1.7.12.25",
+  # merge_nav.py and collate_sources.py declare it inline. Here at the same pin, so
+  # pyright can resolve their imports.
+  "jsonschema==4.26.0",
   "ruff==0.17.1",
   "zizmor==1.31.1",
 ]
@@ -36,3 +39,12 @@ dev = [
 # written to, rather than Ruff's 88.
 [tool.ruff]
 line-length = 120
+
+# pyright checks the types in scripts/ and src/, against the project's environment.
+# The scripts import each other from scripts/, so it's on the import path too.
+[tool.pyright]
+include = ["scripts", "src"]
+extraPaths = ["scripts"]
+venvPath = "."
+venv = ".venv"
+pythonVersion = "3.14"
