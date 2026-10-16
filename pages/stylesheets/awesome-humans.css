@@ -396,8 +396,9 @@
   font-size: 17px;
   line-height: 28px;
   color: var(--ah-ink-2);
-  max-width: 46ch;
+  max-width: 62ch;
   margin: 0 0 var(--ah-space-6);
+  text-wrap: pretty;
 }
 .md-typeset .ah-hero .ah-row {
   margin: 0;
