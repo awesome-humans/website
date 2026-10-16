@@ -6,7 +6,8 @@
 
 # Awesome lists, distilled.
 
-An agentic take on awesome lists ([awesome-dotnet](https://github.com/quozd/awesome-dotnet), [awesome-rust](https://github.com/rust-unofficial/awesome-rust)): distilled guidance, thanks to awesome humans.
+An agentic take on awesome lists ([awesome-dotnet](https://github.com/quozd/awesome-dotnet), [awesome-rust](https://github.com/rust-unofficial/awesome-rust)):<br>
+distilled guidance, thanks to awesome humans.
 
 <div class="ah-row">
 <a class="ah-btn" href="how-it-works/">How it works</a>
