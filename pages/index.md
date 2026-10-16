@@ -8,7 +8,7 @@
 
 # Awesome lists, distilled.
 
-Like a curated awesome-* list, but instead of links you get the guidance itself: opinions distilled from people with a proven track record, each one cited, kept current, and ready for your coding agent.
+An agentic take on curated awesome-* lists: distilled guidance, thanks to awesome humans.
 
 <div class="ah-row"><a class="ah-btn ah-btn--primary" href="dotnet/">Browse .NET</a><a class="ah-btn" href="how-it-works/">How it works</a></div>
 
