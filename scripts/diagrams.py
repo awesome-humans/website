@@ -69,14 +69,15 @@ class Drawing:
 
     def svg(self, width: float, height: float, title: str, description: str) -> str:
         """The drawing as one line of accessible SVG, so Markdown passes it through as a
-        single HTML block."""
+        single HTML block. It grows to its own width and no further, so every diagram's
+        text renders at one size, and shrinks on a narrower page."""
         name = self.name
         marker = (
             f'<defs><marker id="{name}-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7"'
             ' orient="auto-start-reverse"><path class="arrowhead" d="M0 0L10 5L0 10z"/></marker></defs>'
         )
         return (
-            f'<svg role="img" aria-labelledby="{name}-title {name}-desc" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {n(width)} {n(height)}">'
+            f'<svg role="img" aria-labelledby="{name}-title {name}-desc" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {n(width)} {n(height)}" style="max-width: {n(width)}px">'
             f'<title id="{name}-title">{escape(title)}</title><desc id="{name}-desc">{escape(description)}</desc>{marker}'
             f'<rect x=".5" y=".5" width="{n(width - 1)}" height="{n(height - 1)}" rx="10" class="bg"/>'
             + "".join(self.parts)
@@ -99,7 +100,7 @@ def node(x: float, y: float, width: float, height: float, title: str, subtitle: 
 PIPELINE_LANES = [("sources", "Sources"), ("research", "Research"), ("opinions", "Opinions"), ("reports", "Reports")]
 PIPELINE_ROWS = [
     ("sources", ["candidate source,", "or a standing change"], "vet-source", "vet/<source-id>", "check evidence", "roster"),
-    ("research", ["a question", "on a topic"], "research-topic", "research/<topic>", "review", "research"),
+    ("research", ["a question", "about <topic>"], "research-topic", "research/<topic>", "review", "research"),
     ("research", ["topic saved in", "research/"], "resolve-research", "resolve/<topic>", "approve weave", "opinions"),
     ("opinions", ["monthly harvest", "reminder issue"], "harvest-sources", "harvest/<date>", "review", "opinions"),
     ("opinions", ["release-watch PR,", "or a newer pin"], "version refresh", "refresh/<version>", "review", "opinions"),
@@ -234,23 +235,26 @@ MARKINGS = [
 
 def standing() -> str:
     d = Drawing("source-standing")
-    candidate_x, candidate_width = 20, 212
-    vet_x, vet_y, vet_half = 300, 190, 38
-    spine_x = 362
-    out_x, out_width = 568, 540
-    loop_x, loop_y = 1236, 440
+    # The candidate sits above vet-source, and each marking's rule sits under it, so the
+    # diagram is narrow enough for its text to render at the pipeline's size.
+    candidate_x, candidate_y, candidate_width = 20, 20, 212
+    vet_x, vet_y, vet_half = 126, 196, 38
+    spine_x = 256
+    out_x, out_width = 462, 372
+    loop_x = 966
 
     d.add(
-        node(candidate_x, vet_y - 32, candidate_width, 64, "Candidate source", "blog, docs, book, newsletter"),
-        d.arrow(candidate_x + candidate_width, vet_y, vet_x - vet_half - 2, vet_y),
+        node(candidate_x, candidate_y, candidate_width, 64, "Candidate source", "blog, docs, book, newsletter"),
+        d.arrow(vet_x, candidate_y + 64, vet_x, vet_y - vet_half - 2),
         diamond(vet_x, vet_y, vet_half, "decision"),
-        text(vet_x, vet_y - vet_half - 14, "vet-source", "tm", "middle"),
+        text(vet_x + 12, candidate_y + 64 + 40, "vet-source", "tm"),
         text(vet_x, vet_y + 4, "criteria", "ts", "middle"),
         f'<line x1="{n(vet_x + vet_half)}" y1="{n(vet_y)}" x2="{n(spine_x)}" y2="{n(vet_y)}" class="edge"/>',
     )
 
     # Citable, with its markings inside.
-    citable_y, citable_height = 24, 212
+    citable_y, chip_height = 20, 52
+    citable_height = 64 + len(MARKINGS) * (chip_height + 8) + 8
     d.add(
         rect(out_x, citable_y, out_width, citable_height, 8, "box"),
         f'<rect x="{n(out_x)}" y="{n(citable_y)}" width="4" height="{n(citable_height)}" rx="2" class="accent"/>',
@@ -258,10 +262,12 @@ def standing() -> str:
         text(out_x + 16, citable_y + 48, "quotable in opinions and templates, within its marking", "ts"),
     )
     for i, (marking, rule) in enumerate(MARKINGS):
-        y0 = citable_y + 64 + i * 48
-        d.add(rect(out_x + 16, y0, out_width - 32, 40, 6, "chip"), text(out_x + 28, y0 + 25, marking, "tm"), text(out_x + 214, y0 + 25, rule, "ts"))
+        y0 = citable_y + 64 + i * (chip_height + 8)
+        d.add(rect(out_x + 16, y0, out_width - 32, chip_height, 6, "chip"), text(out_x + 28, y0 + 22, marking, "tm"), text(out_x + 28, y0 + 42, rule, "ts"))
 
-    watch_y, declined_y = 260, 344
+    watch_y = citable_y + citable_height + 24
+    declined_y = watch_y + 84
+    loop_y = declined_y + 60 + 36
     d.add(
         node(out_x, watch_y, out_width, 60, "Watch list", "leads only, never cited", cls="ext"),
         node(out_x, declined_y, out_width, 60, "Declined", "off the roster, the decision logged", cls="ext"),
@@ -284,7 +290,7 @@ def standing() -> str:
     )
 
     return d.svg(
-        1252,
+        loop_x + 20,
         loop_y + 28,
         "Source standing",
         "Flow diagram: vet-source sorts a candidate source into citable, with two years of writing and all four criteria;"
@@ -305,20 +311,21 @@ OUTCOMES = [
 
 def research() -> str:
     d = Drawing("research-lifecycle")
-    center_y = 150
-    topic_x, topic_width = 20, 212
-    staged_x, staged_width = 316, 204
-    resolve_x, resolve_half = 616, 38
-    spine_x = 704
-    out_x, out_width, out_height = 736, 356, 60
-    loop_y = 314
+    # research-topic sits above the topic it saves, so the diagram is narrow enough for its
+    # text to render at the pipeline's size.
+    center_y = 182
+    topic_x, topic_y, topic_width = 20, 20, 212
+    resolve_x, resolve_half = 320, 38
+    spine_x = 404
+    out_x, out_width, out_height = 428, 356, 60
+    loop_y = 328
 
     d.add(
-        node(topic_x, center_y - 32, topic_width, 64, "research-topic", "cited, on research/<topic>", title_cls="tm"),
-        d.arrow(topic_x + topic_width, center_y, staged_x - 2, center_y),
-        text((topic_x + topic_width + staged_x) / 2, center_y - 8, "PR merges", "ts", "middle"),
-        node(staged_x, center_y - 32, staged_width, 64, "research/<topic>.md", "on record, unresolved", cls="store", title_cls="tm"),
-        d.arrow(staged_x + staged_width, center_y, resolve_x - resolve_half - 2, center_y),
+        node(topic_x, topic_y, topic_width, 64, "research-topic", "cited, on research/<topic>", title_cls="tm"),
+        d.arrow(topic_x + topic_width / 2, topic_y + 64, topic_x + topic_width / 2, center_y - 34),
+        text(topic_x + topic_width / 2 + 12, center_y - 60, "PR merges", "ts"),
+        node(topic_x, center_y - 32, topic_width, 64, "research/<topic>.md", "on record, unresolved", cls="store", title_cls="tm"),
+        d.arrow(topic_x + topic_width, center_y, resolve_x - resolve_half - 2, center_y),
         diamond(resolve_x, center_y, resolve_half, "decision"),
         text(resolve_x, center_y - resolve_half - 14, "resolve-research", "tm", "middle"),
         text(resolve_x, center_y + 4, "own PR", "ts", "middle"),
@@ -340,7 +347,7 @@ def research() -> str:
     )
 
     return d.svg(
-        1108,
+        out_x + out_width + 20,
         loop_y + 28,
         "Research lifecycle",
         "Flow diagram: research-topic opens a pull request that saves research/<topic>.md; resolve-research then promotes"
