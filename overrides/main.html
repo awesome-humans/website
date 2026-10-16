@@ -1,0 +1,11 @@
+{#- Theme overrides for every page. custom_dir in zensical.toml points here. -#}
+{% extends "base.html" %} {#- Point agents at the raw Markdown. An agent told
+only "awesome-humans.net" lands on HTML, and this link leads it to llms.txt,
+which links every opinion, template, and skill. -#} {% block extrahead %}
+<link
+  rel="alternate"
+  type="text/markdown"
+  title="llms.txt"
+  href="{{ 'llms.txt' | url }}"
+/>
+{% endblock %}
