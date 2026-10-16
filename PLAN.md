@@ -17,7 +17,8 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 Stopped 2026-10-16, with Phases 0, 1, and 2 done, and Phase 3 down to step 4. Pick up here:
 
 1. **Phase 3 step 4,** OpinionMeta: extend the staging contract so an ecosystem writes each opinion's metadata as a `{ .ah-meta }` strip of chips, and change `dotnet`'s `build-site.cs` to match. Steps 1 to 3 and 5 to 8 are done.
-2. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`. It wasn't a Dependabot alert on 2026-10-16. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
+2. **Phase 7, CodeRabbit,** can start any time, and needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
+3. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`. It wasn't a Dependabot alert on 2026-10-16. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
 
 `gh` is signed in as `si618`, an organisation admin. It still has the `admin:org` scope added for Phase 0, which nothing needs now. The owner removes it with `gh auth refresh -h github.com --remove-scopes admin:org`.
 
@@ -61,6 +62,7 @@ These are settled unless the owner says otherwise. Each gives one line on what l
 | Fonts                         | Self-host IBM Plex Sans and Mono (SIL Open Font License) as `woff2` under `website/pages/assets/fonts/`. This keeps the current rule of no third-party request on page view. Google Fonts lost for that reason                                                                                                                                                                                                                                                                                                                                     |
 | Logo                          | The cited-human mark (concept A). The owner wasn't a fan at first, but it has grown on them since it went on the app and the organisation, so Phase 3 uses it. Concepts B (prompt human) and C (the "ah" monogram) lost to it                                                                                                                                                                                                                                                                                                                      |
 | Heading case                  | The section is titled "Want in or out?", in sentence case, as the design system's content rules require for headings                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| AI review                     | [CodeRabbit](https://coderabbit.ai) reviews every pull request in every repository, from one central configuration. Its reviews are advisory: the owner's review stays the gate, and it isn't a required check, so a rate limit on the free open-source plan can't block a merge. A per-repository configuration lost because the repositories share one writing style and one `AGENTS.md` shape                                                                                                                                                   |
 
 ## Target layout of `awesome-humans/website`
 
@@ -418,6 +420,24 @@ Each ecosystem's roster page carries the same two links, with `&ecosystem=<name>
 3. When the Rust plan's phase 6 has its first opinions, set `rust` to `live` in `ecosystems.toml`. The root `llms.txt` then links `/rust/llms.txt`, the Rust EcosystemCard becomes a link, and "Rust and TypeScript are next" becomes "TypeScript is next".
 4. **Rust logo and trademark:** As in the Rust plan, use the official CC-BY logo only on the Rust section index and its EcosystemCard, credited in the footer. Add the footer line "Not affiliated with or endorsed by the Rust Project or the Rust Foundation", and never call the section "official". Add an equivalent .NET line, since the same reasoning applies to Microsoft's marks.
 5. Delete this `PLAN.md`, and trim the Rust plan's superseded sections.
+
+## Phase 7: CodeRabbit reviews
+
+[CodeRabbit](https://coderabbit.ai) reviews pull requests in `.github`, `dotnet`, `rust`, `website`, and `coderabbit`. All of them are public, so the [open-source plan](https://docs.coderabbit.ai/management/plans) covers them at no cost. Phase 7 is independent of the others, so it can run at any time.
+
+1. **Install the app** (owner, web UI): sign in at [app.coderabbit.ai](https://app.coderabbit.ai) with GitHub, add the `awesome-humans` organisation, and install the CodeRabbit app on all repositories, as for Renovate in Phase 0 step 6.
+2. **Create `awesome-humans/coderabbit`** (owner, web UI), public and empty. CodeRabbit reads an organisation's [central configuration](https://docs.coderabbit.ai/configuration/central-configuration) only from a repository with that exact name, so it can't live in `.github`. A repository without its own `.coderabbit.yaml` uses the central one.
+3. **Write the central `.coderabbit.yaml`** (agent), first commit straight to `main`, as `.github`'s was:
+   - **Language:** `en-GB`, to match the repositories' spelling rule.
+   - **Tone and noise:** the `chill` profile, no poem, and no review of draft pull requests.
+   - **Advisory only:** `request_changes_workflow: false`, so CodeRabbit comments but never blocks.
+   - **Skip generated files:** lock files, `.github/state/`, `assets/diagrams/`, `build/`, `artifacts/`, and `pages/assets/fonts/`.
+   - **Path instructions:** for `opinions/` and `templates/`, check that every claim cites a source on the roster and that the metadata is complete. For all Markdown, apply `AGENTS.md: Writing style`.
+   - **Guidelines:** CodeRabbit reads `**/AGENTS.md` by default ([Code guidelines](https://docs.coderabbit.ai/knowledge-base/code-guidelines)), so each repository's own rules apply without more configuration.
+   - **Renovate:** check whether the schema can skip or shorten reviews of `renovate[bot]`'s pull requests, which only bump pins.
+4. **Per-repository overrides,** only if one is needed: a repository's own `.coderabbit.yaml` with `inheritance: true`, which merges onto the central file instead of replacing it ([Configuration inheritance](https://docs.coderabbit.ai/configuration/configuration-inheritance)).
+5. **Tell the agents** in each repository's `AGENTS.md`: CodeRabbit reviews every pull request, and its findings are advisory. Fix each one or reply with the reason, ending the reply with the agent attribution line, and don't resolve a thread without doing either.
+6. **Check** with a small pull request in each repository. Comment `@coderabbitai configuration` to see the resolved settings and confirm they come from `awesome-humans/coderabbit/.coderabbit.yaml`. Add `coderabbit` to `cspell.words.txt` wherever a check flags it.
 
 ## Exploration: house opinion profiles
 
