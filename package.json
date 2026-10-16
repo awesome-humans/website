@@ -1,14 +1,14 @@
 {
   "name": "awesome-humans-website",
   "private": true,
-  "description": "Prose and configuration checks for this repository. The site itself builds with Python: see pyproject.toml.",
+  "description": "Formatting and checks for every file in this repository: run npm run check. The site itself builds with Python: see pyproject.toml.",
   "scripts": {
-    "format": "prettier --prose-wrap preserve --write \"**/*.{md,json,jsonc,yml,yaml,css,js,mjs}\"",
-    "format:check": "prettier --prose-wrap preserve --check \"**/*.{md,json,jsonc,yml,yaml,css,js,mjs}\"",
-    "lint": "markdownlint-cli2 && stylelint \"pages/**/*.css\" && eslint",
-    "typecheck": "pyright",
+    "format": "prettier --prose-wrap preserve --write \"**/*.{md,json,jsonc,yml,yaml,css,js,mjs}\" && uv run taplo fmt && uv run ruff format",
+    "format:check": "prettier --prose-wrap preserve --check \"**/*.{md,json,jsonc,yml,yaml,css,js,mjs}\" && uv run taplo fmt --check && uv run ruff format --check",
+    "lint": "markdownlint-cli2 && stylelint \"pages/**/*.css\" && eslint && uv run ruff check && uv run actionlint && uv run zizmor .github/workflows",
+    "typecheck": "uv sync --quiet && pyright",
     "spell": "cspell lint --no-progress --dot \"**/*.{md,py,yml,yaml,json,jsonc,toml,css,js,mjs,html}\"",
-    "check": "npm run format:check && npm run lint && npm run spell"
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run spell"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

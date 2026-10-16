@@ -33,12 +33,13 @@ The site rejects a staged directory whose JSON doesn't match its schema, whose `
 
 ## Local setup
 
-You need [uv](https://docs.astral.sh/uv/) for the site and its scripts, and Node.js for the prose checks.
+You need [uv](https://docs.astral.sh/uv/) for the site and its scripts, and Node.js for the checks.
 
 ```sh
-uv sync       # the site's Python environment, from pyproject.toml
-npm install   # Prettier, markdownlint, and cspell, at the versions in package.json
-npm run check # formatting, Markdown lint, and spelling
+uv sync        # the site's Python environment and its Python tools, from pyproject.toml
+npm install    # the Node tools, at the versions in package.json
+npm run format # format every file
+npm run check  # everything CI checks: formatting, linting, types, and spelling
 ```
 
 Each live ecosystem also needs its toolchain, such as the .NET SDK for `dotnet`.
