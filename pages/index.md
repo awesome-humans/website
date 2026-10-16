@@ -4,8 +4,6 @@
 
 <section class="ah-hero" markdown>
 
-<p class="ah-hero__kicker">[ ] awesome-humans.net</p>
-
 # Awesome lists, distilled.
 
 An agentic take on curated awesome-* lists: distilled guidance, thanks to awesome humans.
