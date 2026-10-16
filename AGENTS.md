@@ -116,7 +116,7 @@ Work in a git worktree, with one branch per directory. The local clone is bare, 
 
 - Markdown follows GFM and markdownlint, configured in `.markdownlint-cli2.jsonc`. Spelling follows cspell, configured in `cspell.jsonc` with the `en-GB` dictionary and the repository's word list in `cspell.words.txt`.
 - Run `npm run format` to format, and `npm run check` to check formatting, lint, and spelling together. All three use the versions pinned in `package.json`. Don't run `npx prettier`, `npx markdownlint-cli2`, or `npx cspell` directly, because they resolve the latest version.
-- Prettier doesn't format TOML. `.editorconfig` holds TOML and Python to their indentation.
+- Prettier formats Markdown, JSON, YAML, CSS, and JavaScript. It skips the Jinja template in `overrides/`, which it would break. It doesn't format TOML, so `.editorconfig` holds TOML and Python to their indentation.
 
 ### Scripts
 
