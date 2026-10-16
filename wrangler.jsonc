@@ -11,12 +11,12 @@
     // Zensical writes a 404.html; serve it with a 404 status for any unknown path.
     "not_found_handling": "404-page",
     // Pages are directories with an index.html, so /dotnet/ and /dotnet both resolve.
-    "html_handling": "auto-trailing-slash",
+    "html_handling": "auto-trailing-slash"
   },
   // wrangler deploy creates the DNS record and certificate for each custom domain.
   "routes": [{ "pattern": "awesome-humans.net", "custom_domain": true }],
   // No public workers.dev copy of the site, but keep the per-version preview URLs that
   // pull request previews are served from.
   "workers_dev": false,
-  "preview_urls": true,
+  "preview_urls": true
 }

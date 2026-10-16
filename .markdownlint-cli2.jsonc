@@ -12,10 +12,10 @@
 
     // Misfires on headings that end in "#", such as "## C# and F#". markdownlint
     // reads the trailing # as closed-atx syntax, and ecosystem names use it.
-    "MD020": false,
+    "MD020": false
   },
   "globs": ["**/*.md"],
   // .venv is uv's environment. build/ holds the pages staged from the ecosystems,
   // which each ecosystem lints at source.
-  "ignores": ["node_modules", ".venv", "build"],
+  "ignores": ["node_modules", ".venv", "build"]
 }
