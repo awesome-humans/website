@@ -32,22 +32,23 @@ Each ecosystem has the same parts:
 
 ## Usage
 
-- **Point your agent at it.** Tell your coding agent to follow the opinions when it writes code:
+**Point your agent at it.** Tell your coding agent to follow the opinions when it writes code:
 
-  ```text
-  Follow the conventions at awesome-humans.net when writing .NET code
-  ```
+```text title="Prompt"
+Follow the conventions at awesome-humans.net when writing .NET code
+```
 
-- **Check an existing project.** Ask your coding agent to run [`verify-project`](dotnet/skills/verify-project.md):
+**Check an existing project.** Ask your coding agent to run [`verify-project`](dotnet/skills/verify-project.md):
 
-  ```text
-  Use the verify project skill at awesome-humans.net against <repo>
-  ```
+```text title="Prompt"
+Use the verify project skill at awesome-humans.net against <repo>
+```
 
-  To narrow the review, say so in the request, such as "focus on testing".
+To narrow the review, say so in the request, such as "focus on testing".
 
-- **Start a project from the templates.** Copy the [.NET templates](dotnet/templates/index.md) into a new project, and trim what you don't need.
-- **Read the opinions.** Each page gives the recommendation, the rationale, and the sources behind it.
+**Start a project from the templates.** Copy the [.NET templates](dotnet/templates/index.md) into a new project, and trim what you don't need.
+
+**Read the opinions.** Each page gives the recommendation, the rationale, and the sources behind it.
 
 To understand how sources are vetted and how the opinions stay current, see [How it works](how-it-works.md).
 
