@@ -9,12 +9,14 @@
 site_name = "Awesome Humans"
 site_description = "An agentic take on curated awesome-* lists: distilled guidance, thanks to awesome humans."
 site_url = "https://awesome-humans.net/"
-repo_url = "https://github.com/awesome-humans/dotnet"
-repo_name = "awesome-humans/dotnet"
+# The header's repository link. javascripts/ecosystem.js points it at an ecosystem's own
+# repository under /<id>/, from javascripts/repositories.js, which stage.py writes.
+repo_url = "https://github.com/awesome-humans/website"
+repo_name = "awesome-humans/website"
 docs_dir = "docs"
 site_dir = "public"
 extra_css = ["stylesheets/awesome-humans.css"]
-extra_javascript = ["javascripts/ecosystem.js", "javascripts/open-details.js"]
+extra_javascript = ["javascripts/repositories.js", "javascripts/ecosystem.js", "javascripts/open-details.js"]
 
 [project.theme]
 # The look comes from the Awesome Humans design system, through
