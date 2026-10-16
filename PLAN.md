@@ -18,8 +18,7 @@ Stopped 2026-10-16, with Phases 0, 1, and 2 done, and Phase 3 down to step 4. Pi
 
 1. **Phase 3 step 4,** OpinionMeta: extend the staging contract so an ecosystem writes each opinion's metadata as a `{ .ah-meta }` strip of chips, and change `dotnet`'s `build-site.cs` to match. Steps 1 to 3 and 5 to 8 are done.
 2. **Phase 7, CodeRabbit,** can start any time, and needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
-3. **Neutral How it works diagrams,** Phase 4 step 7, before Rust goes live.
-4. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`. It wasn't a Dependabot alert on 2026-10-16. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
+3. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`. It wasn't a Dependabot alert on 2026-10-16. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
 
 `gh` is signed in as `si618`, an organisation admin. It still has the `admin:org` scope added for Phase 0, which nothing needs now. The owner removes it with `gh auth refresh -h github.com --remove-scopes admin:org`.
 
@@ -347,11 +346,13 @@ Branch `feat/source-images` in `website`.
    - With fewer than eight permitted portraits, build no montage, and the hero shows its plain `surface` ground. A montage of three faces singles people out.
    - The hero credit line links to a "Faces in the montage" list on the acknowledgement page, so every face can be attributed.
 6. **Collecting portrait permissions:** After the theme is live, the owner writes once to each citable person in the roster, through a channel the roster already links. The message asks whether they'd like their portrait in the montage, and which image to use. A yes is recorded as an issue comment or an email note in `consent.toml`. Silence stays `unknown`, which means no face.
-7. **Neutral How it works diagrams:** `pages/how-it-works.md` shows `dotnet`'s own diagrams today, from `/dotnet/assets/diagrams/`. They name `refresh-dotnet-versions`, use .NET purple and lane colours from outside the design system, and follow the system's dark setting rather than the site's toggle, because they're `<img>` SVGs. Write `scripts/build_diagrams.py`, a port of `dotnet`'s `export-diagrams.cs`, that draws the three diagrams for any ecosystem:
+7. ~~**Neutral How it works diagrams:**~~ Done 2026-10-16, in #21 and [awesome-humans/dotnet#149](https://github.com/awesome-humans/dotnet/pull/149). `pages/how-it-works.md` showed `dotnet`'s own diagrams today, from `/dotnet/assets/diagrams/`. They name `refresh-dotnet-versions`, use .NET purple and lane colours from outside the design system, and follow the system's dark setting rather than the site's toggle, because they're `<img>` SVGs. Write `scripts/build_diagrams.py`, a port of `dotnet`'s `export-diagrams.cs`, that draws the three diagrams for any ecosystem:
    - **Neutral labels:** "version refresh" for each ecosystem's `refresh-*-versions` skill, and placeholders such as `<topic>`, never an ecosystem's name or branch.
    - **Design-system colours:** `brand` for the accent, `house` for the owner's gates, and `muted`, `line`, and `surface` for the rest, so no ecosystem accent appears outside its four places.
    - **The site's theme:** inline the SVGs in the page, or key their colours to `[data-md-color-scheme]`, so the toggle switches them and they can use IBM Plex.
    - **Each ecosystem keeps its own diagrams** for its README, where its own names belong. Do this before Rust goes live in Phase 6, so the page never shows one ecosystem's pipeline as everyone's.
+
+   **Progress (2026-10-16):** The port is `scripts/diagrams.py`, a module rather than a script: `stage.py` replaces each `<!-- diagram: <name> -->` line on How it works with the diagram's inline SVG, as it fills the home page cards. The SVG carries classes only, and the `.ah-diagram` rules in `awesome-humans.css` colour it from the tokens. `dotnet`'s `export-diagrams.cs` moved to the same tokens and IBM Plex for its README, with the .NET accent dropped. Both dropped the pipeline's "hands off" column for larger type. Rust's `xtask` should start from the same palette and layout.
 
 ## Phase 5: Want in or out?
 

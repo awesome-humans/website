@@ -85,7 +85,7 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 ├── PLAN.md            ← the organisation and website plan, deleted when it's done
 ├── pyproject.toml     ← the site's Python dependencies
 ├── schemas/           ← the staging contract's JSON schemas
-├── scripts/           ← stage, merge the navigation, and collate the sources
+├── scripts/           ← stage, draw the How it works diagrams, merge the navigation, and collate the sources
 ├── wrangler.jsonc     ← the Cloudflare Worker that serves the site
 └── zensical.toml      ← the site configuration
 ```
