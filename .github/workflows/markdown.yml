@@ -43,6 +43,15 @@ jobs:
       - name: Check spelling
         run: npm run spell
 
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+
+      # Only the dev group: Ruff needs neither Zensical nor the site's own package.
+      - name: Check Python formatting
+        run: uv run --locked --only-group dev ruff format --check
+
+      - name: Lint Python
+        run: uv run --locked --only-group dev ruff check
+
   links:
     runs-on: ubuntu-latest
     # Blocking everywhere, pull requests included, as in the ecosystems. A

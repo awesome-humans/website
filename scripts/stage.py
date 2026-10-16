@@ -77,14 +77,16 @@ def pairs(values: list[str], option: str, ecosystems: list[Ecosystem]) -> dict[s
 
 
 def git(*args: str, cwd: Path) -> bool:
-    return subprocess.run(["git", *args], cwd=cwd).returncode == 0
+    return subprocess.run(["git", *args], cwd=cwd, check=False).returncode == 0
 
 
 def fetch(ecosystems: list[Ecosystem], refs: dict[str, str]) -> int:
     errors = []
     for ecosystem in ecosystems:
         if ecosystem.toolchain not in TOOLCHAINS:
-            errors.append(f"ecosystems.toml: {ecosystem.id} needs the {ecosystem.toolchain} toolchain, which build.yml doesn't set up")
+            errors.append(
+                f"ecosystems.toml: {ecosystem.id} needs the {ecosystem.toolchain} toolchain, which build.yml doesn't set up"
+            )
             continue
 
         # A shallow fetch of one ref, which can be a branch or a commit SHA. GitHub
@@ -132,7 +134,7 @@ def stage(ecosystems: list[Ecosystem], local: dict[str, str]) -> int:
         before = set(os.listdir(out))
         command = [part.replace("{out}", str(out)) for part in shlex.split(ecosystem.stage)]
         print(f"Staging {ecosystem.id}: {shlex.join(command)}", flush=True)
-        result = subprocess.run(command, cwd=checkout)
+        result = subprocess.run(command, cwd=checkout, check=False)
         if result.returncode != 0:
             errors.append(f"{ecosystem.id}: the stage command exited with {result.returncode}")
             continue
@@ -231,7 +233,9 @@ def write_llms(ecosystems: list[Ecosystem], errors: list[str]) -> None:
         if not path.is_file():
             errors.append(f"{ecosystem.id}: staged no {ecosystem.id}/llms.txt")
             continue
-        summary = next((line[2:] for line in path.read_text(encoding="utf-8").splitlines() if line.startswith("> ")), None)
+        summary = next(
+            (line[2:] for line in path.read_text(encoding="utf-8").splitlines() if line.startswith("> ")), None
+        )
         if summary is None:
             errors.append(f"{path}: no summary blockquote")
             continue
