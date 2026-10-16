@@ -147,19 +147,19 @@ def pipeline() -> str:
         rows = [i for i, row in enumerate(PIPELINE_ROWS) if row[0] == key]
         top, bottom = ys[rows[0]], ys[rows[-1]] + row_height
         d.add(
-            f'<rect x="{n(x_band)}" y="{n(top)}" width="{n(w_band)}" height="{n(bottom - top)}" rx="6" class="lane tint"/>',
-            f'<rect x="{n(x_band)}" y="{n(top)}" width="4" height="{n(bottom - top)}" rx="2" class="lane"/>',
+            f'<rect x="{n(x_band)}" y="{n(top)}" width="{n(w_band)}" height="{n(bottom - top)}" rx="6" class="lane {key} tint"/>',
+            f'<rect x="{n(x_band)}" y="{n(top)}" width="4" height="{n(bottom - top)}" rx="2" class="lane {key}"/>',
             text(x_band + 14, (top + bottom) / 2 + 6, name, "tb"),
         )
 
-    for (_, picks_up, skill, branch, human_gate, _), y0 in zip(PIPELINE_ROWS, ys):
+    for (key, picks_up, skill, branch, human_gate, _), y0 in zip(PIPELINE_ROWS, ys):
         cy = y0 + row_height / 2
         d.add(
             rect(x_picks_up, y0 + 6, w_picks_up, row_height - 12, 6, "chip"),
             lines(x_picks_up + 12, cy, picks_up),
             d.arrow(x_picks_up + w_picks_up, cy, x_skill - 2, cy),
             rect(x_skill, y0 + 4, w_skill, row_height - 8, 6, "box"),
-            f'<rect x="{n(x_skill)}" y="{n(y0 + 4)}" width="4" height="{n(row_height - 8)}" rx="2" class="lane"/>',
+            f'<rect x="{n(x_skill)}" y="{n(y0 + 4)}" width="4" height="{n(row_height - 8)}" rx="2" class="lane {key}"/>',
             text(x_skill + 14, cy - 4, skill, "tm") + text(x_skill + 14, cy + 16, branch or "report only", "ts"),
         )
         if branch is not None:
