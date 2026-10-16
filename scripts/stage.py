@@ -14,15 +14,18 @@ outputs, so build.yml sets up only those.
 
 stage copies pages/ into build/docs/, runs each ecosystem's stage command with {out}
 set to build/docs/, and writes the root llms.txt, which links to each ecosystem's
-own. It also fills the home page's ecosystem cards from ecosystems.toml, and draws the
-diagrams on How it works from diagrams.py. --local stages from a checkout on disk
-instead of build/repos/<id>/, to preview an ecosystem change before pushing it.
+own. It also fills the home page's ecosystem cards from ecosystems.toml, draws the
+diagrams on How it works from diagrams.py, and writes javascripts/repositories.js, which
+points the header's repository link at each live ecosystem's repository under its /<id>/
+pages. --local stages from a checkout on disk instead of build/repos/<id>/, to preview
+an ecosystem change before pushing it.
 
 Exit codes: 0 done, 1 an ecosystem failed to fetch or stage, or staged outside its
 own directory, 2 not run from the repository root or bad arguments.
 """
 
 import argparse
+import json
 import os
 import re
 import shlex
@@ -144,6 +147,7 @@ def stage(ecosystems: list[Ecosystem], local: dict[str, str]) -> int:
         write_llms(ecosystems, errors)
         write_cards(errors)
         write_diagrams(errors)
+        write_repositories(ecosystems)
     return report(errors)
 
 
@@ -193,6 +197,17 @@ def write_diagrams(errors: list[str]) -> None:
     if count == 0:
         errors.append(f"{PAGES / DIAGRAM_PAGE}: expected a <!-- diagram: <name> --> line")
     path.write_text(text, encoding="utf-8")
+
+
+def write_repositories(ecosystems: list[Ecosystem]) -> None:
+    """Write each live ecosystem's repository for javascripts/ecosystem.js, which loads after
+    this file and before the theme reads the header's repository link."""
+    repositories = {ecosystem.id: ecosystem.repository for ecosystem in ecosystems}
+    (DOCS / "javascripts" / "repositories.js").write_text(
+        "// Written by scripts/stage.py from ecosystems.toml. javascripts/ecosystem.js reads it.\n"
+        f"window.ahRepositories = {json.dumps(repositories)};\n",
+        encoding="utf-8",
+    )
 
 
 def write_llms(ecosystems: list[Ecosystem], errors: list[str]) -> None:
