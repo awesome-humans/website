@@ -18,7 +18,8 @@ Stopped 2026-10-16, with Phases 0, 1, and 2 done, and Phase 3 down to step 4. Pi
 
 1. **Phase 3 step 4,** OpinionMeta: extend the staging contract so an ecosystem writes each opinion's metadata as a `{ .ah-meta }` strip of chips, and change `dotnet`'s `build-site.cs` to match. Steps 1 to 3 and 5 to 8 are done.
 2. **Phase 7, CodeRabbit,** can start any time, and needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
-3. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`. It wasn't a Dependabot alert on 2026-10-16. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
+3. **Phase 8, pull request templates,** can start any time. Its first step checks whether a folder of templates in `.github` applies to the other repositories.
+4. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`. It wasn't a Dependabot alert on 2026-10-16. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
 
 `gh` is signed in as `si618`, an organisation admin. It still has the `admin:org` scope added for Phase 0, which nothing needs now. The owner removes it with `gh auth refresh -h github.com --remove-scopes admin:org`.
 
@@ -447,6 +448,30 @@ Each ecosystem's roster page carries the same two links, with `&ecosystem=<name>
 4. **Per-repository overrides,** only if one is needed: a repository's own `.coderabbit.yaml` with `inheritance: true`, which merges onto the central file instead of replacing it ([Configuration inheritance](https://docs.coderabbit.ai/configuration/configuration-inheritance)).
 5. **Tell the agents** in each repository's `AGENTS.md`: when a pull request is ready and its checks pass, comment `@coderabbitai review`, because a repository under 10 stars isn't reviewed automatically. Its findings are advisory. Fix each one or reply with the reason, ending the reply with the agent attribution line, and don't resolve a thread without doing either. Once a repository passes 10 stars, the comment is no longer needed, but it does no harm.
 6. **Check** with a small pull request in each repository. Comment `@coderabbitai configuration` to see the resolved settings and confirm they come from `awesome-humans/coderabbit/.coderabbit.yaml`. Add `coderabbit` to `cspell.words.txt` wherever a check flags it.
+
+## Phase 8: Pull request templates
+
+The organisation's one pull request template, in `awesome-humans/.github`, fits only a proposed opinion or template change. Six skills in `dotnet` have `change-flow: branch-pr`, and each describes its own pull request body in prose, so the bodies drift between runs and between ecosystems. Give each kind of change its own template, and have each skill name the one it fills in. Phase 8 is independent of the others, so it can run at any time.
+
+**How GitHub picks a template:** Several templates can live in a `PULL_REQUEST_TEMPLATE/` folder, and the `template` query parameter on a compare URL chooses one, such as `?template=source.md` ([Creating a pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)). Unlike issue forms, pull requests have no template chooser, so a person only sees the default `PULL_REQUEST_TEMPLATE.md` unless a link sets the parameter. An agent passes the template to `gh pr create --template <file>`, or fills it in and passes `--body-file`.
+
+1. **Check the organisation fallback first** (agent): with a throwaway branch in `rust`, which has no template of its own, confirm that the folder form in `.github` applies to other repositories, that `?template=` finds those files, and that `gh pr create --template` lists them. The docs only state that a single default template falls back. If the folder doesn't fall back, keep the default in `.github`, and put the skill templates in each ecosystem repository's own `.github/PULL_REQUEST_TEMPLATE/`.
+2. **Write the templates** (agent), in `awesome-humans/.github` unless step 1 rules it out:
+
+   | Template                   | Used by                                                              | Asks for                                                                                                                                                                               |
+   | -------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+   | `PULL_REQUEST_TEMPLATE.md` | A person, for anything else                                          | What changed and why. It links each template below by its `?template=` URL, so a person can switch                                                                                     |
+   | `opinion.md`               | A person proposing an opinion, `harvest-sources`, `resolve-research` | Today's template: the opinion, the provenance, and the checklist. `harvest-sources` adds which posts it read; `resolve-research` names the topic it resolves or discards               |
+   | `source.md`                | `vet-source`                                                         | The decision (admit, watch-list, decline, promote, or demote), the evidence for each admission criterion, the decision log line, and, for a demotion, each claim re-sourced or dropped |
+   | `version-refresh.md`       | Each `refresh-<ecosystem>-versions` skill                            | The versions before and after (framework, toolchain band, and each package pin), the opinions changed and verified unchanged, whether the samples built and tested, and the TODOs      |
+   | `research.md`              | `research-topic`                                                     | The question, the recommendation, the sources cited, and what `resolve-research` should do with it                                                                                     |
+   | `house-opinion.md`         | `weave-house-opinion`                                                | The house opinion, the files it changes, the sourced position it overrides, and the `HOUSE-OPINIONS.md` entry. Fold it into `opinion.md` if the two turn out nearly the same           |
+
+   Keep ecosystem-specific lines, such as a toolchain name, out of the templates. As now, those stay in each repository's `AGENTS.md`. Renovate's pull requests don't use a template.
+
+3. **Point each skill at its template** (agent), in `dotnet` now and in `rust` as its skills are written: the skill's "Open a pull request" step names the template, and the agent fills in every section. A section that doesn't apply says so, instead of being deleted.
+4. **A person suggesting a source** keeps using `website`'s `suggest-source` issue form. `source.md` is for the pull request that records a `vet-source` decision, by an agent or by a contributor who did the vetting.
+5. **Check** with one pull request per template, opened through its `?template=` URL, and one opened by a skill with `gh pr create`.
 
 ## Exploration: house opinion profiles
 
