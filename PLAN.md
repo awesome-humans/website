@@ -14,9 +14,9 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 ## Next session
 
-Stopped 2026-10-16, with Phases 0, 1, and 2 done, and Phase 3 down to step 4. Pick up here:
+Stopped 2026-10-17, with Phases 0 to 3 done once [dotnet#159](https://github.com/awesome-humans/dotnet/pull/159) and this plan's pull request merge. Pick up here:
 
-1. **Phase 3 step 4,** OpinionMeta: extend the staging contract so an ecosystem writes each opinion's metadata as a `{ .ah-meta }` strip of chips, and change `dotnet`'s `build-site.cs` to match. Steps 1 to 3 and 5 to 8 are done.
+1. **Merge dotnet#159 and this pull request,** in either order. The site's stylesheet already holds the `ah-meta` styles. Then check an opinion page on awesome-humans.net for the strip.
 2. **Phase 7, CodeRabbit,** can start any time, and needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
 3. **Phase 8, pull request templates,** can start any time. Its first step checks whether a folder of templates in `.github` applies to the other repositories.
 4. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`. It wasn't a Dependabot alert on 2026-10-16. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
@@ -294,7 +294,7 @@ Branch `feat/design-system` in `website`. The design system is the reference: co
 7. **Home page:** Use the hero (headline under 18 characters, lede under 46) and replace the Ecosystems list with EcosystemCards, with Rust and TypeScript as `ah-card--soon` until they go live.
 8. **Check** text contrast of 4.5:1 in both themes on every component, a focus ring of 3:1, `prefers-reduced-motion`, no horizontal scroll at 360px, and `zensical build --strict`.
 
-**Progress (2026-10-16):** Steps 1 to 3 and 5 to 8 are done in `feat/design-system`. Step 4 is next. The work differs from the steps above in six ways:
+**Progress (2026-10-17):** Steps 1 to 3 and 5 to 8 are done in `feat/design-system`. Step 4 is done in [dotnet#159](https://github.com/awesome-humans/dotnet/pull/159), and README.md's [Opinion metadata](README.md#opinion-metadata) section adds the strip to the staging contract. The strip also carries the design system's freshness chip: `fresh`, or `stale` past the ecosystem's review tolerance, which is 180 days for `dotnet`. The Rust `xtask build-site` doesn't exist yet, so Phase 6 builds the strip into it from the contract. The work differs from the steps above in six ways:
 
 - **The design system has no theme layer to copy.** Its README names `stylesheets/awesome-humans.css`, `javascripts/ecosystem.js`, and `assets/brand/`, but it holds only `tokens.json`, `components/bundle.css`, and the assets. So `pages/stylesheets/awesome-humans.css` is written from those two files, with the tokens renamed `--ah-*`, and replaces `extra.css`.
 - **No template overrides.** The `modern` variant already keeps the header and tabs on the page background. CSS draws the stripe on `.md-header::after`, the tick on `h1`, and the accent on the active tab and navigation link. The hero is HTML in `pages/index.md`, through `md_in_html`.
