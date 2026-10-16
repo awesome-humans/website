@@ -66,7 +66,7 @@ jobs:
           path: build/public
 
       # wranglerVersion pins Wrangler itself, which the action would otherwise take as
-      # whatever v4 is latest. Renovate doesn't track this input, so bump it by hand.
+      # whatever v4 is latest. Renovate's github-actions manager bumps it.
       - name: Deploy with Wrangler
         id: wrangler
         uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
