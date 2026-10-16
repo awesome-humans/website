@@ -416,15 +416,6 @@
   border-color: var(--ah-brand);
   color: var(--ah-brand);
 }
-.md-typeset .ah-btn--primary {
-  background: var(--ah-brand);
-  border-color: var(--ah-brand);
-  color: var(--ah-on-brand);
-}
-.md-typeset .ah-btn--primary:hover {
-  color: var(--ah-on-brand);
-  filter: brightness(1.08);
-}
 
 /* Ecosystem cards */
 .md-typeset .ah-cards {

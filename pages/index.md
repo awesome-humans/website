@@ -10,7 +10,7 @@ An agentic take on awesome lists ([awesome-dotnet](https://github.com/quozd/awes
 
 <div class="ah-row">
 <a class="ah-btn" href="how-it-works/">How it works</a>
-<a class="ah-btn ah-btn--primary" href="dotnet/">Browse .NET</a>
+<a class="ah-btn" href="dotnet/">Browse .NET</a>
 </div>
 
 </section>
