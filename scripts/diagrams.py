@@ -100,7 +100,7 @@ def node(x: float, y: float, width: float, height: float, title: str, subtitle: 
 PIPELINE_LANES = [("sources", "Sources"), ("research", "Research"), ("opinions", "Opinions"), ("reports", "Reports")]
 PIPELINE_ROWS = [
     ("sources", ["candidate source,", "or a standing change"], "vet-source", "vet/<source-id>", "check evidence", "roster"),
-    ("research", ["an open question", "about <topic>"], "research-topic", "research/<topic>", "review", "research"),
+    ("research", ["a question", "about <topic>"], "research-topic", "research/<topic>", "review", "research"),
     ("research", ["topic saved in", "research/"], "resolve-research", "resolve/<topic>", "approve weave", "opinions"),
     ("opinions", ["monthly harvest", "reminder issue"], "harvest-sources", "harvest/<date>", "review", "opinions"),
     ("opinions", ["release-watch PR,", "or a newer pin"], "version refresh", "refresh/<version>", "review", "opinions"),
