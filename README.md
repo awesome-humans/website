@@ -27,6 +27,19 @@ The site never runs an ecosystem's tooling directly. It runs the ecosystem's `st
 | `sources.json`        | The roster, exported from `AWESOME-HUMANS.md` and valid against [`schemas/sources.schema.json`](schemas/sources.schema.json). The site combines every ecosystem's export to draw the source images and montage |
 | `llms.txt`            | A complete [llms.txt](https://llmstxt.org) for the ecosystem, served at `/<id>/llms.txt`. The site's root `llms.txt` links to each one                                                                         |
 
+### Opinion metadata
+
+Each opinion page opens with the design system's OpinionMeta strip, directly under its `h1`. Write it as one paragraph marked `{ .ah-meta }`, with a `.ah-meta__item` span for each of the opinion's targets, its last-reviewed date, and its sources:
+
+```markdown
+<span class="ah-meta__item"><span class="ah-label">Targets</span> `net10.0` `csharp-14`</span><span class="ah-meta__item"><span class="ah-label">Last reviewed</span> 2026-08-18 <span class="ah-chip ah-chip--fresh ah-chip--dot">fresh</span></span><span class="ah-meta__item"><span class="ah-label">Sources</span> [andrew-lock](../awesome-humans/citable.md#andrew-lock-citable){ .ah-chip } [ms-learn](../awesome-humans/citable.md#ms-learn-citable){ .ah-chip }</span>
+{ .ah-meta }
+```
+
+- **Separate values with a space.** Two code spans with no space between them merge into one.
+- **Link each source to its roster entry,** with a relative link the build can check.
+- **Mark the review date `fresh` or `stale`** against the ecosystem's own review tolerance, with `ah-chip--fresh` or `ah-chip--stale`. The weekly build restages every ecosystem, so the chip changes within a week of the date passing.
+
 The command exits 0 when it staged everything, 1 when it found problems in the content, and 2 when it wasn't run from the repository root. On anything but 0, the site build stops.
 
 The site rejects a staged directory whose JSON doesn't match its schema, whose `nav.json` names a page that doesn't exist, or whose `sources.json` holds a duplicate or out-of-order `id`. A source that appears in more than one ecosystem must use the same `id` and `kind` in each.
