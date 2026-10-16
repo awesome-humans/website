@@ -1,6 +1,6 @@
 # How it works
 
-Agent skills maintain each ecosystem's repository, and nothing reaches an opinion without passing CI and the owner's review. The skills and the roster's admission criteria, linked from each ecosystem's pages, are canonical over the diagrams.
+Agent skills maintain each ecosystem's repository, and nothing reaches an opinion without passing CI and the owner's review. The diagrams below are an overview. Where one disagrees with a skill or the roster's admission criteria, follow the skill or the criteria, which each ecosystem's pages link to.
 
 ## Every change is a pull request
 
@@ -20,7 +20,7 @@ A source joins the roster on its track record: at least two years of sustained w
 
 A research topic saves the evidence on a subject in its own pull request. A second pull request then promotes it into the opinions and templates, or discards it, and deletes the topic either way. A topic on disk is unresolved.
 
-![Research lifecycle: research-topic saves research/{topic}.md, and resolve-research promotes, discards or partly promotes it](dotnet/assets/diagrams/research-lifecycle.svg)
+![Research lifecycle: research-topic saves a topic under research/, and resolve-research promotes, discards or partly promotes it](dotnet/assets/diagrams/research-lifecycle.svg)
 
 ## House opinions
 
