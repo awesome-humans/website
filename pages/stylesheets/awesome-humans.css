@@ -206,12 +206,14 @@
   font-feature-settings: normal;
 }
 
-/* The page title, with the ecosystem tick above it. */
+/* The page title, underlined with the ecosystem tick. The design system draws the tick
+   above the title; the owner moved it underneath on 2026-10-16, where it reads as an
+   underline rather than a rule cutting the page. */
 .md-typeset h1 {
   display: inline-block;
   margin: 0 0 var(--ah-space-6);
-  padding-top: 6px;
-  border-top: var(--ah-tick) solid var(--ah-eco);
+  padding-bottom: 6px;
+  border-bottom: var(--ah-tick) solid var(--ah-eco);
   font-size: 2em;
   line-height: 1.1875;
   letter-spacing: -0.015em;
