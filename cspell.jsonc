@@ -14,7 +14,7 @@
     "html",
     "npm",
     "bash",
-    "repository-words",
+    "repository-words"
   ],
 
   // Names, identifiers, and terms the dictionaries lack. addWords lets the
@@ -23,8 +23,8 @@
     {
       "name": "repository-words",
       "path": "./cspell.words.txt",
-      "addWords": true,
-    },
+      "addWords": true
+    }
   ],
 
   "useGitignore": true,
@@ -41,7 +41,7 @@
       "ignoreRegExpList": [
         "/\\[[^\\]\\n]*\\]\\(/g",
         "/`[^`\\n]+`/g",
-        "/\"[^\"\\n]*\"/g",
+        "/\"[^\"\\n]*\"/g"
       ],
       // The software dictionaries accept these because API names use them, so
       // en-GB alone lets them through in prose. Code files aren't covered: an
@@ -78,9 +78,9 @@
         "traveled",
         "fulfill",
         "judgment",
-        "gray",
-      ],
+        "gray"
+      ]
       // cspell:enable
-    },
-  ],
+    }
+  ]
 }
