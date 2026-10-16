@@ -650,12 +650,21 @@
 
 /* ---- Diagrams: How it works, drawn by scripts/diagrams.py ----
    The SVG carries classes only, so these rules colour it from the tokens and the theme
-   toggle switches it. Brand marks what the agents do, house what the owner decides, and
-   muted the report-only lane. No ecosystem accent: a diagram isn't one of its four places.
-   On a narrow screen, the figure scrolls sideways rather than shrinking the labels. */
-.ah-diagram {
+   toggle switches it. Colour carries meaning only: brand marks the CI gate and the
+   outcome the agents work towards, and house what the owner decides. The lanes stay
+   neutral, and no ecosystem accent appears: a diagram isn't one of its four places.
+   The figure takes the content's full width, which How it works widens by hiding its
+   table of contents, and the prose beside it keeps its usual measure. On a narrow
+   screen, the figure scrolls sideways rather than shrinking the labels. The theme
+   centres a figure at its content's width, hence .md-typeset. */
+.md-typeset .ah-diagram {
+  display: block;
+  width: 100%;
   margin: var(--ah-space-6) 0;
   overflow-x: auto;
+}
+.md-typeset:has(> .ah-diagram) > :not(.ah-diagram) {
+  max-width: 42rem;
 }
 .ah-diagram svg {
   display: block;
@@ -686,13 +695,13 @@
   stroke-width: 1.2;
 }
 .ah-diagram .lane {
-  fill: var(--ah-brand);
-}
-.ah-diagram .lane.muted {
-  fill: var(--ah-muted);
+  fill: var(--ah-ink-2);
 }
 .ah-diagram .lane.tint {
-  opacity: 0.14;
+  fill: var(--ah-raised);
+}
+.ah-diagram .accent {
+  fill: var(--ah-brand);
 }
 .ah-diagram text {
   font-family: var(--ah-font-sans);
@@ -701,15 +710,16 @@
 .ah-diagram .tb,
 .ah-diagram .tm {
   fill: var(--ah-ink);
-  font-size: 14px;
+  font-size: 16px;
 }
 .ah-diagram .t {
   font-weight: 500;
 }
 .ah-diagram .tb {
   font-weight: 600;
+}
+.ah-diagram .tm {
   font-size: 15px;
-  letter-spacing: 0.02em;
 }
 .ah-diagram .tm,
 .ah-diagram .th {
@@ -718,11 +728,11 @@
 }
 .ah-diagram .ts {
   fill: var(--ah-muted);
-  font-size: 13px;
+  font-size: 14px;
 }
 .ah-diagram .th {
   fill: var(--ah-muted);
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -753,7 +763,7 @@
 .ah-diagram .gate-t,
 .ah-diagram .check-t {
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
 }
 .ah-diagram .gate-t {
   fill: var(--ah-house);

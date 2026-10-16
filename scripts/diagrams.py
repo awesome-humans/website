@@ -6,7 +6,10 @@ with the diagram's SVG. It isn't a script of its own.
 A port of dotnet's scripts/export-diagrams.cs, with neutral labels: "version refresh"
 for each ecosystem's refresh-*-versions skill, and placeholders for branches, never an
 ecosystem's name. Each ecosystem keeps its own diagrams for its README, where its names
-belong. Keep the layout here in step with that script.
+belong. Keep the layout here in step with that script, with two differences: columns
+here fit IBM Plex, which the site always loads, where the script leaves room for wider
+fallback fonts, and the skill column fits "version refresh" rather than an ecosystem's
+longer skill name.
 
 Each diagram is data at the top of its function, rows or nodes with their labels, and
 layout code below. The SVG carries classes and no colours or fonts: the .ah-diagram rules
@@ -30,8 +33,8 @@ def text(x: float, y: float, value: str, cls: str = "t", anchor: str = "start") 
 
 def lines(x: float, y: float, items: list[str], cls: str = "t") -> str:
     """Lines of text, vertically centred on y."""
-    step = 17
-    top = y - ((len(items) - 1) * step / 2) + 4
+    step = 19
+    top = y - ((len(items) - 1) * step / 2) + 5
     return "".join(text(x, top + i * step, item, cls) for i, item in enumerate(items))
 
 
@@ -84,8 +87,8 @@ class Drawing:
 def node(x: float, y: float, width: float, height: float, title: str, subtitle: str, cls: str = "box", title_cls: str = "tb", accent: bool = False) -> str:
     """A titled box with a subtitle and an optional brand edge on its left."""
     cy = y + height / 2
-    edge_bar = f'<rect x="{n(x)}" y="{n(y)}" width="4" height="{n(height)}" rx="2" class="lane"/>' if accent else ""
-    return rect(x, y, width, height, 8, cls) + edge_bar + text(x + 16, cy - 3, title, title_cls) + text(x + 16, cy + 15, subtitle, "ts")
+    edge_bar = f'<rect x="{n(x)}" y="{n(y)}" width="4" height="{n(height)}" rx="2" class="accent"/>' if accent else ""
+    return rect(x, y, width, height, 8, cls) + edge_bar + text(x + 16, cy - 4, title, title_cls) + text(x + 16, cy + 17, subtitle, "ts")
 
 
 # ---- Maintenance pipeline ----
@@ -108,15 +111,16 @@ PIPELINE_ROWS = [
 
 def pipeline() -> str:
     d = Drawing("maintenance-pipeline")
-    x_band, w_band = 12, 104
-    x_bracket = 126
-    x_picks_up, w_picks_up = 136, 180
-    x_skill, w_skill = 342, 236
-    x_agent_gate, w_agent_gate = 604, 128
-    x_human_gate = 774
-    x_lands_in, w_lands_in = 934, 200
-    width = 1148
-    row_height = 64
+    x_band, w_band = 12, 96
+    x_bracket = 118
+    x_picks_up, w_picks_up = 128, 192
+    x_skill, w_skill = 344, 204
+    x_agent_gate, w_agent_gate = 572, 116
+    gate_half = 20
+    x_human_gate = 732
+    x_lands_in, w_lands_in = 878, 184
+    width = 1074
+    row_height = 66
 
     # Rows stack with a gap between lanes.
     ys: list[float] = []
@@ -134,7 +138,7 @@ def pipeline() -> str:
         (x_picks_up, "picks up"),
         (x_skill, "skill"),
         (x_agent_gate, "agent gate"),
-        (x_human_gate - 17, "human gate"),
+        (x_human_gate - gate_half, "human gate"),
         (x_lands_in, "lands in"),
     ]:
         d.add(text(x, 24, label, "th"))
@@ -142,35 +146,33 @@ def pipeline() -> str:
     for key, name in PIPELINE_LANES:
         rows = [i for i, row in enumerate(PIPELINE_ROWS) if row[0] == key]
         top, bottom = ys[rows[0]], ys[rows[-1]] + row_height
-        lane = "lane muted" if key == "reports" else "lane"
         d.add(
-            f'<rect x="{n(x_band)}" y="{n(top)}" width="{n(w_band)}" height="{n(bottom - top)}" rx="6" class="{lane} tint"/>',
-            f'<rect x="{n(x_band)}" y="{n(top)}" width="4" height="{n(bottom - top)}" rx="2" class="{lane}"/>',
-            text(x_band + 14, (top + bottom) / 2 + 5, name, "tb"),
+            f'<rect x="{n(x_band)}" y="{n(top)}" width="{n(w_band)}" height="{n(bottom - top)}" rx="6" class="lane tint"/>',
+            f'<rect x="{n(x_band)}" y="{n(top)}" width="4" height="{n(bottom - top)}" rx="2" class="lane"/>',
+            text(x_band + 14, (top + bottom) / 2 + 6, name, "tb"),
         )
 
-    for (key, picks_up, skill, branch, human_gate, _), y0 in zip(PIPELINE_ROWS, ys):
+    for (_, picks_up, skill, branch, human_gate, _), y0 in zip(PIPELINE_ROWS, ys):
         cy = y0 + row_height / 2
-        lane = "lane muted" if key == "reports" else "lane"
         d.add(
             rect(x_picks_up, y0 + 6, w_picks_up, row_height - 12, 6, "chip"),
             lines(x_picks_up + 12, cy, picks_up),
             d.arrow(x_picks_up + w_picks_up, cy, x_skill - 2, cy),
             rect(x_skill, y0 + 4, w_skill, row_height - 8, 6, "box"),
-            f'<rect x="{n(x_skill)}" y="{n(y0 + 4)}" width="4" height="{n(row_height - 8)}" rx="2" class="{lane}"/>',
-            text(x_skill + 14, cy - 3, skill, "tm") + text(x_skill + 14, cy + 14, branch or "report only", "ts"),
+            f'<rect x="{n(x_skill)}" y="{n(y0 + 4)}" width="4" height="{n(row_height - 8)}" rx="2" class="lane"/>',
+            text(x_skill + 14, cy - 4, skill, "tm") + text(x_skill + 14, cy + 16, branch or "report only", "ts"),
         )
         if branch is not None:
             d.add(
                 d.arrow(x_skill + w_skill, cy, x_agent_gate - 2, cy),
-                rect(x_agent_gate, cy - 17, w_agent_gate, 34, 17, "check"),
-                text(x_agent_gate + w_agent_gate / 2, cy - 2, "CI: metadata,", "check-t", "middle"),
+                rect(x_agent_gate, cy - gate_half, w_agent_gate, gate_half * 2, gate_half, "check"),
+                text(x_agent_gate + w_agent_gate / 2, cy - 3, "CI: metadata,", "check-t", "middle"),
                 text(x_agent_gate + w_agent_gate / 2, cy + 13, "sources, links", "check-t", "middle"),
-                d.arrow(x_agent_gate + w_agent_gate, cy, x_human_gate - 19, cy),
+                d.arrow(x_agent_gate + w_agent_gate, cy, x_human_gate - gate_half - 2, cy),
                 # The human gate is a diamond the height of the agent gate's capsule.
-                diamond(x_human_gate, cy, 17, "gate"),
-                d.arrow(x_human_gate + 17, cy, x_lands_in - 2, cy),
-                text(x_human_gate + 26, cy - 8, human_gate, "gate-t"),
+                diamond(x_human_gate, cy, gate_half, "gate"),
+                d.arrow(x_human_gate + gate_half, cy, x_lands_in - 2, cy),
+                text(x_human_gate + gate_half + 8, cy - 9, human_gate, "gate-t"),
             )
         else:
             d.add(
@@ -188,21 +190,21 @@ def pipeline() -> str:
         rows = [i for i, row in enumerate(PIPELINE_ROWS) if row[5] == key]
         top, bottom = ys[rows[0]] + 4, ys[rows[-1]] + row_height - 4
         d.add(rect(x_lands_in, top, w_lands_in, bottom - top, 6, cls))
-        ty = (top + bottom) / 2 - len(title_lines) * 10 + 5
+        ty = (top + bottom) / 2 - len(title_lines) * 11 + 5
         for i, line in enumerate(title_lines):
-            d.add(text(x_lands_in + 14, ty + i * 20, line, "tb" if key == "report" else "tm"))
-        d.add(text(x_lands_in + 14, ty + len(title_lines) * 20, subtitle, "ts"))
+            d.add(text(x_lands_in + 14, ty + i * 22, line, "tb" if key == "report" else "tm"))
+        d.add(text(x_lands_in + 14, ty + len(title_lines) * 22, subtitle, "ts"))
 
     # The loop: a report's findings, with the scheduled workflows and the owner, start the
     # next run in whichever row it belongs to.
     loop_y = rows_bottom + 56
-    start_x, start_width = 480, 420
+    start_x, start_width = 440, 372
     d.add(
         d.path_arrow(f"M{n(x_lands_in + w_lands_in / 2)} {n(rows_bottom - 4)}V{n(loop_y)}H{n(start_x + start_width + 2)}"),
         text(x_lands_in + w_lands_in / 2 - 8, loop_y - 8, "findings", "ts", "end"),
-        rect(start_x, loop_y - 32, start_width, 64, 6, "box"),
-        text(start_x + 16, loop_y - 4, "What starts a run", "tb"),
-        text(start_x + 16, loop_y + 16, "findings, the release watch, the harvest reminder, you", "ts"),
+        rect(start_x, loop_y - 34, start_width, 68, 6, "box"),
+        text(start_x + 16, loop_y - 5, "What starts a run", "tb"),
+        text(start_x + 16, loop_y + 17, "findings, the release watch, the harvest reminder, you", "ts"),
         f'<path d="M{n(start_x)} {n(loop_y)}H{n(x_bracket)}V{n(ys[0] + row_height / 2)}" class="edge"/>',
         text((start_x + x_bracket) / 2, loop_y - 8, "starts the next skill", "ts", "middle"),
     )
@@ -211,7 +213,7 @@ def pipeline() -> str:
 
     return d.svg(
         width,
-        loop_y + 48,
+        loop_y + 50,
         "Maintenance pipeline",
         "Swimlane diagram of how an ecosystem's repository maintains itself: vet-source, research-topic, resolve-research,"
         " harvest-sources, the version refresh, and weave-house-opinion each work on their own branch, pass CI and the"
@@ -232,57 +234,57 @@ MARKINGS = [
 
 def standing() -> str:
     d = Drawing("source-standing")
-    candidate_x, candidate_width = 24, 212
-    vet_x, vet_y, vet_half = 308, 182, 36
-    spine_x = 376
-    out_x, out_width = 606, 540
-    loop_x, loop_y = 1270, 412
+    candidate_x, candidate_width = 20, 212
+    vet_x, vet_y, vet_half = 300, 190, 38
+    spine_x = 362
+    out_x, out_width = 568, 540
+    loop_x, loop_y = 1236, 440
 
     d.add(
         node(candidate_x, vet_y - 32, candidate_width, 64, "Candidate source", "blog, docs, book, newsletter"),
         d.arrow(candidate_x + candidate_width, vet_y, vet_x - vet_half - 2, vet_y),
         diamond(vet_x, vet_y, vet_half, "decision"),
-        text(vet_x, vet_y - vet_half - 12, "vet-source", "tm", "middle"),
+        text(vet_x, vet_y - vet_half - 14, "vet-source", "tm", "middle"),
         text(vet_x, vet_y + 4, "criteria", "ts", "middle"),
         f'<line x1="{n(vet_x + vet_half)}" y1="{n(vet_y)}" x2="{n(spine_x)}" y2="{n(vet_y)}" class="edge"/>',
     )
 
     # Citable, with its markings inside.
-    citable_y, citable_height = 24, 196
+    citable_y, citable_height = 24, 212
     d.add(
         rect(out_x, citable_y, out_width, citable_height, 8, "box"),
-        f'<rect x="{n(out_x)}" y="{n(citable_y)}" width="4" height="{n(citable_height)}" rx="2" class="lane"/>',
-        text(out_x + 16, citable_y + 26, "Citable", "tb"),
-        text(out_x + 16, citable_y + 44, "quotable in opinions and templates, within its marking", "ts"),
+        f'<rect x="{n(out_x)}" y="{n(citable_y)}" width="4" height="{n(citable_height)}" rx="2" class="accent"/>',
+        text(out_x + 16, citable_y + 27, "Citable", "tb"),
+        text(out_x + 16, citable_y + 48, "quotable in opinions and templates, within its marking", "ts"),
     )
     for i, (marking, rule) in enumerate(MARKINGS):
-        y0 = citable_y + 60 + i * 44
-        d.add(rect(out_x + 16, y0, out_width - 32, 36, 6, "chip"), text(out_x + 28, y0 + 23, marking, "tm"), text(out_x + 212, y0 + 23, rule, "ts"))
+        y0 = citable_y + 64 + i * 48
+        d.add(rect(out_x + 16, y0, out_width - 32, 40, 6, "chip"), text(out_x + 28, y0 + 25, marking, "tm"), text(out_x + 214, y0 + 25, rule, "ts"))
 
-    watch_y, declined_y = 244, 324
+    watch_y, declined_y = 260, 344
     d.add(
-        node(out_x, watch_y, out_width, 56, "Watch list", "leads only, never cited", cls="ext"),
-        node(out_x, declined_y, out_width, 56, "Declined", "off the roster, the decision logged", cls="ext"),
+        node(out_x, watch_y, out_width, 60, "Watch list", "leads only, never cited", cls="ext"),
+        node(out_x, declined_y, out_width, 60, "Declined", "off the roster, the decision logged", cls="ext"),
     )
     for y, label in [
         (citable_y + 32, "two years and all four criteria"),
-        (watch_y + 28, "under two years, or dormant"),
-        (declined_y + 28, "otherwise"),
+        (watch_y + 30, "under two years, or dormant"),
+        (declined_y + 30, "otherwise"),
     ]:
         d.add(d.path_arrow(f"M{n(spine_x)} {n(vet_y)}V{n(y)}H{n(out_x - 2)}"), text(spine_x + 12, y - 8, label, "ts"))
 
     # Standing is never permanent: citable and watch-listed sources share one path back.
     d.add(
         f'<path d="M{n(out_x + out_width)} {n(citable_y + 32)}H{n(loop_x)}V{n(loop_y)}" class="edge dash"/>',
-        f'<path d="M{n(out_x + out_width)} {n(watch_y + 28)}H{n(loop_x)}" class="edge dash"/>',
+        f'<path d="M{n(out_x + out_width)} {n(watch_y + 30)}H{n(loop_x)}" class="edge dash"/>',
         d.path_arrow(f"M{n(loop_x)} {n(loop_y)}H{n(vet_x)}V{n(vet_y + vet_half + 2)}", dash=True),
         text(out_x + out_width + 10, citable_y + 24, "dormant, weaker", "ts"),
-        text(out_x + out_width + 10, watch_y + 20, "blocker clears", "ts"),
+        text(out_x + out_width + 10, watch_y + 22, "blocker clears", "ts"),
         text((vet_x + loop_x) / 2, loop_y - 8, "re-vetted: standing is never permanent", "ts", "middle"),
     )
 
     return d.svg(
-        1290,
+        1252,
         loop_y + 28,
         "Source standing",
         "Flow diagram: vet-source sorts a candidate source into citable, with two years of writing and all four criteria;"
@@ -303,13 +305,13 @@ OUTCOMES = [
 
 def research() -> str:
     d = Drawing("research-lifecycle")
-    center_y = 140
-    topic_x, topic_width = 24, 196
-    staged_x, staged_width = 300, 210
-    resolve_x, resolve_half = 600, 36
-    spine_x = 680
-    out_x, out_width, out_height = 720, 360, 56
-    loop_y = 292
+    center_y = 150
+    topic_x, topic_width = 20, 212
+    staged_x, staged_width = 316, 204
+    resolve_x, resolve_half = 616, 38
+    spine_x = 704
+    out_x, out_width, out_height = 736, 356, 60
+    loop_y = 314
 
     d.add(
         node(topic_x, center_y - 32, topic_width, 64, "research-topic", "cited, on research/<topic>", title_cls="tm"),
@@ -318,7 +320,7 @@ def research() -> str:
         node(staged_x, center_y - 32, staged_width, 64, "research/<topic>.md", "on record, unresolved", cls="store", title_cls="tm"),
         d.arrow(staged_x + staged_width, center_y, resolve_x - resolve_half - 2, center_y),
         diamond(resolve_x, center_y, resolve_half, "decision"),
-        text(resolve_x, center_y - resolve_half - 12, "resolve-research", "tm", "middle"),
+        text(resolve_x, center_y - resolve_half - 14, "resolve-research", "tm", "middle"),
         text(resolve_x, center_y + 4, "own PR", "ts", "middle"),
         f'<line x1="{n(resolve_x + resolve_half)}" y1="{n(center_y)}" x2="{n(spine_x)}" y2="{n(center_y)}" class="edge"/>',
     )
@@ -338,7 +340,7 @@ def research() -> str:
     )
 
     return d.svg(
-        1104,
+        1108,
         loop_y + 28,
         "Research lifecycle",
         "Flow diagram: research-topic opens a pull request that saves research/<topic>.md; resolve-research then promotes"
