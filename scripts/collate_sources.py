@@ -18,6 +18,7 @@ another ecosystem on a source's kind, 2 not run from the repository root.
 
 import json
 import sys
+from itertools import pairwise
 
 from ecosystems import BUILD, DOCS, live, load_json, report, require_root, validate
 
@@ -39,7 +40,7 @@ def main() -> int:
             continue
 
         ids = [source["id"] for source in document["sources"]]
-        for previous, current in zip(ids, ids[1:]):
+        for previous, current in pairwise(ids):
             if current == previous:
                 errors.append(f"{path}: {current} appears more than once")
             elif current < previous:

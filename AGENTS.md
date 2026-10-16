@@ -121,6 +121,7 @@ Work in a git worktree, with one branch per directory. The local clone is bare, 
 ### Scripts
 
 - Site scripts live in `scripts/` as Python, run with `uv run scripts/<name>.py` from the repository root. Each declares its dependencies inline ([PEP 723](https://peps.python.org/pep-0723/)), with exact pins.
+- Ruff formats and lints the Python in `scripts/` and `src/`, configured in `pyproject.toml`. Run `uv run ruff format` to format, and `uv run ruff check` to lint. CI runs both as checks.
 - Python is Zensical's own language, so the site needs one toolchain. Don't add a script in an ecosystem's language here: the ecosystems dogfood their own languages in their own repositories.
 - Exit codes: 0 for success, 1 for findings, and 2 when not run from the repository root, as in the ecosystems' scripts.
 

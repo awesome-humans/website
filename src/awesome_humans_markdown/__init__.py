@@ -40,7 +40,7 @@ class ListIndentPreprocessor(Preprocessor):
                 marker, source, target = fence
                 text = line[min(indent, source) :] if stripped else ""
                 out.append(" " * target + text if stripped else "")
-                if re.fullmatch(re.escape(marker[0]) + "{%d,} *" % len(marker), stripped):
+                if re.fullmatch(re.escape(marker[0]) + f"{{{len(marker)},}} *", stripped):
                     fence = None
                 previous_blank = False
                 continue
@@ -61,7 +61,7 @@ class ListIndentPreprocessor(Preprocessor):
             target = TAB_LENGTH * len(items) + max(0, indent - base)
 
             if marker:
-                spaces, bullet, gap, rest = marker.groups()
+                _, bullet, gap, rest = marker.groups()
                 width = len(bullet) + max(1, len(gap))
                 out.append(" " * target + bullet + " " + rest if rest else " " * target + bullet)
                 items.append(indent + width)

@@ -85,11 +85,26 @@ class Drawing:
         )
 
 
-def node(x: float, y: float, width: float, height: float, title: str, subtitle: str, cls: str = "box", title_cls: str = "tb", accent: bool = False) -> str:
+def node(
+    x: float,
+    y: float,
+    width: float,
+    height: float,
+    title: str,
+    subtitle: str,
+    cls: str = "box",
+    title_cls: str = "tb",
+    accent: bool = False,
+) -> str:
     """A titled box with a subtitle and an optional brand edge on its left."""
     cy = y + height / 2
     edge_bar = f'<rect x="{n(x)}" y="{n(y)}" width="4" height="{n(height)}" rx="2" class="accent"/>' if accent else ""
-    return rect(x, y, width, height, 8, cls) + edge_bar + text(x + 16, cy - 4, title, title_cls) + text(x + 16, cy + 17, subtitle, "ts")
+    return (
+        rect(x, y, width, height, 8, cls)
+        + edge_bar
+        + text(x + 16, cy - 4, title, title_cls)
+        + text(x + 16, cy + 17, subtitle, "ts")
+    )
 
 
 # ---- Maintenance pipeline ----
@@ -99,12 +114,26 @@ def node(x: float, y: float, width: float, height: float, title: str, subtitle: 
 # opens no pull request, so it passes neither gate.
 PIPELINE_LANES = [("sources", "Sources"), ("research", "Research"), ("opinions", "Opinions"), ("reports", "Reports")]
 PIPELINE_ROWS = [
-    ("sources", ["candidate source,", "or a standing change"], "vet-source", "vet/<source-id>", "check evidence", "roster"),
+    (
+        "sources",
+        ["candidate source,", "or a standing change"],
+        "vet-source",
+        "vet/<source-id>",
+        "check evidence",
+        "roster",
+    ),
     ("research", ["a question", "about <topic>"], "research-topic", "research/<topic>", "review", "research"),
     ("research", ["topic saved in", "research/"], "resolve-research", "resolve/<topic>", "approve weave", "opinions"),
     ("opinions", ["monthly harvest", "reminder issue"], "harvest-sources", "harvest/<date>", "review", "opinions"),
     ("opinions", ["release-watch PR,", "or a newer pin"], "version refresh", "refresh/<version>", "review", "opinions"),
-    ("opinions", ["HOUSE-OPINIONS.md", "inbox entry"], "weave-house-opinion", "house/<slug>", "confirm wording", "opinions"),
+    (
+        "opinions",
+        ["HOUSE-OPINIONS.md", "inbox entry"],
+        "weave-house-opinion",
+        "house/<slug>",
+        "confirm wording",
+        "opinions",
+    ),
     ("reports", ["periodic cadence"], "audit-freshness", None, "", "report"),
     ("reports", ["a project path", "or repository URL"], "verify-project", None, "", "report"),
 ]
@@ -201,7 +230,9 @@ def pipeline() -> str:
     loop_y = rows_bottom + 56
     start_x, start_width = 440, 372
     d.add(
-        d.path_arrow(f"M{n(x_lands_in + w_lands_in / 2)} {n(rows_bottom - 4)}V{n(loop_y)}H{n(start_x + start_width + 2)}"),
+        d.path_arrow(
+            f"M{n(x_lands_in + w_lands_in / 2)} {n(rows_bottom - 4)}V{n(loop_y)}H{n(start_x + start_width + 2)}"
+        ),
         text(x_lands_in + w_lands_in / 2 - 8, loop_y - 8, "findings", "ts", "end"),
         rect(start_x, loop_y - 34, start_width, 68, 6, "box"),
         text(start_x + 16, loop_y - 5, "What starts a run", "tb"),
@@ -263,7 +294,11 @@ def standing() -> str:
     )
     for i, (marking, rule) in enumerate(MARKINGS):
         y0 = citable_y + 64 + i * (chip_height + 8)
-        d.add(rect(out_x + 16, y0, out_width - 32, chip_height, 6, "chip"), text(out_x + 28, y0 + 22, marking, "tm"), text(out_x + 28, y0 + 42, rule, "ts"))
+        d.add(
+            rect(out_x + 16, y0, out_width - 32, chip_height, 6, "chip"),
+            text(out_x + 28, y0 + 22, marking, "tm"),
+            text(out_x + 28, y0 + 42, rule, "ts"),
+        )
 
     watch_y = citable_y + citable_height + 24
     declined_y = watch_y + 84
@@ -324,7 +359,16 @@ def research() -> str:
         node(topic_x, topic_y, topic_width, 64, "research-topic", "cited, on research/<topic>", title_cls="tm"),
         d.arrow(topic_x + topic_width / 2, topic_y + 64, topic_x + topic_width / 2, center_y - 34),
         text(topic_x + topic_width / 2 + 12, center_y - 60, "PR merges", "ts"),
-        node(topic_x, center_y - 32, topic_width, 64, "research/<topic>.md", "on record, unresolved", cls="store", title_cls="tm"),
+        node(
+            topic_x,
+            center_y - 32,
+            topic_width,
+            64,
+            "research/<topic>.md",
+            "on record, unresolved",
+            cls="store",
+            title_cls="tm",
+        ),
         d.arrow(topic_x + topic_width, center_y, resolve_x - resolve_half - 2, center_y),
         diamond(resolve_x, center_y, resolve_half, "decision"),
         text(resolve_x, center_y - resolve_half - 14, "resolve-research", "tm", "middle"),
@@ -342,7 +386,10 @@ def research() -> str:
     # The remainder waits for vet-source, then goes round again.
     partial_bottom = center_y + out_height + 16 + out_height / 2
     d.add(
-        d.path_arrow(f"M{n(out_x + out_width / 2)} {n(partial_bottom)}V{n(loop_y)}H{n(resolve_x)}V{n(center_y + resolve_half + 2)}", dash=True),
+        d.path_arrow(
+            f"M{n(out_x + out_width / 2)} {n(partial_bottom)}V{n(loop_y)}H{n(resolve_x)}V{n(center_y + resolve_half + 2)}",
+            dash=True,
+        ),
         text((resolve_x + out_x + out_width / 2) / 2, loop_y - 8, "once vet-source clears its source", "ts", "middle"),
     )
 

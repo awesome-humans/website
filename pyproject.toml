@@ -21,3 +21,16 @@ build-backend = "uv_build"
 
 [tool.uv.build-backend]
 module-name = "awesome_humans_markdown"
+
+# Tools for working on the site, which `uv sync` installs and the build doesn't need.
+# Pinned like zensical, so a new release arrives as a reviewed Renovate pull request.
+[dependency-groups]
+dev = [
+  "ruff==0.17.1",
+]
+
+# Ruff formats and lints the Python in scripts/ and src/. Run `uv run ruff format`
+# and `uv run ruff check`. Lines run to 120 characters, the width the code is
+# written to, rather than Ruff's 88.
+[tool.ruff]
+line-length = 120
