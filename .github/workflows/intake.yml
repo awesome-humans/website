@@ -10,10 +10,6 @@ on:
 
 permissions: {}
 
-# One run per issue at a time, so an edit can't race the route of the issue it edits.
-concurrency:
-  group: intake-${{ github.event.issue.number }}
-
 jobs:
   route:
     # A form applies its labels as it opens the issue, which fires labeled once per
@@ -24,6 +20,12 @@ jobs:
         (contains(github.event.issue.labels.*.name, 'suggest-source') && github.event.action != 'labeled') ||
         (contains(github.event.issue.labels.*.name, 'opt-out') && github.event.label.name == 'verified')
       )
+    # One route per issue at a time, so an edit can't race the route of the issue it
+    # edits. It's on the job, not the workflow, because the runs that the form's own
+    # labels start are skipped here, and in a workflow-level group they could cancel
+    # the waiting run of the opened issue.
+    concurrency:
+      group: intake-${{ github.event.issue.number }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7

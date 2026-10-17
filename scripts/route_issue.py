@@ -10,9 +10,9 @@
 intake.yml runs it with GH_TOKEN set to the app's token. It reads the issue with gh,
 and each live ecosystem's roster from its published sources.json.
 
-suggest checks a new or edited suggestion. A field that isn't a URL gets one comment,
-which the script updates on each edit. A source already on the chosen ecosystem's
-roster gets its standing, and the issue closes. Otherwise the issue moves to the
+suggest checks a new or edited suggestion. A source already on the chosen ecosystem's
+roster gets its standing, and the issue closes. Otherwise a field that isn't a URL gets
+one comment, which the script updates on each edit. Otherwise the issue moves to the
 ecosystem's repository, labelled vet-source. An ecosystem that isn't live yet keeps the
 suggestion here, with a comment.
 
@@ -114,8 +114,29 @@ def suggest(number: int, issue: dict, dry_run: bool) -> int:
     if ecosystem is None:
         raise RouteError(f"#{number} names the ecosystem {name!r}, which ecosystems.toml doesn't have")
 
-    problems = []
+    # A source already on the roster needs nothing else from the form, so check that
+    # first. An ecosystem that isn't live has no roster to check.
     main_url = form.get("Main URL", "")
+    if ecosystem.status == "live":
+        target = normalise(main_url)
+        suggested_name = form.get("Name", "").casefold()
+        for source in roster(ecosystem):
+            if normalise(source["url"]) == target or source["name"].casefold() == suggested_name:
+                standing = source["standing"].replace("-", " ")
+                upsert_comment(
+                    number,
+                    f"`{source['id']}` is already on the {ecosystem.name} roster, on the {standing}. "
+                    f"See [{source['name']}]({SITE}/{ecosystem.id}/awesome-humans/). "
+                    "If you think its standing should change, say so here, and the owner can reopen this issue.",
+                    dry_run=dry_run,
+                )
+                close = ("issue", "close", str(number), "-R", REPOSITORY, "--reason", "not planned")
+                gh(*close, dry_run=dry_run, writes=True)
+                label = ("issue", "edit", str(number), "-R", REPOSITORY, "--add-label", "duplicate")
+                gh(*label, dry_run=dry_run, writes=True)
+                return 0
+
+    problems = []
     if not URL.match(main_url):
         problems.append(f"**Main URL** isn't a URL: `{main_url}`")
     samples = [line.strip() for line in form.get("Three sample posts", "").splitlines() if line.strip()]
@@ -138,22 +159,6 @@ def suggest(number: int, issue: dict, dry_run: bool) -> int:
             dry_run=dry_run,
         )
         return 0
-
-    target = normalise(main_url)
-    suggested_name = form.get("Name", "").casefold()
-    for source in roster(ecosystem):
-        if normalise(source["url"]) == target or source["name"].casefold() == suggested_name:
-            standing = source["standing"].replace("-", " ")
-            upsert_comment(
-                number,
-                f"`{source['id']}` is already on the {ecosystem.name} roster, on the {standing}. "
-                f"See [{source['name']}]({SITE}/{ecosystem.id}/awesome-humans/). "
-                "If you think its standing should change, say so here, and the owner can reopen this issue.",
-                dry_run=dry_run,
-            )
-            gh("issue", "close", str(number), "-R", REPOSITORY, "--reason", "not planned", dry_run=dry_run, writes=True)
-            gh("issue", "edit", str(number), "-R", REPOSITORY, "--add-label", "duplicate", dry_run=dry_run, writes=True)
-            return 0
 
     moved = gh("issue", "transfer", str(number), ecosystem.repository, dry_run=dry_run, writes=True)
     if not dry_run:
