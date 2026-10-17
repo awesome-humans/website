@@ -14,12 +14,13 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 ## Next session
 
-Stopped 2026-10-17, with Phases 0 to 3 done and Phase 8 at step 3. Pick up here:
+Stopped 2026-10-17, with Phases 0 to 3 and 8 done. Pick up here:
 
-1. **Merge [dotnet#166](https://github.com/awesome-humans/dotnet/pull/166),** which does Phase 8 step 3, and this plan's pull request, in either order.
-2. **Phase 8 step 5:** open one pull request per template through its `?template=` URL, and have the next skill run that opens a pull request use its template with `gh pr create --body-file`. The `?template=` check needs a browser signed in to GitHub, so the owner runs it or an agent drives one.
-3. **Phase 7, CodeRabbit,** needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
-4. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`. It wasn't a Dependabot alert on 2026-10-16. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
+1. **Merge this plan's pull request.**
+2. **Phase 4, source images** (agent): steps 1 to 5 on `feat/source-images` in `website`. Step 6, writing to each source for portrait permission, is the owner's, after the images ship.
+3. **Phase 8's last check** happens on its own: the next skill run that opens a pull request fills in its template and passes it with `gh pr create --body-file`. If the body drifts from the template, fix the skill.
+4. **Phase 7, CodeRabbit,** needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
+5. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`, and in `website` through `stylelint` too. It wasn't a Dependabot alert on 2026-10-17, and `markdownlint-cli2` 0.23.3 was still the latest. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
 
 `gh` is signed in as `si618`, an organisation admin. It still has the `admin:org` scope added for Phase 0, which nothing needs now. The owner removes it with `gh auth refresh -h github.com --remove-scopes admin:org`.
 
@@ -453,7 +454,7 @@ Each ecosystem's roster page carries the same two links, with `&ecosystem=<name>
 
 The organisation's one pull request template, in `awesome-humans/.github`, fits only a proposed opinion or template change. Six skills in `dotnet` have `change-flow: branch-pr`, and each describes its own pull request body in prose, so the bodies drift between runs and between ecosystems. Give each kind of change its own template, and have each skill name the one it fills in. Phase 8 is independent of the others, so it can run at any time.
 
-**How GitHub picks a template:** Several templates can live in a `PULL_REQUEST_TEMPLATE/` folder, and the `template` query parameter on a compare URL chooses one, such as `?template=source.md` ([Creating a pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)). Unlike issue forms, pull requests have no template chooser, so a person only sees the default `PULL_REQUEST_TEMPLATE.md` unless a link sets the parameter. An agent passes the template to `gh pr create --template <file>`, or fills it in and passes `--body-file`.
+**How GitHub picks a template:** Several templates can live in a `PULL_REQUEST_TEMPLATE/` folder, and the `template` query parameter on a compare URL chooses one, such as `?template=source.md` ([Creating a pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository)). Unlike issue forms, pull requests have no template chooser, so a person only sees the default `PULL_REQUEST_TEMPLATE.md` unless a link sets the parameter. An agent fills the template in and passes `--body-file`. `gh pr create --template <file>` only works interactively: without a terminal, `gh` refuses to run without `--body`.
 
 1. **Check the organisation fallback first** (agent): with a throwaway branch in `rust`, which has no template of its own, confirm that the folder form in `.github` applies to other repositories, that `?template=` finds those files, and that `gh pr create --template` lists them. The docs only state that a single default template falls back. If the folder doesn't fall back, keep the default in `.github`, and put the skill templates in each ecosystem repository's own `.github/PULL_REQUEST_TEMPLATE/`.
 2. **Write the templates** (agent), in `awesome-humans/.github` unless step 1 rules it out:
@@ -478,6 +479,7 @@ The organisation's one pull request template, in `awesome-humans/.github`, fits 
 - **Step 1:** The folder falls back. A test file pushed straight to `.github`'s `main` (`106e320`, removed in `20cd476`) showed up in the GraphQL `pullRequestTemplates` list for `rust`, `dotnet`, `website`, and `.github`, beside the default template. `rust` saw it although it's empty, so the throwaway branch wasn't needed. GitHub reads templates only from the default branch. The `?template=` link wasn't checked, because comparing `main` with itself shows no pull request form, so step 5 checks it.
 - **Step 2:** [.github#1](https://github.com/awesome-humans/.github/pull/1) adds the five templates and makes the default one ask what changed and why, listing the others. `house-opinion.md` stays separate from `opinion.md`, because it asks for the position it overrides and the Woven table row. `opinion.md` has a **Skill run** section for `harvest-sources` and `resolve-research`.
 - **Step 3:** [dotnet#166](https://github.com/awesome-humans/dotnet/pull/166) names a template in each of the six `branch-pr` skills, and repoints the three links to the default template at `opinion.md`. One rule in `dotnet`'s `AGENTS.md` says how to fill a template in, so the skills don't each repeat it. `rust` copies that rule and the template names as its skills are written.
+- **Step 5:** On a throwaway `chore/template-check` branch in `website`, since deleted, the owner opened the compare page signed in. With no parameter it filled in the organisation's default template, and `?template=opinion.md` and `?template=source.md` filled in those templates from the folder. The other three sit in the same folder, so they weren't opened one by one. `gh pr create --template --dry-run` failed without a terminal, which is why the skills use `--body-file`. The skill half of the check waits for the next skill run.
 
 ## Exploration: house opinion profiles
 
