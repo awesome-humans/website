@@ -17,7 +17,7 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 Stopped 2026-10-17, with Phases 0 to 3 and 8 done, and Phase 4 parked. Pick up here:
 
 1. **Merge this plan's pull request.**
-2. **Phase 5, Want in or out?** (agent): the `website` side first, steps 1 and 2 under Suggest a source, steps 1 and 2 under Opt out, the policy page, and the home section, on `feat/want-in-or-out`. Then the `dotnet` side: `vet-source` taking an issue, and the `## Opted out` roster section. Check first whether Cloudflare Email Routing already forwards `contact@awesome-humans.net`, which `SECURITY.md` names.
+2. **Phase 5, Want in or out?** (agent): merge `feat/want-in-or-out`, then open each form from the home page to check it. Next, `intake.yml` with `route_issue.py` (Suggest a source step 2, and Opt out step 4's fan-out), on `feat/intake`. Then the `dotnet` side: `vet-source` taking an issue, the `## Opted out` roster section and its `opted-out` standing, the roster page's two links, and dropping the portrait sentence from the roster's **Kind** bullet.
 3. **Phase 8's last check** happens on its own: the next skill run that opens a pull request fills in its template and passes it with `gh pr create --body-file`. If the body drifts from the template, fix the skill.
 4. **Phase 7, CodeRabbit,** needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
 5. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`, and in `website` through `stylelint` too. It wasn't a Dependabot alert on 2026-10-17, and `markdownlint-cli2` 0.23.3 was still the latest. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
@@ -371,6 +371,8 @@ For how we handle both, see [Want in or out?](want-in-or-out.md)
 ```
 
 Each ecosystem's roster page carries the same two links, with `&ecosystem=<name>` prefilled.
+
+**Progress (2026-10-17):** `feat/want-in-or-out` adds the two issue forms, a `config.yml` whose contact link points at the email option, `pages/want-in-or-out.md`, which the home section, the forms, and the organisation profile link to instead of a navigation tab, and this section on the home page. The labels `intake`, `suggest-source`, `opt-out`, and `verified` exist in `website`. Cloudflare Email Routing already forwards `contact@awesome-humans.net`, which the owner tested. The Ecosystem dropdown lists all three ecosystems by name, and `route_issue.py` should fail on a name `ecosystems.toml` doesn't have, so the two can't drift.
 
 ### Suggest a source
 
