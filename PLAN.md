@@ -6,7 +6,7 @@ This plan moves the project into the `awesome-humans` GitHub organisation. It ha
 - `awesome-humans/rust` joins as the second ecosystem.
 - A new `awesome-humans/website` repository owns everything specific to publishing awesome-humans.net.
 
-The site takes its look from the [Awesome Humans design system](https://claude.ai/artifact/QfYm5d57sbJxs3W3jMyGiy), collates the roster of every ecosystem, generates the images of the cited sources, and adds a "Want in or out?" section to the home page.
+The site takes its look from the [Awesome Humans design system](https://claude.ai/artifact/QfYm5d57sbJxs3W3jMyGiy), collates the roster of every ecosystem, and adds a "Want in or out?" section to the home page.
 
 Written 2026-10-15. This file lives at the workspace root until `awesome-humans/website` exists. Phase 2 moves it there, and the pull request that completes phase 6 deletes it.
 
@@ -14,10 +14,10 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 ## Next session
 
-Stopped 2026-10-17, with Phases 0 to 3 and 8 done. Pick up here:
+Stopped 2026-10-17, with Phases 0 to 3 and 8 done, and Phase 4 parked. Pick up here:
 
 1. **Merge this plan's pull request.**
-2. **Phase 4, source images** (agent): steps 1 to 5 on `feat/source-images` in `website`. Step 6, writing to each source for portrait permission, is the owner's, after the images ship.
+2. **Phase 5, Want in or out?** (agent): the `website` side first, steps 1 and 2 under Suggest a source, steps 1 and 2 under Opt out, the policy page, and the home section, on `feat/want-in-or-out`. Then the `dotnet` side: `vet-source` taking an issue, and the `## Opted out` roster section. Check first whether Cloudflare Email Routing already forwards `contact@awesome-humans.net`, which `SECURITY.md` names.
 3. **Phase 8's last check** happens on its own: the next skill run that opens a pull request fills in its template and passes it with `gh pr create --body-file`. If the body drifts from the template, fix the skill.
 4. **Phase 7, CodeRabbit,** needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
 5. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`, and in `website` through `stylelint` too. It wasn't a Dependabot alert on 2026-10-17, and `markdownlint-cli2` 0.23.3 was still the latest. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
@@ -56,11 +56,11 @@ These are settled unless the owner says otherwise. Each gives one line on what l
 | Previews from ecosystems      | `website` exposes its build as a reusable workflow (`workflow_call`). An ecosystem pull request calls it with its own ref, and gets a full-site preview with only that ecosystem at the pull request's head. Previews only from the website repository lost because most content changes start in an ecosystem                                                                                                                                                                                                                                     |
 | Cross-repository identity     | A GitHub App installed on the organisation, `awesome-humans-app`, sends dispatches, transfers issues, and opens pull requests. Workflows mint short-lived tokens with `actions/create-github-app-token`, pinned to a commit SHA. A personal access token lost because the site would depend on one person's account                                                                                                                                                                                                                                |
 | Secrets                       | `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` become organisation secrets, limited to `website`, `dotnet`, and `rust`, so the reusable workflow can deploy previews through `secrets: inherit`                                                                                                                                                                                                                                                                                                                                                |
-| Citation is opt-out           | Citing and linking published writing needs no permission, and a listed source can opt out at any time. Opting out removes the portrait at the next build, and the source from every ecosystem's opinions within 30 days                                                                                                                                                                                                                                                                                                                            |
-| Portraits are opt-in          | A face appears only with recorded permission, as the design system requires. A source without permission gets a generated tile: their initials inside the mark's square brackets, in `brand-mark`. Faces by default lost, because the design system says "each face needs the person's permission"                                                                                                                                                                                                                                                 |
-| No faces in git               | Portraits are downloaded at build time from the URL in the consent register, cached in the Actions cache, and never committed. The montage and per-source images are build outputs too. Git history is permanent, and a face committed once outlives an opt-out                                                                                                                                                                                                                                                                                    |
-| Publication logos             | Opt-in, like portraits. A publication gets the initials tile unless `data/consent.toml` records a grant: the publisher's written permission, or a link to brand guidelines that allow this use. Logos appear on per-source images only, never in the montage, which shows people. They're downloaded at build time and never committed. Logos by default lost because many publishers restrict them: Microsoft's trademark guidelines allow its names in text but not its logos without a licence, and a row of company logos reads as endorsement |
-| Intake goes through `website` | The "Suggest a source" and "Opt out" issue forms live in `website`, with an ecosystem dropdown. A workflow transfers each suggestion to its ecosystem repository, where `vet-source` runs. Opt-outs stay in `website` because they cross ecosystems. One link from the home page lost nothing, and per-repository forms would scatter the opt-out register                                                                                                                                                                                         |
+| Citation is opt-out           | Citing and linking published writing needs no permission, and a listed source can opt out at any time. Opting out removes the source from every ecosystem's roster and opinions within 30 days                                                                                                                                                                                                                                                                                                                                                     |
+| Portraits are opt-in (parked) | Parked 2026-10-17 with Phase 4: the site shows no faces or logos. When it does, a face appears only with recorded permission, as the design system requires. A source without permission gets a generated tile: their initials inside the mark's square brackets, in `brand-mark`. Faces by default lost, because the design system says "each face needs the person's permission"                                                                                                                                                                 |
+| No faces in git               | Stands while portraits are parked, as `AGENTS.md` says. Portraits are downloaded at build time from the URL in the consent register, cached in the Actions cache, and never committed. The montage and per-source images are build outputs too. Git history is permanent, and a face committed once outlives an opt-out                                                                                                                                                                                                                            |
+| Publication logos (parked)    | Opt-in, like portraits. A publication gets the initials tile unless `data/consent.toml` records a grant: the publisher's written permission, or a link to brand guidelines that allow this use. Logos appear on per-source images only, never in the montage, which shows people. They're downloaded at build time and never committed. Logos by default lost because many publishers restrict them: Microsoft's trademark guidelines allow its names in text but not its logos without a licence, and a row of company logos reads as endorsement |
+| Intake goes through `website` | The "Suggest a source" and "Opt out" issue forms live in `website`, with an ecosystem dropdown. A workflow transfers each suggestion to its ecosystem repository, where `vet-source` runs. Opt-outs start in `website` because one source can be in several ecosystems, and the app fans each one out to every roster that lists it. One link from the home page lost nothing, and per-repository forms would make a source ask once per ecosystem                                                                                                 |
 | Fonts                         | Self-host IBM Plex Sans and Mono (SIL Open Font License) as `woff2` under `website/pages/assets/fonts/`. This keeps the current rule of no third-party request on page view. Google Fonts lost for that reason                                                                                                                                                                                                                                                                                                                                     |
 | Logo                          | The cited-human mark (concept A). The owner wasn't a fan at first, but it has grown on them since it went on the app and the organisation, so Phase 3 uses it. Concepts B (prompt human) and C (the "ah" monogram) lost to it                                                                                                                                                                                                                                                                                                                      |
 | Heading case                  | The section is titled "Want in or out?", in sentence case, as the design system's content rules require for headings                                                                                                                                                                                                                                                                                                                                                                                                                               |
@@ -79,8 +79,6 @@ These are settled unless the owner says otherwise. Each gives one line on what l
 ├── schemas/
 │   ├── nav.schema.json
 │   └── sources.schema.json
-├── data/
-│   └── consent.toml             ← portrait and logo permissions, and opt-outs; the only register of each
 ├── pages/                       ← shared pages, the theme layer, and brand assets
 │   ├── index.md                 ← home: hero, ecosystems, usage, acknowledgement, want in or out?
 │   ├── how-it-works.md
@@ -93,15 +91,12 @@ These are settled unless the owner says otherwise. Each gives one line on what l
 ├── scripts/
 │   ├── stage.py                 ← run each ecosystem's staging command into build/docs/
 │   ├── merge_nav.py             ← validate nav.json fragments and write build/zensical.toml
-│   ├── collate_sources.py       ← validate sources.json files, apply consent.toml, write build/sources.json
-│   ├── fetch_portraits.py       ← download permitted portraits into the cache
-│   ├── build_source_images.py   ← per-source images: portrait or initials tile, light and dark
-│   ├── build_montage.py         ← the hero montage, light and dark, from permitted portraits only
+│   ├── collate_sources.py       ← validate sources.json files, write build/sources.json
 │   └── route_issue.py           ← label, validate, and transfer intake issues
 └── .github/
     ├── ISSUE_TEMPLATE/{suggest-source.yml,opt-out.yml,config.yml}
     └── workflows/
-        ├── build.yml            ← reusable: stage, collate, images, zensical build --strict
+        ├── build.yml            ← reusable: stage, collate, zensical build --strict
         ├── site.yml             ← the four triggers; calls build.yml, then deploys
         ├── intake.yml           ← on issue opened or labelled: route_issue.py
         └── markdown.yml         ← Prettier, markdownlint-cli2, cspell, as in the ecosystems
@@ -308,6 +303,8 @@ The checks: every token pair passes in both themes, at 4.5:1 for text and 3:1 fo
 
 ## Phase 4: Collate sources and generate their images
 
+**Parked 2026-10-17.** The owner judged that collecting, recording, and honouring portrait and logo permissions is too much to maintain, so the site shows no faces or logos. Step 7 was done before the phase was parked. Steps 1 to 6 stay here for reference, and Phase 5 no longer depends on them: without portraits, an opt-out only affects citations, which the ecosystems' rosters handle. A first cut of steps 1 and 2, [#49](https://github.com/awesome-humans/website/pull/49), was closed without merging. `collate_sources.py` still writes `build/sources.json`, which Phase 5's intake reads.
+
 Branch `feat/source-images` in `website`.
 
 1. **`data/consent.toml`**, one table per source that has said anything. A source without a table counts as `portrait = "unknown"`:
@@ -368,7 +365,7 @@ Add this after `## Acknowledgement` in `pages/index.md`, and keep the full polic
 ## Want in or out?
 
 - **Suggest a source.** Know a person or publication with at least two years of accurate, independent writing about an ecosystem we cover? [Suggest them for vetting](https://github.com/awesome-humans/website/issues/new?template=suggest-source.yml). Every suggestion goes through the same [admission criteria](dotnet/awesome-humans/index.md#admission-criteria), and the decision log records the outcome, whether yes or no.
-- **Opt out.** If you're a listed source and don't want your work cited or your face shown, [ask to opt out](https://github.com/awesome-humans/website/issues/new?template=opt-out.yml), or email <opt-out@awesome-humans.net> if you'd rather not ask in public. Your portrait goes at the next build, and citations of your work within 30 days.
+- **Opt out.** If you're a listed source and don't want your work cited, [ask to opt out](https://github.com/awesome-humans/website/issues/new?template=opt-out.yml), or email <contact@awesome-humans.net> if you'd rather not ask in public. Citations of your work go within 30 days.
 
 For how we handle both, see [Want in or out?](want-in-or-out.md)
 ```
@@ -397,29 +394,30 @@ Each ecosystem's roster page carries the same two links, with `&ecosystem=<name>
 
 ### Opt out
 
+An opt-out removes citations only, because the site shows no portraits while Phase 4 is parked. The ecosystems' rosters are the record: `website` keeps no register of its own.
+
 1. **`opt-out.yml` issue form** with these fields:
    - The source IDs or names
-   - What to remove: the portrait only, or the portrait and all citations
-   - How the requester shows they control the source: a comment from the GitHub account linked from the source's site, a page or post on the source's domain naming the issue, or an email from the source's domain to the opt-out address
+   - How the requester shows they control the source: a comment from the GitHub account linked from the source's site, a page or post on the source's domain naming the issue, or an email from the source's domain to `contact@awesome-humans.net`
 
    It applies the labels `intake` and `opt-out`. The form's intro links the email option for anyone who'd rather not ask in public.
 
-2. **The private channel:** Use Cloudflare Email Routing on awesome-humans.net to forward `opt-out@awesome-humans.net` to the owner. The owner records an emailed request as a `consent.toml` change, with the date and "email" as evidence, but no address or name beyond the source ID.
-3. **Verification** is a human step. An agent can check that the claimed proof exists, but the owner decides. An unverifiable request gets one reply explaining the three options, and stays open for 30 days.
+2. **The private channel:** Cloudflare Email Routing forwards `contact@awesome-humans.net`, which `SECURITY.md` already names, to the owner. For an emailed request, the owner opens the opt-out issue themselves, with "email" and the date as the proof, and no address or name beyond the source ID. The ID is public already, in the roster.
+3. **Verification** is a human step. An agent can check that the claimed proof exists, but the owner decides, and labels the issue `verified`. An unverifiable request gets one reply explaining the three options, and stays open for 30 days.
 4. **Once verified:**
-   - **Portrait:** A pull request sets `portrait = "declined"`. The next build drops the face from the montage and the source images. A portrait opt-out needs nothing from the ecosystems.
-   - **Citation:** The same pull request sets `citation = "opted-out"`, and the app opens an issue in each ecosystem whose `sources.json` lists the ID.
-   - **In each ecosystem:** The source moves to a new `## Opted out` roster section, which keeps the ID reserved so it's never suggested again. `validate-sources` fails on any opinion that still cites the ID. Opinions that rested on it are re-sourced with `research-topic`, or reduced to what other citable sources support. Merging this unblocks the site build, which `collate_sources.py` fails until then.
-   - **Close** the issue with links to every pull request, and lock it.
+   - **The app opens an issue** in each ecosystem whose `sources.json` lists the ID, linking the `website` issue. `intake.yml` runs it on the `verified` label.
+   - **In each ecosystem:** The source moves to a new `## Opted out` roster section, which keeps the ID reserved so it's never suggested again, and exports as `standing = "opted-out"` in `sources.json`. The decision log records the date and the `website` issue. `validate-sources` fails on any opinion that still cites the ID. Opinions that rested on it are re-sourced with `research-topic`, or reduced to what other citable sources support. The site build never waits on this: the policy promises removal within 30 days, not at the next build.
+   - **Close** the `website` issue with links to every pull request, and lock it.
 5. **Reversal:** Opting back in is a suggestion like any other. It goes through vetting, and leaves the `## Opted out` section only on admission.
+6. **`sources.schema.json`** gains the `opted-out` standing, reversing Phase 2's choice to leave opt-outs out of the export, so `route_issue.py` can turn away a suggestion of an opted-out source. Its descriptions stop naming `data/consent.toml` and portraits.
 
 ### Policy page
 
-`want-in-or-out.md` sets out the two principles: citations are opt-out and portraits are opt-in. It also covers:
+`want-in-or-out.md` sets out the principle that citations are opt-out. It also covers:
 
 - What counts as proof of control
 - The 30-day deadline for citations
-- That no portrait is ever committed to the repository
+- That the site shows no faces or logos
 - That opting out removes citations of the source's work, but can't remove the fact that a published opinion once linked it. Pages are versioned in git, like any public repository
 
 ## Phase 6: Rust joins
@@ -528,7 +526,7 @@ This isn't a phase yet. It's open question 5, written down far enough to judge w
 ## Open questions
 
 1. **Shared skills and scripts (deferred):** Many skills (`vet-source`, `audit-freshness`, `research-topic`, and the others), the prose tooling configuration, and the shared text in `AGENTS.md`, the admission criteria, and the house-opinion mechanism will exist as near-copies in every ecosystem repository. Consolidating them into a shared repository, or into `website`, may cut the drift. **Decide once the Rust ecosystem is up and running**, when there are two real copies to compare. Until then, keep the copies, and note each divergence in the Rust repository's pull requests.
-2. **The opt-out address:** Is `opt-out@awesome-humans.net` acceptable, and should it forward to the owner's personal address or to a shared inbox?
-3. **The montage threshold:** Is eight permitted portraits the right minimum before the hero shows a montage?
+2. ~~**The opt-out address:**~~ Settled 2026-10-17: `contact@awesome-humans.net`, already named in `SECURITY.md`, forwarded to the owner. One inbox is less to maintain than a separate opt-out address.
+3. ~~**The montage threshold:**~~ Parked with Phase 4.
 4. **Opted-out sources across ecosystems:** One person can be in several rosters. Should an opt-out given for one ecosystem apply to all of them? This plan assumes it does, because people opt out as people, not per language.
 5. **House opinion profiles:** Should the site default to no house opinions, and let readers and agents choose a profile per person or organisation, such as `simon-mckenna`? It looks feasible. The main cost is changing house opinions from rewriting the sourced text to a separate block beside it. See [Exploration: house opinion profiles](#exploration-house-opinion-profiles). **Decide before the Rust repository weaves its first house opinion**, and prototype it with the four that `dotnet` has woven.
