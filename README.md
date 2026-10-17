@@ -6,7 +6,7 @@ Each ecosystem's content lives in its own repository. This repository owns every
 
 ## Ecosystems
 
-[`ecosystems.toml`](ecosystems.toml) lists every ecosystem the site knows. Adding one takes an entry there, which also gives it a card on the home page, and its accent colours in [`pages/stylesheets/awesome-humans.css`](pages/stylesheets/awesome-humans.css), copied from the design system, and an option in the Ecosystem dropdown of [`suggest-source.yml`](.github/ISSUE_TEMPLATE/suggest-source.yml).
+[`ecosystems.toml`](ecosystems.toml) lists every ecosystem the site knows. Adding one takes an entry there, which also gives it a card on the home page, and its accent colours in [`pages/stylesheets/awesome-humans.css`](pages/stylesheets/awesome-humans.css), copied from the design system, and an option in the Ecosystem dropdown of [`suggest-source.yml`](.github/ISSUE_TEMPLATE/suggest-source.yml). Once it's live, add its repository to the app token in [`intake.yml`](.github/workflows/intake.yml).
 
 | Ecosystem  | Repository                                                        | Status |
 | ---------- | ----------------------------------------------------------------- | ------ |
@@ -93,7 +93,7 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 
 ```text
 ├── .github/ISSUE_TEMPLATE/ ← the Suggest a source and Opt out issue forms
-├── .github/workflows/      ← build.yml and deploy.yml, which ecosystems call too, site.yml, and markdown.yml
+├── .github/workflows/      ← build.yml and deploy.yml, which ecosystems call too, site.yml, intake.yml, and markdown.yml
 ├── AGENTS.md               ← how agents work in this repository
 ├── ecosystems.toml         ← the ecosystem registry
 ├── pages/                  ← the shared pages, the theme, and the brand assets
@@ -101,7 +101,7 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 ├── pyproject.toml          ← the site's Python dependencies, and its package of Markdown extensions
 ├── schemas/                ← the staging contract's JSON schemas
 ├── src/                    ← the site's Markdown extensions, which zensical.toml loads
-├── scripts/                ← stage, draw the How it works diagrams, merge the navigation, and collate the sources
+├── scripts/                ← stage, draw the How it works diagrams, merge the navigation, collate the sources, and route intake issues
 ├── wrangler.jsonc          ← the Cloudflare Worker that serves the site
 └── zensical.toml           ← the site configuration
 ```

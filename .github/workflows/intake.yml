@@ -1,0 +1,53 @@
+name: Intake
+
+# Routes the issues the Suggest a source and Opt out forms open. A suggestion is checked
+# when it's opened or edited, and moves to its ecosystem's repository. An opt-out waits
+# for the owner to label it verified, then opens an issue in each ecosystem that lists
+# the source. For the rules, see scripts/route_issue.py.
+on:
+  issues:
+    types: [opened, edited, labeled]
+
+permissions: {}
+
+# One run per issue at a time, so an edit can't race the route of the issue it edits.
+concurrency:
+  group: intake-${{ github.event.issue.number }}
+
+jobs:
+  route:
+    # A form applies its labels as it opens the issue, which fires labeled once per
+    # label. Only the verified label starts anything.
+    if: >-
+      github.event.issue.state == 'open' &&
+      (
+        (contains(github.event.issue.labels.*.name, 'suggest-source') && github.event.action != 'labeled') ||
+        (contains(github.event.issue.labels.*.name, 'opt-out') && github.event.label.name == 'verified')
+      )
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+
+      # The app moves issues to, and opens them in, the ecosystems' repositories, which
+      # this workflow's own token can't reach. Add each ecosystem's repository here as it
+      # goes live in ecosystems.toml.
+      - name: Mint the app token
+        id: app
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: awesome-humans
+          repositories: website,dotnet
+          permission-issues: write
+
+      - name: Route the issue
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          NUMBER: ${{ github.event.issue.number }}
+          FORM: ${{ contains(github.event.issue.labels.*.name, 'opt-out') && 'opt-out' || 'suggest' }}
+        run: uv run scripts/route_issue.py "$FORM" "$NUMBER"
