@@ -372,7 +372,7 @@ For how we handle both, see [Want in or out?](want-in-or-out.md)
 
 Each ecosystem's roster page carries the same two links, with `&ecosystem=<name>` prefilled.
 
-**Progress (2026-10-17):** `feat/want-in-or-out` adds the two issue forms, a `config.yml` whose contact link points at the email option, `pages/want-in-or-out.md` in the site navigation, and this section on the home page. The labels `intake`, `suggest-source`, `opt-out`, and `verified` exist in `website`. Cloudflare Email Routing already forwards `contact@awesome-humans.net`, which the owner tested. The Ecosystem dropdown lists all three ecosystems by name, and `route_issue.py` should fail on a name `ecosystems.toml` doesn't have, so the two can't drift.
+**Progress (2026-10-17):** `feat/want-in-or-out` adds the two issue forms, a `config.yml` whose contact link points at the email option, `pages/want-in-or-out.md`, which the home section, the forms, and the organisation profile link to instead of a navigation tab, and this section on the home page. The labels `intake`, `suggest-source`, `opt-out`, and `verified` exist in `website`. Cloudflare Email Routing already forwards `contact@awesome-humans.net`, which the owner tested. The Ecosystem dropdown lists all three ecosystems by name, and `route_issue.py` should fail on a name `ecosystems.toml` doesn't have, so the two can't drift.
 
 ### Suggest a source
 
