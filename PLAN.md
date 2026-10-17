@@ -16,7 +16,7 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 Stopped 2026-10-17, with Phases 0 to 3 and 8 done, Phase 4 parked, and Phase 5's `website` side merged (#51, #52, #55, #56, #58). Pick up here:
 
-1. **Merge this plan's pull request first, then dotnet's `feat/opted-out`.** This one adds the `opted-out` standing to `sources.schema.json`, and `dotnet`'s exports it, so the old schema would reject `dotnet`'s export once a source opts out. Together they finish Phase 5's `dotnet` side:
+1. **Merge this plan's pull request first, then [dotnet#169](https://github.com/awesome-humans/dotnet/pull/169).** This one adds the `opted-out` standing to `sources.schema.json`, and `dotnet`'s exports it, so the old schema would reject `dotnet`'s export once a source opts out. Together they finish Phase 5's `dotnet` side:
    - `AWESOME-HUMANS.md` gains the intake links, prefilled with `ecosystem=.NET`, and an empty `## Opted out` section, which the site stages on the roster overview.
    - `build-site.cs` exports its rows as `standing = "opted-out"`. `validate-sources.cs` rejects an opted-out ID in `sources:`, and a notes section for one.
    - `vet-source` takes an issue number, comments the outcome, and logs a decline from an issue. Its new Opt-outs section covers the opt-out pull request.
