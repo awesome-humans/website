@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/awesome-humans/website/blob/main/schemas/sources.schema.json",
   "title": "Ecosystem sources",
-  "description": "One ecosystem's roster, exported from its AWESOME-HUMANS.md. The roster stays the source of truth. The site combines every ecosystem's export with data/consent.toml to draw the source images and the montage.",
+  "description": "One ecosystem's roster, exported from its AWESOME-HUMANS.md. The roster stays the source of truth. The site collates every ecosystem's export, and issue intake reads the published copy to check a suggestion against the roster.",
   "type": "object",
   "required": ["version", "sources"],
   "additionalProperties": false,
@@ -13,7 +13,7 @@
       "const": 1
     },
     "sources": {
-      "description": "Every source in the roster's Citable and Watch list tables, sorted by id. The site rejects a duplicate or out-of-order id.",
+      "description": "Every source in the roster's Citable, Watch list, and Opted out tables, sorted by id. The site rejects a duplicate or out-of-order id.",
       "type": "array",
       "items": { "$ref": "#/$defs/source" }
     }
@@ -36,7 +36,7 @@
           "minLength": 1
         },
         "kind": {
-          "description": "A person can have a portrait, and a publication a logo, each only with the permission data/consent.toml records.",
+          "description": "A person's name is the start of their Source link text, and a publication's is the whole link text.",
           "enum": ["person", "publication"]
         },
         "url": {
@@ -46,8 +46,8 @@
           "pattern": "^https://"
         },
         "standing": {
-          "description": "The roster table the source is in.",
-          "enum": ["citable", "watch-list"]
+          "description": "The roster table the source is in. An opted-out source is never cited, and intake turns away a suggestion of it.",
+          "enum": ["citable", "watch-list", "opted-out"]
         },
         "marking": {
           "description": "A reserved marking from the source's notes. Leave it out for an unmarked source.",
@@ -64,7 +64,7 @@
           "pattern": "^~?\\d{4}$"
         },
         "github": {
-          "description": "A GitHub login that suggests a portrait. It's a hint for the consent request, never permission: only data/consent.toml grants that.",
+          "description": "The source's GitHub login. No ecosystem exports it yet.",
           "type": "string",
           "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9]|-(?=[A-Za-z0-9])){0,38}$"
         }
