@@ -36,7 +36,9 @@ jobs:
 
       # The app moves issues to, and opens them in, the ecosystems' repositories, which
       # this workflow's own token can't reach. Add each ecosystem's repository here as it
-      # goes live in ecosystems.toml.
+      # goes live in ecosystems.toml. With issues write alone, transferIssue failed with
+      # "Resource not accessible by integration" on 2026-10-17 (#57), so the token also
+      # asks for contents write, which GitHub may count as write access to the repository.
       - name: Mint the app token
         id: app
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
@@ -46,6 +48,7 @@ jobs:
           owner: awesome-humans
           repositories: website,dotnet
           permission-issues: write
+          permission-contents: write
 
       - name: Route the issue
         env:
