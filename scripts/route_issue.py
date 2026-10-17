@@ -130,7 +130,7 @@ def suggest(number: int, issue: dict, dry_run: bool) -> int:
                     number,
                     f"{source['name']} is already on the {ecosystem.name} roster as `{source['id']}`, "
                     f"in [{title}]({SITE}/{ecosystem.id}/awesome-humans/{page}). "
-                    "If you think its standing should change, say so here, and the owner can reopen this issue.",
+                    "If you think their standing should change, say so here, and the owner can reopen this issue.",
                     dry_run=dry_run,
                 )
                 close = ("issue", "close", str(number), "-R", REPOSITORY, "--reason", "not planned")
