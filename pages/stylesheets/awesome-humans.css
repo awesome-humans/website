@@ -314,6 +314,12 @@
   border-radius: var(--ah-radius-sm);
 }
 
+/* A date in a table stays on one line, instead of breaking at its hyphens. The
+   date_cells extension in src/ marks each cell that holds only a date. */
+.md-typeset td.ah-date {
+  white-space: nowrap;
+}
+
 /* Wider pages on large screens. The theme caps the page at 61rem with a 12.1rem sidebar
    each side, which shrinks the diagrams, drawn 1100 to 1220 units wide, to about 70% in a
    column some 880px across. An 80rem cap and narrower sidebars give the content column

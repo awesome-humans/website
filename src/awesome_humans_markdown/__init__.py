@@ -7,17 +7,24 @@ list item's content lines up under the text after its marker, two columns deep f
 drops out of the item on the site, and an ordered list nested three columns deep splits
 its parent list in two. Before parsing, the extension re-indents each list to 4 columns
 per level, and keeps any indentation past an item's content column.
+
+date_cells marks a table cell that holds only an ISO 8601 date with the ah-date class,
+which the theme keeps on one line. A browser otherwise breaks a date at its hyphens in
+a narrow column, as in a roster's decision log or the Woven table of house opinions.
 """
 
 import re
+import xml.etree.ElementTree as etree
 
 from markdown import Markdown
 from markdown.extensions import Extension
 from markdown.preprocessors import Preprocessor
+from markdown.treeprocessors import Treeprocessor
 
 TAB_LENGTH = 4
 MARKER = re.compile(r"( *)([-*+]|\d{1,9}[.)])( {1,4}|$)(.*)")
 FENCE = re.compile(r" *(`{3,}|~{3,})")
+DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
 
 
 class ListIndentPreprocessor(Preprocessor):
@@ -81,11 +88,22 @@ class ListIndentPreprocessor(Preprocessor):
         return out
 
 
+class DateCellTreeprocessor(Treeprocessor):
+    """Add the ah-date class to each table cell whose whole text is an ISO 8601 date."""
+
+    def run(self, root: etree.Element) -> None:
+        for cell in root.iter("td"):
+            if len(cell) == 0 and DATE.fullmatch((cell.text or "").strip()):
+                cell.set("class", "ah-date")
+
+
 class ListIndentExtension(Extension):
     def extendMarkdown(self, md: Markdown) -> None:
         # After normalize_whitespace (30), which expands tabs, and before
         # superfences' fenced_code_block (25), which reads fences by indentation.
         md.preprocessors.register(ListIndentPreprocessor(md), "list_indent", 28)
+        # Tables are built by the block parser, so any priority after it works.
+        md.treeprocessors.register(DateCellTreeprocessor(md), "date_cells", 5)
 
 
 def makeExtension(**kwargs) -> ListIndentExtension:
