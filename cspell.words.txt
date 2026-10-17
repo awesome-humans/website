@@ -17,6 +17,8 @@ scratchpad
 smol
 taplo
 tasklist
+treeprocessor
+treeprocessors
 unpushed
 Unweaving
 worktrees
