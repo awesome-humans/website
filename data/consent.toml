@@ -1,0 +1,33 @@
+# What each source has said about how the site shows them. collate_sources.py applies
+# it to every ecosystem's roster, and writes the result to build/sources.json.
+#
+# One table per source that has said anything, named by its roster id, in id order.
+# A source without a table shows as its initials and stays cited. Silence never
+# grants anything.
+#
+# Every change to this file goes through a pull request that links its evidence: an
+# issue or comment, or for an email, an anonymised note and the date. Never commit
+# the image itself. The build downloads it.
+#
+# A person:
+#
+#   [andrew-lock]
+#   portrait = "granted"           # granted | declined | unknown
+#   portrait_url = "https://…"     # the image the person chose. Leave it out to use
+#                                  # the GitHub avatar of the roster's github login
+#   citation = "allowed"           # allowed | opted-out
+#   evidence = "https://github.com/awesome-humans/website/issues/12"
+#   recorded = 2026-11-02
+#
+# A publication takes logo and logo_url instead, and its evidence links the written
+# permission or the brand guidelines that allow the use. A logo always needs its URL:
+#
+#   [jetbrains-dotnet]
+#   logo = "granted"               # granted | declined | unknown
+#   logo_url = "https://…"
+#   evidence = "https://…"
+#   recorded = 2026-11-02
+#
+# citation = "opted-out" drops the source from every page and image at the next
+# build. The ecosystems then remove it from their opinions within 30 days. Keep the
+# table after a roster drops the source: it's the record of the opt-out.

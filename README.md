@@ -65,7 +65,7 @@ The `Site` workflow runs these steps through [`build.yml`](.github/workflows/bui
 uv run scripts/stage.py fetch     # clone each live ecosystem into build/repos/, at main
 uv run scripts/stage.py stage     # stage the shared pages and every ecosystem into build/docs/
 uv run scripts/merge_nav.py       # check each nav.json, and write build/zensical.toml
-uv run scripts/collate_sources.py # check each sources.json, and write build/sources.json
+uv run scripts/collate_sources.py # check each sources.json, apply data/consent.toml, and write build/sources.json
 uv run zensical build --strict -f build/zensical.toml
 ```
 
@@ -94,6 +94,7 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 ```text
 ├── .github/workflows/ ← build.yml and deploy.yml, which ecosystems call too, site.yml, and markdown.yml
 ├── AGENTS.md          ← how agents work in this repository
+├── data/consent.toml  ← what each source has said about being cited and shown, with its evidence
 ├── ecosystems.toml    ← the ecosystem registry
 ├── pages/             ← the shared pages, the theme, and the brand assets
 ├── PLAN.md            ← the organisation and website plan, deleted when it's done

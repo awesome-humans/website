@@ -17,7 +17,7 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 Stopped 2026-10-17, with Phases 0 to 3 and 8 done. Pick up here:
 
 1. **Merge this plan's pull request.**
-2. **Phase 4, source images** (agent): steps 1 to 5 on `feat/source-images` in `website`. Step 6, writing to each source for portrait permission, is the owner's, after the images ship.
+2. **Phase 4, source images** (agent): steps 1 and 2 are in `feat/source-consent`. Next, steps 3 to 5, one pull request each, starting with where the roster pages show the images. Step 6, writing to each source for portrait permission, is the owner's, after the images ship.
 3. **Phase 8's last check** happens on its own: the next skill run that opens a pull request fills in its template and passes it with `gh pr create --body-file`. If the body drifts from the template, fix the skill.
 4. **Phase 7, CodeRabbit,** needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
 5. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`, and in `website` through `stylelint` too. It wasn't a Dependabot alert on 2026-10-17, and `markdownlint-cli2` 0.23.3 was still the latest. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
@@ -336,6 +336,9 @@ Branch `feat/source-images` in `website`.
 2. **`collate_sources.py`:** Merge every ecosystem's `sources.json` by ID, since one person can be in several rosters. Apply `consent.toml`, and write `build/sources.json`, which the other scripts and the pages read.
    - **Drop a source** whose `citation` is `opted-out` from every page and image at once. The ecosystems remove it from their opinions within 30 days, and until then the source keeps its standing in their `sources.json`.
    - **Fail the build** if an ID has a different `kind` in two ecosystems, or if `consent.toml` gives a `logo` to a person or a `portrait` to a publication.
+
+   **Progress (2026-10-17):** Steps 1 and 2 are in `feat/source-consent`, which splits Phase 4 into one pull request per piece. `consent.toml` starts with no tables, because no source has answered yet. `collate_sources.py` gives each granted source an `image` entry with its download URL, and leaves an opted-out source out of `build/sources.json`. It also fails on an unknown ID, so a typo can't hide an opt-out, but keeps an opted-out table after a roster drops the source, as the record. Opted-out sources still show on the ecosystems' roster pages until the step that puts images on those pages also hides them.
+
 3. **`fetch_portraits.py`:** For each `portrait = "granted"` or `logo = "granted"` source only, download `portrait_url` or `logo_url` (or the GitHub avatar of a person's `github` login). Cap the size at 2 MB, accept only JPEG, PNG, or WebP, and store the files in an Actions cache keyed by the URL. Nothing is written into the repository.
 4. **`build_source_images.py`:** For every source in `build/sources.json`, write `build/docs/assets/sources/<id>.webp` and `<id>-dark.webp` at 96px and 192px:
    - **With a portrait:** greyscale, then duotone in `ink` and `brand-mark` for light, and `brand` on black for dark.
