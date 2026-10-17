@@ -14,10 +14,12 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 ## Next session
 
-Stopped 2026-10-17, with Phases 0 to 3 and 8 done, and Phase 4 parked. Pick up here:
+Stopped 2026-10-17, with Phases 0 to 3 and 8 done, Phase 4 parked, and Phase 5's `website` side merged (#51, #52, #55, #56). Pick up here:
 
-1. **Merge this plan's pull request.**
-2. **Phase 5, Want in or out?** (agent): merge `feat/intake`, then test it with one real suggestion of a source already on the .NET roster, which only comments and closes. A new suggestion moves to `dotnet`, so the first real one checks the transfer. Then the `dotnet` side: `vet-source` taking an issue, the `## Opted out` roster section and its `opted-out` standing, the roster page's two links, and dropping the portrait sentence from the roster's **Kind** bullet.
+1. **Merge this plan's pull request,** which also widens the intake token (see step 2).
+2. **Phase 5, Want in or out?** (agent):
+   - **Test the transfer again.** The duplicate path works: [#54](https://github.com/awesome-humans/website/issues/54), a suggestion of Andrew Lock, got its standing and closed. The first new suggestion, [#57](https://github.com/awesome-humans/website/issues/57) for Stephen Cleary, passed the checks, but `gh issue transfer` failed with `Resource not accessible by integration (transferIssue)`, although the app token had `issues: write` on both repositories. The owner moved it by hand to [dotnet#167](https://github.com/awesome-humans/dotnet/issues/167) and labelled it `vet-source`. This plan's pull request adds `contents: write` to the token, which is a guess. After it merges, test with the next real new suggestion. If the transfer still fails, stop transferring: open a copy in the ecosystem with a link back, then comment and close the `website` issue.
+   - **The `dotnet` side:** `vet-source` taking an issue, starting with dotnet#167; the `## Opted out` roster section and its `opted-out` standing; the roster page's two links; and dropping the portrait sentence from the roster's **Kind** bullet.
 3. **Phase 8's last check** happens on its own: the next skill run that opens a pull request fills in its template and passes it with `gh pr create --body-file`. If the body drifts from the template, fix the skill.
 4. **Phase 7, CodeRabbit,** needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
 5. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`, and in `website` through `stylelint` too. It wasn't a Dependabot alert on 2026-10-17, and `markdownlint-cli2` 0.23.3 was still the latest. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
@@ -375,6 +377,8 @@ Each ecosystem's roster page carries the same two links, with `&ecosystem=<name>
 **Progress (2026-10-17):** `feat/want-in-or-out` adds the two issue forms, a `config.yml` whose contact link points at the email option, `pages/want-in-or-out.md`, which the home section, the forms, and the organisation profile link to instead of a navigation tab, and this section on the home page. The labels `intake`, `suggest-source`, `opt-out`, and `verified` exist in `website`. Cloudflare Email Routing already forwards `contact@awesome-humans.net`, which the owner tested. The Ecosystem dropdown lists all three ecosystems by name, and `route_issue.py` should fail on a name `ecosystems.toml` doesn't have, so the two can't drift.
 
 **Progress (2026-10-17), intake:** `feat/intake` adds `intake.yml` and `route_issue.py`. A suggestion is checked when it's opened or edited: a field that isn't a URL gets one comment, kept up to date; a source already on that ecosystem's roster, matched by URL or name, gets its standing and closes as a duplicate; a `soon` ecosystem keeps it in `website` with a comment; otherwise it moves to the ecosystem's repository, labelled `vet-source`. A source on another ecosystem's roster isn't a duplicate, because vetting is per ecosystem. A `verified` opt-out opens one issue per live ecosystem that lists the source, unless one is already open, and comments with any name it couldn't match. The script reads each roster from the published `/<id>/sources.json`, so intake needs no build. The app token covers `website` and `dotnet`, and each ecosystem's repository joins it as it goes live. `dotnet` has the `vet-source` and `opt-out` labels.
+
+**Progress (2026-10-17), first runs:** #54 tested the duplicate path, and #55 and #56 fixed what it found: the roster check now runs before the URL checks, the form's own labels no longer cancel a route, and the comment names the roster table. #57 tested the transfer, which failed for the app token. See [Next session](#next-session).
 
 ### Suggest a source
 
