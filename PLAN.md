@@ -14,21 +14,15 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 ## Next session
 
-Stopped 2026-10-17, with Phases 0 to 3 and 8 done, Phase 4 parked, and Phase 5's `website` side merged (#51, #52, #55, #56, #58). Pick up here:
+Stopped 2026-10-17, with Phases 0 to 3 and 8 done, Phase 4 parked, and both sides of Phase 5 merged (#51, #52, #55, #56, #58, #59, and dotnet#169). The `verify-project` example prompt now says "on `<repo>`" in `dotnet`, the organisation profile, the home page, and `rust/main/PLAN.md` (dotnet#170, .github#3, #60). Pick up here:
 
-1. **Merge this plan's pull request first, then [dotnet#169](https://github.com/awesome-humans/dotnet/pull/169).** This one adds the `opted-out` standing to `sources.schema.json`, and `dotnet`'s exports it, so the old schema would reject `dotnet`'s export once a source opts out. Together they finish Phase 5's `dotnet` side:
-   - `AWESOME-HUMANS.md` gains the intake links, prefilled with `ecosystem=.NET`, and an empty `## Opted out` section, which the site stages on the roster overview.
-   - `build-site.cs` exports its rows as `standing = "opted-out"`. `validate-sources.cs` rejects an opted-out ID in `sources:`, and a notes section for one.
-   - `vet-source` takes an issue number, comments the outcome, and logs a decline from an issue. Its new Opt-outs section covers the opt-out pull request.
-   - The **Kind** bullet drops its portrait sentence.
-   - Here, `route_issue.py` links an opted-out duplicate to `#opted-out` with its own wording, and the schema's descriptions stop naming `data/consent.toml` and portraits.
-2. **Phase 5, Want in or out?** (agent):
+1. **Phase 5, Want in or out?,** waits on real issues (agent):
    - **Test the transfer again.** The duplicate path works: [#54](https://github.com/awesome-humans/website/issues/54), a suggestion of Andrew Lock, got its standing and closed. The first new suggestion, [#57](https://github.com/awesome-humans/website/issues/57) for Stephen Cleary, passed the checks, but `gh issue transfer` failed with `Resource not accessible by integration (transferIssue)`, although the app token had `issues: write` on both repositories. The owner moved it by hand to [dotnet#167](https://github.com/awesome-humans/dotnet/issues/167), and `vet-source` admitted him in dotnet#168. #58 added `contents: write` to the token, which is a guess. Test with the next real new suggestion. If the transfer still fails, stop transferring: open a copy in the ecosystem with a link back, then comment and close the `website` issue.
    - **Intake tests stay out of the decision log.** #54 and any later test suggestion exercise the plumbing only. Don't record them in `AWESOME-HUMANS.md`'s decision log, and don't open a `vet-source` pull request for them. Close each with a comment that it was a test.
    - **Opt-out end to end** is untested. The first real `verified` opt-out exercises `route_issue.py opt-out` and `vet-source`'s Opt-outs section together.
-3. **Phase 8's last check** happens on its own: the next skill run that opens a pull request fills in its template and passes it with `gh pr create --body-file`. If the body drifts from the template, fix the skill.
-4. **Phase 7, CodeRabbit,** needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
-5. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`, and in `website` through `stylelint` too. It wasn't a Dependabot alert on 2026-10-17, and `markdownlint-cli2` 0.23.3 was still the latest. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
+2. **Phase 8's last check** happens on its own: the next skill run that opens a pull request fills in its template and passes it with `gh pr create --body-file`. If the body drifts from the template, fix the skill.
+3. **Phase 7, CodeRabbit,** needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
+4. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`, and in `website` through `stylelint` too. It wasn't a Dependabot alert on 2026-10-17, and `markdownlint-cli2` 0.23.3 was still the latest. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
 
 `gh` is signed in as `si618`, an organisation admin. It still has the `admin:org` scope added for Phase 0, which nothing needs now. The owner removes it with `gh auth refresh -h github.com --remove-scopes admin:org`.
 
@@ -385,6 +379,8 @@ Each ecosystem's roster page carries the same two links, with `&ecosystem=<name>
 **Progress (2026-10-17), intake:** `feat/intake` adds `intake.yml` and `route_issue.py`. A suggestion is checked when it's opened or edited: a field that isn't a URL gets one comment, kept up to date; a source already on that ecosystem's roster, matched by URL or name, gets its standing and closes as a duplicate; a `soon` ecosystem keeps it in `website` with a comment; otherwise it moves to the ecosystem's repository, labelled `vet-source`. A source on another ecosystem's roster isn't a duplicate, because vetting is per ecosystem. A `verified` opt-out opens one issue per live ecosystem that lists the source, unless one is already open, and comments with any name it couldn't match. The script reads each roster from the published `/<id>/sources.json`, so intake needs no build. The app token covers `website` and `dotnet`, and each ecosystem's repository joins it as it goes live. `dotnet` has the `vet-source` and `opt-out` labels.
 
 **Progress (2026-10-17), first runs:** #54 tested the duplicate path, and #55 and #56 fixed what it found: the roster check now runs before the URL checks, the form's own labels no longer cancel a route, and the comment names the roster table. #57 tested the transfer, which failed for the app token. See [Next session](#next-session).
+
+**Progress (2026-10-17), `dotnet` side:** #59 adds the `opted-out` standing to `sources.schema.json`, and `route_issue.py` links an opted-out duplicate to the roster's `#opted-out` section. dotnet#169 adds an empty `## Opted out` section, which the site stages on the roster overview, and exports its rows as `opted-out`. `validate-sources.cs` rejects an opted-out ID in `sources:`, and a notes section for one. `vet-source` takes an issue number, and its Opt-outs section covers the opt-out pull request. The roster page links both forms, and the **Kind** bullet no longer mentions portraits.
 
 ### Suggest a source
 
