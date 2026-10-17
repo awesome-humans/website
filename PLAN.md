@@ -14,10 +14,10 @@ Written 2026-10-15. This file lives at the workspace root until `awesome-humans/
 
 ## Next session
 
-Stopped 2026-10-17, with Phases 0 to 3 done and Phase 8 at step 2. Pick up here:
+Stopped 2026-10-17, with Phases 0 to 3 done and Phase 8 at step 3. Pick up here:
 
-1. **Merge [.github#1](https://github.com/awesome-humans/.github/pull/1),** which adds Phase 8's templates, and this plan's pull request, in either order.
-2. **Phase 8 step 3:** point each `dotnet` skill's "Open a pull request" step at its template, and repoint the three links to the default template in `README.md`, `HOUSE-OPINIONS.md`, and `skills/weave-house-opinion/SKILL.md` at `opinion.md`. Then step 5 checks a `?template=` link per template.
+1. **Merge [dotnet#166](https://github.com/awesome-humans/dotnet/pull/166),** which does Phase 8 step 3, and this plan's pull request, in either order.
+2. **Phase 8 step 5:** open one pull request per template through its `?template=` URL, and have the next skill run that opens a pull request use its template with `gh pr create --body-file`. The `?template=` check needs a browser signed in to GitHub, so the owner runs it or an agent drives one.
 3. **Phase 7, CodeRabbit,** needs the owner first: install the app on the organisation, and create the `coderabbit` repository.
 4. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`. It wasn't a Dependabot alert on 2026-10-16. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
 
@@ -477,6 +477,7 @@ The organisation's one pull request template, in `awesome-humans/.github`, fits 
 
 - **Step 1:** The folder falls back. A test file pushed straight to `.github`'s `main` (`106e320`, removed in `20cd476`) showed up in the GraphQL `pullRequestTemplates` list for `rust`, `dotnet`, `website`, and `.github`, beside the default template. `rust` saw it although it's empty, so the throwaway branch wasn't needed. GitHub reads templates only from the default branch. The `?template=` link wasn't checked, because comparing `main` with itself shows no pull request form, so step 5 checks it.
 - **Step 2:** [.github#1](https://github.com/awesome-humans/.github/pull/1) adds the five templates and makes the default one ask what changed and why, listing the others. `house-opinion.md` stays separate from `opinion.md`, because it asks for the position it overrides and the Woven table row. `opinion.md` has a **Skill run** section for `harvest-sources` and `resolve-research`.
+- **Step 3:** [dotnet#166](https://github.com/awesome-humans/dotnet/pull/166) names a template in each of the six `branch-pr` skills, and repoints the three links to the default template at `opinion.md`. One rule in `dotnet`'s `AGENTS.md` says how to fill a template in, so the skills don't each repeat it. `rust` copies that rule and the template names as its skills are written.
 
 ## Exploration: house opinion profiles
 
