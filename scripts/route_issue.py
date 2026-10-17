@@ -41,6 +41,9 @@ from ecosystems import Ecosystem, live, registry, require_root
 REPOSITORY = "awesome-humans/website"
 SITE = "https://awesome-humans.net"
 
+# The roster page that lists each standing, as each ecosystem stages it.
+STANDINGS = {"citable": ("Citable", "citable/"), "watch-list": ("Watch list", "watch-list/")}
+
 # Marks the one comment suggest keeps up to date, so an edit doesn't add another.
 MARKER = "<!-- route-issue -->"
 
@@ -122,12 +125,12 @@ def suggest(number: int, issue: dict, dry_run: bool) -> int:
         suggested_name = form.get("Name", "").casefold()
         for source in roster(ecosystem):
             if normalise(source["url"]) == target or source["name"].casefold() == suggested_name:
-                standing = source["standing"].replace("-", " ")
+                title, page = STANDINGS.get(source["standing"], ("Awesome humans", ""))
                 upsert_comment(
                     number,
-                    f"`{source['id']}` is already on the {ecosystem.name} roster, on the {standing}. "
-                    f"See [{source['name']}]({SITE}/{ecosystem.id}/awesome-humans/). "
-                    "If you think its standing should change, say so here, and the owner can reopen this issue.",
+                    f"{source['name']} is already on the {ecosystem.name} roster as `{source['id']}`, "
+                    f"in [{title}]({SITE}/{ecosystem.id}/awesome-humans/{page}). "
+                    "If you think their standing should change, say so here, and the owner can reopen this issue.",
                     dry_run=dry_run,
                 )
                 close = ("issue", "close", str(number), "-R", REPOSITORY, "--reason", "not planned")
