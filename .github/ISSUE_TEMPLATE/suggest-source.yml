@@ -1,0 +1,76 @@
+# The "Suggest a source" form, linked from the home page and the policy page. The
+# intake workflow routes each suggestion to its ecosystem's repository, where the
+# vet-source skill decides it. Keep the ecosystem options in step with ecosystems.toml.
+name: Suggest a source
+description: Suggest a person or publication for vetting as an awesome human.
+title: "Suggest a source: "
+labels: [intake, suggest-source]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Every suggestion goes through the ecosystem's [admission criteria](https://awesome-humans.net/dotnet/awesome-humans/#admission-criteria), and its decision log records the outcome, whether yes or no. You can suggest yourself. For how suggestions are handled, see [Want in or out?](https://awesome-humans.net/want-in-or-out/)
+  - type: dropdown
+    id: ecosystem
+    attributes:
+      label: Ecosystem
+      options:
+        - .NET
+        - Rust
+        - TypeScript
+    validations:
+      required: true
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      description: The person's name, or the publication's title.
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Main URL
+      description: Where to read the source, such as a blog's home page.
+      placeholder: https://
+    validations:
+      required: true
+  - type: textarea
+    id: samples
+    attributes:
+      label: Three sample posts
+      description: One URL per line. Pick posts that show original insight, such as internals, measurements, or worked reasoning.
+    validations:
+      required: true
+  - type: input
+    id: since
+    attributes:
+      label: Writing since
+      description: The year of the earliest post on the subject.
+      placeholder: "2018"
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why they qualify
+      description: How the source meets each criterion, and any vendor or product the source works for.
+    validations:
+      required: true
+  - type: dropdown
+    id: relationship
+    attributes:
+      label: Your relationship to the source
+      options:
+        - I'm the source
+        - A colleague
+        - A reader
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before you submit
+      options:
+        - label: I've read the admission criteria, and I know that only published writing counts. Videos, conference talks, and podcasts are out of scope.
+          required: true

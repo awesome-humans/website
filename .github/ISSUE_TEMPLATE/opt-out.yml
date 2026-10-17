@@ -1,0 +1,43 @@
+# The "Opt out" form, linked from the home page and the policy page. The owner checks
+# the proof and labels the issue verified, and the intake workflow then asks each
+# ecosystem that lists the source to remove it.
+name: Opt out
+description: Ask for your work to stop being cited.
+title: "Opt out: "
+labels: [intake, opt-out]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Once your request is verified, every ecosystem removes your work from its opinions and roster within 30 days. The site shows no portraits or logos, so there's nothing else to remove. For the details, see [Want in or out?](https://awesome-humans.net/want-in-or-out/)
+
+        If you'd rather not ask in public, email <contact@awesome-humans.net> from your source's domain instead.
+  - type: textarea
+    id: sources
+    attributes:
+      label: Sources
+      description: The roster IDs or names to remove, one per line, such as `andrew-lock`. Each roster lists its IDs.
+    validations:
+      required: true
+  - type: dropdown
+    id: proof
+    attributes:
+      label: How you'll show you control the source
+      options:
+        - A comment from the GitHub account linked from the source's site
+        - A page or post on the source's domain that names this issue
+        - An email from the source's domain to contact@awesome-humans.net
+    validations:
+      required: true
+  - type: textarea
+    id: proof-details
+    attributes:
+      label: Proof details
+      description: The link to the page or post, or where your site links your GitHub account. Leave it empty for an email.
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before you submit
+      options:
+        - label: I understand that the pages are versioned in git, so an opt-out can't remove the fact that a published opinion once linked my work.
+          required: true

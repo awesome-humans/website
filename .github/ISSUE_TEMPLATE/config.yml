@@ -1,0 +1,6 @@
+# The issue chooser. Blank issues stay open for anything about the site itself.
+blank_issues_enabled: true
+contact_links:
+  - name: Opt out privately
+    url: https://awesome-humans.net/want-in-or-out/#opt-out-by-email
+    about: Email your request from your source's domain instead of asking in public.
