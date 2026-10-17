@@ -42,7 +42,7 @@ Each ecosystem has the same parts:
 - **Check an existing project.** Ask your coding agent to run [`verify-project`](dotnet/skills/verify-project.md):
 
   ```text title="Prompt"
-  Use the verify project skill at awesome-humans.net against <repo>
+  Use the verify project skill at awesome-humans.net on <repo>
   ```
 
   To narrow the review, say so in the request, such as "focus on testing".
