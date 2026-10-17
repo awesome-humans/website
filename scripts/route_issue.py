@@ -42,7 +42,11 @@ REPOSITORY = "awesome-humans/website"
 SITE = "https://awesome-humans.net"
 
 # The roster page that lists each standing, as each ecosystem stages it.
-STANDINGS = {"citable": ("Citable", "citable/"), "watch-list": ("Watch list", "watch-list/")}
+STANDINGS = {
+    "citable": ("Citable", "citable/"),
+    "watch-list": ("Watch list", "watch-list/"),
+    "opted-out": ("Opted out", "#opted-out"),
+}
 
 # Marks the one comment suggest keeps up to date, so an edit doesn't add another.
 MARKER = "<!-- route-issue -->"
@@ -126,11 +130,18 @@ def suggest(number: int, issue: dict, dry_run: bool) -> int:
         for source in roster(ecosystem):
             if normalise(source["url"]) == target or source["name"].casefold() == suggested_name:
                 title, page = STANDINGS.get(source["standing"], ("Awesome humans", ""))
+                if source["standing"] == "opted-out":
+                    next_step = (
+                        "They asked not to be cited, so the roster keeps them out unless they ask to opt back in."
+                    )
+                else:
+                    next_step = (
+                        "If you think their standing should change, say so here, and the owner can reopen this issue."
+                    )
                 upsert_comment(
                     number,
                     f"{source['name']} is already on the {ecosystem.name} roster as `{source['id']}`, "
-                    f"in [{title}]({SITE}/{ecosystem.id}/awesome-humans/{page}). "
-                    "If you think their standing should change, say so here, and the owner can reopen this issue.",
+                    f"in [{title}]({SITE}/{ecosystem.id}/awesome-humans/{page}). {next_step}",
                     dry_run=dry_run,
                 )
                 close = ("issue", "close", str(number), "-R", REPOSITORY, "--reason", "not planned")
