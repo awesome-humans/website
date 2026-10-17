@@ -21,7 +21,11 @@ Stopped 2026-10-17, with Phases 0 to 3 and 8 done, Phase 4 parked, and both side
    - **Intake tests stay out of the decision log.** #54 and any later test suggestion exercise the plumbing only. Don't record them in `AWESOME-HUMANS.md`'s decision log, and don't open a `vet-source` pull request for them. Close each with a comment that it was a test.
    - **Opt-out end to end** is untested. The first real `verified` opt-out exercises `route_issue.py opt-out` and `vet-source`'s Opt-outs section together.
 2. **Phase 8's last check** happens on its own: the next skill run that opens a pull request fills in its template and passes it with `gh pr create --body-file`. If the body drifts from the template, fix the skill.
-3. **Phase 7, CodeRabbit,** is set up and confirmed in `website` and `dotnet` (#62, dotnet#171). Its step 6 check is left for `.github`, and for `rust` once it has commits. `coderabbit` has no `protect-main` ruleset yet, and the owner adds one, as for `.github`.
+3. **Phase 7, CodeRabbit,** is set up and confirmed in `website` and `dotnet` (#62, dotnet#171). Left to do:
+   - **Merge [coderabbit#1](https://github.com/awesome-humans/coderabbit/pull/1)** once its checks pass. It adds a `Validate` workflow, whose `config` job checks `.coderabbit.yaml` against a copy of CodeRabbit's schema that rejects unknown keys at every level, and a `renovate.json`.
+   - **Protect `coderabbit`'s `main`** (owner): create the `protect-main` ruleset copied from `.github`, then make `config` a required check. Allow squash merges only, as in `website`.
+   - **Watch whether reviews start on their own.** The next pull request settles it. If CodeRabbit doesn't start, put back the "Ask for the review" bullet in each `AGENTS.md`, and drop "Reviews start on their own" from Phase 7.
+   - **Run step 6's check** in `.github`, and in `rust` once it has commits.
 4. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`, and in `website` through `stylelint` too. It wasn't a Dependabot alert on 2026-10-17, and `markdownlint-cli2` 0.23.3 was still the latest. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
 
 `gh` is signed in as `si618`, an organisation admin. It still has the `admin:org` scope added for Phase 0, which nothing needs now. The owner removes it with `gh auth refresh -h github.com --remove-scopes admin:org`.
