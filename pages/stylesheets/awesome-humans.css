@@ -239,7 +239,8 @@
 }
 
 /* Each heading's text links to its own anchor (the toc extension's anchorlink), in place
-   of a pilcrow. It keeps the heading's colour, so the accent stays in its four places.
+   of a pilcrow. It keeps the heading's colour, so the accent stays in its four places,
+   and its hover underline takes the brand green that every other link uses.
    Zensical underlines every link, so the underline is off until hover or focus, and off
    altogether on the page title, where it would double the tick. */
 .md-typeset .toclink,
@@ -250,7 +251,7 @@
 }
 .md-typeset :not(h1) > .toclink:hover,
 .md-typeset :not(h1) > .toclink:focus-visible {
-  text-decoration: underline;
+  text-decoration: underline var(--ah-brand);
 }
 
 /* The page title, underlined with the ecosystem tick. The design system draws the tick
