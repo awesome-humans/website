@@ -4,6 +4,8 @@ name: Build
 # calls it, and so does each ecosystem's site-preview.yml, which passes its own id and
 # the pull request's head commit as ecosystem and ref. Every other live ecosystem in
 # ecosystems.toml builds at main, so a preview shows one change against the live site.
+# The named ecosystem builds even while it's soon, so its pull requests get the strict
+# build before it goes live.
 #
 # For the steps, see README.md: Build the site. This workflow runs the same recipes.
 on:
@@ -25,6 +27,8 @@ permissions:
 env:
   DOTNET_NOLOGO: "true"
   DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+  # Read by the site scripts, as scripts/ecosystems.py: built() says.
+  PREVIEW_ECOSYSTEM: ${{ inputs.ecosystem }}
 
 jobs:
   build:
@@ -62,6 +66,13 @@ jobs:
         if: contains(format(' {0} ', steps.fetch.outputs.toolchains), ' dotnet ')
         with:
           global-json-file: ${{ steps.fetch.outputs.dotnet-global-json }}
+
+      # The ecosystem's own rust-toolchain.toml decides the toolchain. The runner has
+      # rustup, which installs that one.
+      - name: Install the Rust toolchain
+        if: contains(format(' {0} ', steps.fetch.outputs.toolchains), ' rust ')
+        working-directory: build/repos/rust
+        run: rustup toolchain install
 
       - name: Stage the ecosystems and the shared pages
         run: just stage

@@ -16,6 +16,7 @@ mckenna
 NOLOGO
 OPTOUT
 pilcrow
+rustup
 scannable
 scratchpad
 smol
@@ -27,4 +28,5 @@ treeprocessors
 unpushed
 Unweaving
 worktrees
+xtask
 zizmor

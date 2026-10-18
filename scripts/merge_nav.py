@@ -6,7 +6,7 @@
 
     uv run scripts/merge_nav.py
 
-Run it after stage.py. The navigation is the site's own pages, then each live
+Run it after stage.py. The navigation is the site's own pages, then each built
 ecosystem's section under its name from ecosystems.toml, in registry order. Each
 section's paths gain the ecosystem's directory as a prefix. zensical.toml stays the
 base configuration, and the copy in build/ adds only the nav, so Zensical then
@@ -23,7 +23,7 @@ import sys
 import tomllib
 from pathlib import Path
 
-from ecosystems import BUILD, DOCS, live, load_json, report, require_root, validate
+from ecosystems import BUILD, DOCS, built, load_json, report, require_root, validate
 
 SITE_CONFIG = Path("zensical.toml")
 
@@ -67,7 +67,7 @@ def main() -> int:
     errors: list[str] = []
     nav = list(SITE_NAV)
 
-    for ecosystem in live():
+    for ecosystem in built():
         directory = DOCS / ecosystem.id
         path = directory / "nav.json"
         document = load_json(path, errors)

@@ -463,6 +463,8 @@ An opt-out removes citations only, because the site shows no portraits while Pha
 4. **Rust logo and trademark:** As in the Rust plan, use the official CC-BY logo only on the Rust section index and its EcosystemCard, credited in the footer. Add the footer line "Not affiliated with or endorsed by the Rust Project or the Rust Foundation", and never call the section "official". Add an equivalent .NET line, since the same reasoning applies to Microsoft's marks.
 5. Delete this `PLAN.md`, and trim the Rust plan's superseded sections.
 
+**Order (settled 2026-10-19 by the owner):** wire Rust into the site now, and publish it later. Step 3 doesn't change: production shows `/rust/` only once the first opinions merge. Until then, a preview builds the ecosystem it names even while it's `soon`, so `rust`'s pull requests get the strict build and a preview. Wiring everything at go-live lost, because it left the pull request that adds the first opinions without a site check. Going live now lost, because `/rust/` has no opinions to show. `website`'s `feat/preview-soon-ecosystems` adds the Rust toolchain step, Rust's `stage` command, and `PREVIEW_ECOSYSTEM`. A `rust` pull request then adds `site-preview.yml` and `site-dispatch.yml`.
+
 ## Phase 7: CodeRabbit reviews
 
 [CodeRabbit](https://coderabbit.ai) reviews pull requests in `.github`, `dotnet`, `rust`, `website`, and `coderabbit`. All of them are public, so the [open-source plan](https://docs.coderabbit.ai/management/plans) covers them at no cost, with Team features. Phase 7 is independent of the others, so it can run at any time.

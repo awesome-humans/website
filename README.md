@@ -97,6 +97,12 @@ To preview a change to an ecosystem before you push it, pass your checkout to `b
 just serve dotnet=../../dotnet/main
 ```
 
+An ecosystem that's still `soon` builds only when the `PREVIEW_ECOSYSTEM` environment variable names it, as `build.yml` sets it for that ecosystem's pull requests:
+
+```sh
+PREVIEW_ECOSYSTEM=rust just serve rust=../../rust/main
+```
+
 ### How the site updates
 
 | Trigger                                    | What runs                                                                                                        |
@@ -107,7 +113,7 @@ just serve dotnet=../../dotnet/main
 | A pull request here                        | `site.yml` builds and deploys a preview, `pr-website-<number>`                                                   |
 | A pull request in an ecosystem             | Its `site-preview.yml` calls `build.yml` and `deploy.yml` with its head commit, for a preview `pr-<id>-<number>` |
 
-Every build takes every live ecosystem at `main`, except the one a preview names.
+Every build takes every live ecosystem at `main`, except the one a preview names. A preview also builds its ecosystem while it's `soon`, so its pull requests get the strict build before production shows it.
 
 ## Repository layout
 
