@@ -4,6 +4,8 @@ Citation is opt-out. Anyone can suggest a source, and any listed source can ask 
 
 The site shows no portraits or logos. Each source appears by name, with a link to their work.
 
+The goal is a montage of portraits for each ecosystem, and one for the site itself. Unlike citation, a portrait is opt-in: a face appears only with the person's recorded permission. Asking means the owner writes to every source on every roster and follows up each reply. That's more correspondence than one maintainer can take on yet, so portraits are on hold.
+
 ## Suggest a source
 
 [Suggest a source for vetting](https://github.com/awesome-humans/website/issues/new?template=suggest-source.yml) with the issue form. It asks for the ecosystem, the source's main URL, three sample posts, and why the source qualifies. You can suggest yourself.
