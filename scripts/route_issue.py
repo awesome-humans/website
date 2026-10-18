@@ -11,7 +11,7 @@ intake.yml runs it with GH_TOKEN set to the app's token. It reads the issue with
 and each live ecosystem's roster from its published sources.json.
 
 suggest checks a new or edited suggestion. A source already on the chosen ecosystem's
-roster gets its standing, and the issue closes. Otherwise a field that isn't a URL gets
+roster, or opted out of any live roster, gets its standing, and the issue closes. Otherwise a field that isn't a URL gets
 one comment, which the script updates on each edit. Otherwise the issue moves to the
 ecosystem's repository, labelled vet-source. An ecosystem that isn't live yet keeps the
 suggestion here, with a comment.
@@ -122,33 +122,40 @@ def suggest(number: int, issue: dict, dry_run: bool) -> int:
         raise RouteError(f"#{number} names the ecosystem {name!r}, which ecosystems.toml doesn't have")
 
     # A source already on the roster needs nothing else from the form, so check that
-    # first. An ecosystem that isn't live has no roster to check.
+    # first. An opt-out from one ecosystem covers them all, so any live roster's
+    # opted-out entry wins over the chosen roster's standing. An ecosystem that isn't
+    # live has no roster to check.
     main_url = form.get("Main URL", "")
-    if ecosystem.status == "live":
-        target = normalise(main_url)
-        suggested_name = form.get("Name", "").casefold()
-        for source in roster(ecosystem):
-            if normalise(source["url"]) == target or source["name"].casefold() == suggested_name:
-                title, page = STANDINGS.get(source["standing"], ("Awesome humans", ""))
-                if source["standing"] == "opted-out":
-                    next_step = (
-                        "They asked not to be cited, so the roster keeps them out unless they ask to opt back in."
-                    )
-                else:
-                    next_step = (
-                        "If you think their standing should change, say so here, and the owner can reopen this issue."
-                    )
-                upsert_comment(
-                    number,
-                    f"{source['name']} is already on the {ecosystem.name} roster as `{source['id']}`, "
-                    f"in [{title}]({SITE}/{ecosystem.id}/awesome-humans/{page}). {next_step}",
-                    dry_run=dry_run,
-                )
-                close = ("issue", "close", str(number), "-R", REPOSITORY, "--reason", "not planned")
-                gh(*close, dry_run=dry_run, writes=True)
-                label = ("issue", "edit", str(number), "-R", REPOSITORY, "--add-label", "duplicate")
-                gh(*label, dry_run=dry_run, writes=True)
-                return 0
+    target = normalise(main_url)
+    suggested_name = form.get("Name", "").casefold()
+    found = [
+        (listed, source)
+        for listed in live()
+        for source in roster(listed)
+        if normalise(source["url"]) == target or source["name"].casefold() == suggested_name
+    ]
+    found = [f for f in found if f[1]["standing"] == "opted-out"] + [f for f in found if f[0] == ecosystem]
+    if found:
+        listed, source = found[0]
+        title, page = STANDINGS.get(source["standing"], ("Awesome humans", ""))
+        if source["standing"] == "opted-out":
+            next_step = (
+                "They asked not to be cited, which covers every ecosystem, "
+                "so the rosters keep them out unless they ask to opt back in."
+            )
+        else:
+            next_step = "If you think their standing should change, say so here, and the owner can reopen this issue."
+        upsert_comment(
+            number,
+            f"{source['name']} is already on the {listed.name} roster as `{source['id']}`, "
+            f"in [{title}]({SITE}/{listed.id}/awesome-humans/{page}). {next_step}",
+            dry_run=dry_run,
+        )
+        close = ("issue", "close", str(number), "-R", REPOSITORY, "--reason", "not planned")
+        gh(*close, dry_run=dry_run, writes=True)
+        label = ("issue", "edit", str(number), "-R", REPOSITORY, "--add-label", "duplicate")
+        gh(*label, dry_run=dry_run, writes=True)
+        return 0
 
     problems = []
     if not URL.match(main_url):
