@@ -20,14 +20,11 @@ Stopped 2026-10-18, with Phases 0 to 3 and 8 done, Phase 4 parked, both sides of
 - **Merge settings:** every repository merges by squash only, with the pull request's title and description as the commit, and deletes branches on merge.
 - **CodeRabbit:** it no longer adds a summary to pull request descriptions ([coderabbit#2](https://github.com/awesome-humans/coderabbit/pull/2)). `coderabbit`'s `main` has a `protect-main` ruleset that requires the `config` check, and .github#4 confirmed the central configuration in `.github`.
 - **Attribution:** an agent's attribution line in a comment is italic (#65, dotnet#173).
-- **House opinion profiles:** open question 5 is settled, and #72 and dotnet#175 implement it. See [House opinion profiles](#house-opinion-profiles).
+- **House opinion profiles:** open question 5 is settled, and #72 and dotnet#175 implement it, both merged 2026-10-18. [.github#6](https://github.com/awesome-humans/.github/pull/6) updates the pull request templates to match. See [House opinion profiles](#house-opinion-profiles).
 
 Pick up here:
 
-0. **House opinion profiles** (owner, then agent):
-   - **Merge #72 first, then dotnet#175.** `website` registers the profile, and builds against `dotnet`'s `main` with only a warning. `dotnet`'s link check fails on its links to `houses.toml` until `website` merges, and its preview shows the blocks as plain text until then, so re-run both after the merge.
-   - **Update the organisation's `house-opinion.md` pull request template** in `.github`. It asks for "the sourced position it overrides", and a house opinion now sits beside the sourced text instead. Ask for the profile, and the sourced text the block sits beside.
-   - **Check the `rust` scaffolding** against [What Rust follows](#what-rust-follows) before its first house opinion.
+0. **House opinion profiles** (agent): check the `rust` scaffolding against [What Rust follows](#what-rust-follows) before its first house opinion.
 1. **Phase 5, Want in or out?,** waits on real issues (agent):
    - **Test the transfer again.** The duplicate path works: [#54](https://github.com/awesome-humans/website/issues/54), a suggestion of Andrew Lock, got its standing and closed. The first new suggestion, [#57](https://github.com/awesome-humans/website/issues/57) for Stephen Cleary, passed the checks, but `gh issue transfer` failed with `Resource not accessible by integration (transferIssue)`, although the app token had `issues: write` on both repositories. The owner moved it by hand to [dotnet#167](https://github.com/awesome-humans/dotnet/issues/167), and `vet-source` admitted him in dotnet#168. #58 added `contents: write` to the token, which is a guess. Test with the next real new suggestion. If the transfer still fails, stop transferring: open a copy in the ecosystem with a link back, then comment and close the `website` issue.
    - **Intake tests stay out of the decision log.** #54 and any later test suggestion exercise the plumbing only. Don't record them in `AWESOME-HUMANS.md`'s decision log, and don't open a `vet-source` pull request for them. Close each with a comment that it was a test.
