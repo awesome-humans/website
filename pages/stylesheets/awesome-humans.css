@@ -238,6 +238,19 @@
   font-feature-settings: normal;
 }
 
+/* Each heading's text links to its own anchor (the toc extension's anchorlink), in place
+   of a pilcrow. It keeps the heading's colour, so the accent stays in its four places,
+   and shows it's a link only on hover or focus. */
+.md-typeset .toclink,
+.md-typeset .toclink:hover,
+.md-typeset .toclink:focus {
+  color: inherit;
+}
+.md-typeset .toclink:hover,
+.md-typeset .toclink:focus-visible {
+  text-decoration: underline;
+}
+
 /* The page title, underlined with the ecosystem tick. The design system draws the tick
    above the title; the owner moved it underneath on 2026-10-16, where it reads as an
    underline rather than a rule cutting the page. */
