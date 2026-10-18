@@ -30,13 +30,7 @@ Pick up here:
 2. **Phase 8's last check** happens on its own: the next skill run that opens a pull request fills in its template and passes it with `gh pr create --body-file`. If the body drifts from the template, fix the skill.
 3. **Phase 7, CodeRabbit,** is set up and confirmed in `.github`, `website`, `dotnet`, and `coderabbit`. Run step 6's check in `rust` once it has commits.
 4. **A `braces` advisory** ([GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), high) shows in `npm audit` in both `website` and `dotnet`, through `markdownlint-cli2` and `globby`, and in `website` through `stylelint` too. It wasn't a Dependabot alert on 2026-10-17, and `markdownlint-cli2` 0.23.3 was still the latest. If one opens, check for a `markdownlint-cli2` release first, then an `overrides` entry, as #8 did for `katex`.
-5. **Rename `verify-project` to `review-project`** (agent, started 2026-10-18): dotnet#174, .github#5, and #70 rename the skill, its links, and the diagrams. Each repository's required `build` check builds the other at `main`, so the home page's link to the skill fails one side or the other. Merge in this order:
-   1. **#71** points the home page at `dotnet/skills/index.md`, which exists under both names.
-   2. **dotnet#174** renames the skill. Rerun its `build` check after #71 merges.
-   3. **#70** points the home page at `dotnet/skills/review-project.md` again. Rerun its `build` check after dotnet#174 merges.
-   4. **.github#5** once the site has redeployed, so the profile's link resolves.
-
-   Then:
+5. **Rename `verify-project` to `review-project`** is merged in `dotnet`, `.github`, and `website` (2026-10-18): dotnet#174, .github#5, #70, and #71. Each repository's required `build` check builds the other at `main`, so a link from one to a renamed page fails whichever side merges first. #71 bridged it by pointing the home page at `dotnet/skills/index.md`, which existed under both names, and #70 pointed it back once dotnet#174 had merged. Use the same bridge for any later rename across repositories. Left to do:
    - **`rust`:** The owner is scaffolding it in another session (rust#1), and the scaffold copies `verify-project` from `dotnet`, in its README, `AGENTS.md`, and `PLAN.md`. Rename it there, in rust#1 or straight after it merges, rather than from here.
    - **`feat/house-profiles`:** Its branches in `dotnet` and `website` change the same lines. Rebase them after the merge.
    - **Old links:** The site has no redirects, so `/dotnet/skills/verify-project/` stops working. Nothing in the organisation links it after the rename.
