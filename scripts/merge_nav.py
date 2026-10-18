@@ -28,7 +28,16 @@ from ecosystems import BUILD, DOCS, live, load_json, report, require_root, valid
 SITE_CONFIG = Path("zensical.toml")
 
 # The site's own pages, ahead of the ecosystems.
-SITE_NAV: list[dict] = [{"Home": "index.md"}, {"How it works": "how-it-works.md"}]
+SITE_NAV: list[dict] = [
+    {"Home": "index.md"},
+    {
+        "How it works": [
+            {"Overview": "how-it-works.md"},
+            {"House profiles": "house-profiles.md"},
+            {"Want in or out?": "want-in-or-out.md"},
+        ]
+    },
+]
 
 
 def prefixed(items: list[dict], prefix: str, directory: Path, errors: list[str], path: Path) -> list[dict]:
