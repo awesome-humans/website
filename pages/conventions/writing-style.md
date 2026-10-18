@@ -4,7 +4,7 @@ These rules cover all prose in every awesome-humans repository: opinions, resear
 
 Each repository's `AGENTS.md` adds what only it can say: who its reader is, the platform's spelling exception and its examples, and, in an ecosystem, Writing style for opinions. Read both before you write.
 
-The voice follows the [Google developer documentation style guide](https://developers.google.com/style): conversational but direct, plain, and easy to scan. Start with its [highlights](https://developers.google.com/style/highlights). The rules below adapt it to awesome-humans. When a question comes up, use [Google's own order of precedence](https://developers.google.com/style#how-to-use):
+The voice follows the [Google developer documentation style guide](https://developers.google.com/style): conversational but direct, plain, and easy to scan. Start with its [highlights](https://developers.google.com/style/highlights). The rules below adapt it to awesome-humans. When a question comes up, use [Google's own order of precedence](https://developers.google.com/style#reference-hierarchy):
 
 1. The rules on this page, and the repository's own in its `AGENTS.md`. Where the repository's rule is narrower, it wins.
 2. The Google developer documentation style guide.
