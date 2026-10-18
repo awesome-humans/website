@@ -7,7 +7,7 @@
 # Awesome lists, distilled.
 
 An agentic take on awesome lists ([awesome-dotnet](https://github.com/quozd/awesome-dotnet), [awesome-rust](https://github.com/rust-unofficial/awesome-rust)):<br>
-distilled guidance, thanks to awesome humans.
+distilled, opinionated guidance, thanks to awesome humans.
 
 <div class="ah-row">
 <a class="ah-btn" href="how-it-works/">How it works</a>
@@ -16,7 +16,7 @@ distilled guidance, thanks to awesome humans.
 
 </section>
 
-It shows you what good code looks like today, and keeps that answer current as ecosystems change. Recommendations come from awesome humans: people and publications with at least two years of accurate, independent writing on the subject.
+This project documents current best practice in code and updates it as ecosystems evolve. Opinions come from awesome humans: people and publications with at least two years of accurate, independent writing on the subject.
 
 Every opinion states its recommendation first, cites its sources, and targets the latest released versions.
 
@@ -24,9 +24,9 @@ Every opinion states its recommendation first, cites its sources, and targets th
 
 <!-- ecosystem-cards -->
 
-Each ecosystem has the same parts:
+Each ecosystem includes:
 
-- **Opinions:** One topic per page, each with its recommendation, rationale, and sources.
+- **Opinions:** One topic per page, with its recommendation, rationale, and sources.
 - **Templates:** Files that encode the opinions.
 - **Skills:** Agent skills that check a project against the opinions and keep the opinions current.
 - **Awesome humans:** The roster of sources that the opinions cite.
@@ -35,23 +35,23 @@ Each ecosystem has the same parts:
 
 - **Point your agent at it.** Tell your coding agent to follow the opinions when it writes code:
 
-  ```text title="Prompt"
+  ```text
   Follow the conventions at awesome-humans.net when writing .NET code
   ```
 
 - **Check an existing project.** Ask your coding agent to run [`verify-project`](dotnet/skills/verify-project.md):
 
-  ```text title="Prompt"
+  ```text
   Use the verify project skill at awesome-humans.net on <repo>
   ```
 
   To narrow the review, say so in the request, such as "focus on testing".
 
-- **Start a project from the templates.** Copy the [.NET templates](dotnet/templates/index.md) into a new project, and trim what you don't need.
+- **Start a project from the templates.** Copy the [.NET templates](dotnet/templates/index.md) into a new project, trimming what you don't need.
 
-- **Read the opinions.** Each page gives the recommendation, the rationale, and the sources behind it.
+- **Read the opinions.** Each page gives its recommendation, with the rationale and sources behind it.
 
-To understand how sources are vetted and how the opinions stay current, see [How it works](how-it-works.md).
+To understand how sources are vetted and how opinions stay current, see [How it works](how-it-works.md).
 
 ## Acknowledgement
 
