@@ -71,9 +71,19 @@
       select.append(new Option(`House: ${house.name}`, house.id));
     }
     select.value = current;
+    // A ?house= left in the address would undo the change on reload, so it follows the picker.
     select.addEventListener("change", () => {
       store(select.value);
       apply(select.value);
+      const url = new URL(location.href);
+      if (url.searchParams.has("house")) {
+        if (select.value === none) {
+          url.searchParams.delete("house");
+        } else {
+          url.searchParams.set("house", select.value);
+        }
+        history.replaceState(history.state, "", url);
+      }
     });
     header.insertBefore(
       select,

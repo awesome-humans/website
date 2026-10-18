@@ -9,8 +9,9 @@
 # profile here before an ecosystem weaves its first opinion: until then, the build only
 # warns that the ecosystem staged nothing for it.
 #
-# id          The profile's id: lowercase words joined by hyphens. Ecosystems cite it
-#             as house:<id>, and the site's ?house=<id> chooses it.
+# id          The profile's id: lowercase words joined by hyphens, and never none,
+#             which is the default. Ecosystems cite it as house:<id>, and the site's
+#             ?house=<id> chooses it.
 # name        The display name, in the header picker and on each house block.
 # kind        person or organisation.
 # ecosystems  The ecosystem ids, from ecosystems.toml, that hold its opinions.

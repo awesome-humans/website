@@ -15,6 +15,8 @@ from pathlib import Path
 REGISTRY = Path("ecosystems.toml")
 HOUSES = Path("houses.toml")
 PROFILE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
+# The default, with no house opinions: house.js's ?house=none, and an ecosystem's raw/none/.
+NO_PROFILE = "none"
 BUILD = Path("build")
 DOCS = BUILD / "docs"
 REPOS = BUILD / "repos"
@@ -49,6 +51,8 @@ def houses(errors: list[str]) -> list[House]:
     for house in found:
         if not PROFILE.fullmatch(house.id):
             errors.append(f"{HOUSES}: {house.id} isn't a profile id: use lowercase words joined by hyphens")
+        elif house.id == NO_PROFILE:
+            errors.append(f"{HOUSES}: {NO_PROFILE} is reserved for the default, which has no house opinions")
         if house.kind not in ("person", "organisation"):
             errors.append(f"{HOUSES}: {house.id} has kind {house.kind}, not person or organisation")
         for ecosystem in house.ecosystems:
