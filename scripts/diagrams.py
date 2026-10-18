@@ -135,7 +135,7 @@ PIPELINE_ROWS = [
         "opinions",
     ),
     ("reports", ["periodic cadence"], "audit-freshness", None, "", "report"),
-    ("reports", ["a project path", "or repository URL"], "verify-project", None, "", "report"),
+    ("reports", ["a project path", "or repository URL"], "review-project", None, "", "report"),
 ]
 
 
@@ -250,7 +250,7 @@ def pipeline() -> str:
         "Swimlane diagram of how an ecosystem's repository maintains itself: vet-source, research-topic, resolve-research,"
         " harvest-sources, the version refresh, and weave-house-opinion each work on their own branch, pass CI and the"
         " owner's review, and land in the roster, research/ or the opinions and templates; audit-freshness and"
-        " verify-project only report. Their findings, the release watch and the harvest reminder start the next run.",
+        " review-project only report. Their findings, the release watch and the harvest reminder start the next run.",
     )
 
 

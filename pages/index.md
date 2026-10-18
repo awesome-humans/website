@@ -39,10 +39,10 @@ Each ecosystem includes:
   Follow the conventions at awesome-humans.net when writing .NET code
   ```
 
-- **Check an existing project.** Ask your coding agent to run [`verify-project`](dotnet/skills/index.md):
+- **Check an existing project.** Ask your coding agent to run [`review-project`](dotnet/skills/review-project.md):
 
   ```text
-  Use the verify project skill at awesome-humans.net on <repo>
+  Use the review project skill at awesome-humans.net on <repo>
   ```
 
   To narrow the review, say so in the request, such as "focus on testing".

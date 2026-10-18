@@ -11,7 +11,7 @@ Agent skills maintain each ecosystem's repository, and nothing becomes an opinio
 
 Each skill works on its own branch, and its changes land through a pull request. CI checks the metadata on every opinion and template, that every cited source is on the roster and citable, and that every link resolves. The owner then reviews and merges it.
 
-Two skills only report: `audit-freshness` finds stale review dates and lagging version pins, and `verify-project` grades an external codebase against the opinions. Their findings, a scheduled release watch, and a monthly harvest reminder start the next run.
+Two skills only report: `audit-freshness` finds stale review dates and lagging version pins, and `review-project` grades an external codebase against the opinions. Their findings, a scheduled release watch, and a monthly harvest reminder start the next run.
 
 <!-- diagram: maintenance-pipeline -->
 
