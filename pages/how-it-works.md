@@ -29,4 +29,4 @@ A research topic saves the evidence on a subject in its own pull request. A seco
 
 ## House opinions
 
-Each repository's owner outranks the roster. The owner's preferences are recorded separately, and marked **House:** wherever they appear, so you can tell community practice from local convention.
+House opinions are preferences from experience, which no vetted source backs. Each belongs to a house profile, owned by a person or an organisation. The site shows none by default, so every page is sourced community practice. Choose a profile in the header to see its house opinions, each marked **House:** beside the sourced text it changes. For how profiles work, including private ones for your own organisation, see [House profiles](house-profiles.md).

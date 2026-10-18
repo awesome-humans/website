@@ -1,0 +1,26 @@
+# The house profiles the site publishes. A house profile is a named set of house
+# opinions, owned by a person or an organisation. The site shows none by default, and a
+# reader chooses a profile in the header, or an agent reads its llms-<profile>.txt. For
+# what readers see, see pages/house-profiles.md.
+#
+# A profile's opinions live in each ecosystem it lists, as house blocks and regions
+# beside the sourced text, recorded in that ecosystem's HOUSE-OPINIONS.md. The build
+# fails when an ecosystem stages a profile that isn't listed here for it. Register a
+# profile here before an ecosystem weaves its first opinion: until then, the build only
+# warns that the ecosystem staged nothing for it.
+#
+# id          The profile's id: lowercase words joined by hyphens. Ecosystems cite it
+#             as house:<id>, and the site's ?house=<id> chooses it.
+# name        The display name, in the header picker and on each house block.
+# kind        person or organisation.
+# ecosystems  The ecosystem ids, from ecosystems.toml, that hold its opinions.
+# approved    The date the repository owner approved it. An organisation's profile
+#             carries the site's name, so it needs that approval, as adopting a
+#             contributor's opinion does.
+
+[[house]]
+id = "simon-mckenna"
+name = "Simon McKenna"
+kind = "person"
+ecosystems = ["dotnet"]
+approved = 2026-10-18

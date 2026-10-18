@@ -20,6 +20,8 @@ extra_javascript = [
   "javascripts/repositories.js",
   "javascripts/ecosystem.js",
   "javascripts/open-details.js",
+  "javascripts/houses.js",
+  "javascripts/house.js",
 ]
 
 [project.theme]
@@ -84,6 +86,11 @@ toggle.name = "Switch to system preference"
 anchorlink = true
 [project.markdown_extensions.pymdownx.arithmatex]
 generic = true
+# House opinions, which an ecosystem writes as "/// house | <profile>" blocks. Not a
+# Zensical default: blocks take their content unindented, so the Markdown reads the same
+# on GitHub. awesome_humans_markdown ties each block to its profile.
+[project.markdown_extensions.pymdownx.blocks.admonition]
+types = ["house"]
 [project.markdown_extensions.pymdownx.betterem]
 [project.markdown_extensions.pymdownx.caret]
 [project.markdown_extensions.pymdownx.details]

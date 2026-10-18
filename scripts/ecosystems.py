@@ -1,16 +1,20 @@
-"""The ecosystem registry and the staging paths that the site scripts share.
+"""The ecosystem and house profile registries, and the staging paths that the site scripts share.
 
 Imported by stage.py, merge_nav.py, and collate_sources.py, which run from the
 repository root. It isn't a script of its own.
 """
 
 import json
+import re
 import sys
 import tomllib
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 
 REGISTRY = Path("ecosystems.toml")
+HOUSES = Path("houses.toml")
+PROFILE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
 BUILD = Path("build")
 DOCS = BUILD / "docs"
 REPOS = BUILD / "repos"
@@ -26,6 +30,33 @@ class Ecosystem:
     stage: str
     status: str
     scope: str
+
+
+@dataclass(frozen=True)
+class House:
+    id: str
+    name: str
+    kind: str
+    ecosystems: list[str]
+    approved: date
+
+
+def houses(errors: list[str]) -> list[House]:
+    """Every house profile, in registry order, recording a malformed entry as an error."""
+    with HOUSES.open("rb") as file:
+        found = [House(**entry) for entry in tomllib.load(file).get("house", [])]
+    ids = {ecosystem.id for ecosystem in registry()}
+    for house in found:
+        if not PROFILE.fullmatch(house.id):
+            errors.append(f"{HOUSES}: {house.id} isn't a profile id: use lowercase words joined by hyphens")
+        if house.kind not in ("person", "organisation"):
+            errors.append(f"{HOUSES}: {house.id} has kind {house.kind}, not person or organisation")
+        for ecosystem in house.ecosystems:
+            if ecosystem not in ids:
+                errors.append(f"{HOUSES}: {house.id} lists {ecosystem}, which isn't in {REGISTRY}")
+    if len({house.id for house in found}) != len(found):
+        errors.append(f"{HOUSES}: a profile id appears more than once")
+    return found
 
 
 def require_root() -> None:

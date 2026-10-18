@@ -12,6 +12,7 @@ llms
 llmstxt
 lycheecache
 lycheeverse
+mckenna
 NOLOGO
 OPTOUT
 pilcrow

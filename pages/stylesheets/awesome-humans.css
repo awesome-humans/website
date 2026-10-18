@@ -629,6 +629,31 @@
   color: var(--ah-muted);
 }
 
+/* House profiles: an element with data-house, such as a house block or a profile's chip,
+   shows only when a reader chooses that profile in the header picker, which
+   javascripts/house.js adds. Without it, every page is sourced community practice. */
+.md-typeset [data-house]:not(.ah-house--on) {
+  display: none;
+}
+.ah-house-picker {
+  max-width: 12rem;
+  margin: 0 var(--ah-space-2);
+  padding: var(--ah-space-1) var(--ah-space-2);
+  border: var(--ah-hairline) solid var(--ah-line);
+  border-radius: var(--ah-radius-sm);
+  background: var(--ah-bg);
+  color: var(--ah-ink-2);
+  font: 500 12px/16px var(--ah-font-mono);
+  cursor: pointer;
+}
+.ah-house-picker:focus-visible {
+  outline: var(--ah-stripe) solid var(--ah-brand-mark);
+  outline-offset: 2px;
+}
+[data-house] .ah-house-picker {
+  border-color: var(--ah-house);
+  color: var(--ah-house);
+}
 /* Before and After code: fences with { .ah-before title="Before" } and
    { .ah-after title="After" }, side by side inside <div class="ah-compare" markdown>. */
 .md-typeset .ah-compare {
