@@ -17,7 +17,12 @@ Two skills only report: `audit-freshness` finds stale review dates and lagging v
 
 ## Sources need a track record
 
-A source joins the roster on its track record: at least two years of sustained writing, with depth, accuracy, and an independent view. A source with less than two years, or dormant for over a year, goes on the watch list, which supplies leads but is never cited. Two markings limit what a citable source can support. A source is vetted again when it goes quiet or a blocker clears.
+A source joins the roster on its track record: at least two years of sustained writing, with depth, accuracy, and an independent view. A source with less than two years, or dormant for over a year, goes on the watch list, which supplies leads but is never cited. A source is vetted again when it goes quiet or a blocker clears.
+
+Two markings limit how an opinion can cite a roster source, and CI enforces both:
+
+- **Corroborate:** a long track record but thin depth. An opinion can cite the source, but every claim it supports also needs an unmarked source.
+- **Discovery-only:** an aggregator, such as a newsletter or link roundup. It's never cited, and an opinion cites the primary source it leads to instead.
 
 <!-- diagram: source-standing -->
 
