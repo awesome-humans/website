@@ -32,32 +32,37 @@ jobs:
           node-version: "24"
           cache: npm
 
-      # ci install, not npm install: it honours package-lock.json exactly and
-      # fails if the lock and manifest disagree, so CI cannot float a version.
-      - run: npm ci
-
       - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
 
-      # --locked fails if uv.lock and pyproject.toml disagree, as npm ci does for npm.
-      - run: uv sync --locked
+      # Pinned to a release at least two weeks old when chosen, as in awesome-humans/dotnet.
+      # The justfile is every entry point, so the steps below call its recipes, never npm
+      # or uv.
+      - uses: taiki-e/install-action@83ac0ad63c0167e6f06796fab0fce28db1bf3db0 # v2.87.22
+        with:
+          tool: just@1.58.0
 
-      # Each step is one of the scripts npm run check runs, so CI checks what a local
-      # run checks, step by step.
+      # npm ci and uv sync --locked, not npm install and uv sync: each honours its lockfile
+      # exactly and fails if the lock and manifest disagree, so CI can't float a version.
+      - name: Install the tools
+        run: just install
+
+      # Each step is one of the recipes just check runs, so CI checks what a local run
+      # checks, step by step.
       - name: Check formatting
-        run: npm run format:check
+        run: just format-check
 
       # The token lets zizmor's online audits look up the actions the workflows pin,
       # for known vulnerabilities and for commits that aren't on the action's repository.
       - name: Lint
         env:
           GH_TOKEN: ${{ github.token }}
-        run: npm run lint
+        run: just lint
 
       - name: Check types
-        run: npm run typecheck
+        run: just typecheck
 
       - name: Check spelling
-        run: npm run spell
+        run: just spell
 
   links:
     runs-on: ubuntu-latest

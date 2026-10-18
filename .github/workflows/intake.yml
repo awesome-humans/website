@@ -34,6 +34,13 @@ jobs:
 
       - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
 
+      # Pinned to a release at least two weeks old when chosen, as in awesome-humans/dotnet.
+      # The justfile is every entry point, so the steps below call its recipes, never npm
+      # or uv.
+      - uses: taiki-e/install-action@83ac0ad63c0167e6f06796fab0fce28db1bf3db0 # v2.87.22
+        with:
+          tool: just@1.58.0
+
       # The app moves issues to, and opens them in, the ecosystems' repositories, which
       # this workflow's own token can't reach. Add each ecosystem's repository here as it
       # goes live in ecosystems.toml. With issues write alone, transferIssue failed with
@@ -55,4 +62,4 @@ jobs:
           GH_TOKEN: ${{ steps.app.outputs.token }}
           NUMBER: ${{ github.event.issue.number }}
           FORM: ${{ contains(github.event.issue.labels.*.name, 'opt-out') && 'opt-out' || 'suggest' }}
-        run: uv run scripts/route_issue.py "$FORM" "$NUMBER"
+        run: just route-issue "$FORM" "$NUMBER"

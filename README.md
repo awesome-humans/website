@@ -69,35 +69,33 @@ A source that appears in more than one ecosystem must use the same `id` and `kin
 
 ## Local setup
 
-You need [uv](https://docs.astral.sh/uv/) for the site and its scripts, and Node.js for the checks.
+You need [just](https://just.systems/) to run the commands, [uv](https://docs.astral.sh/uv/) for the site and its scripts, and Node.js for the checks. Run `just` to list every recipe.
 
 ```sh
-uv sync        # the site's Python environment and its Python tools, from pyproject.toml
-npm install    # the Node tools, at the versions in package.json
-npm run format # format every file
-npm run check  # everything CI checks: formatting, linting, types, and spelling
+just install # the Node and Python tools, at the versions package-lock.json and uv.lock pin
+just format  # format every file
+just check   # what CI checks on a pull request: formatting, linting, types, and spelling
 ```
 
 Each live ecosystem also needs its toolchain, such as the .NET SDK for `dotnet`.
 
 ## Build the site
 
-The `Site` workflow runs these steps through [`build.yml`](.github/workflows/build.yml), so a local build matches CI:
+The `Site` workflow runs the same recipes through [`build.yml`](.github/workflows/build.yml), so a local build matches CI:
 
 ```sh
-uv run scripts/stage.py fetch     # clone each live ecosystem into build/repos/, at main
-uv run scripts/stage.py stage     # stage the shared pages and every ecosystem into build/docs/
-uv run scripts/merge_nav.py       # check each nav.json, and write build/zensical.toml
-uv run scripts/collate_sources.py # check each sources.json, and write build/sources.json
-uv run zensical build --strict -f build/zensical.toml
+just fetch # clone each live ecosystem into build/repos/, at main
+just build # stage, check and merge each nav.json and sources.json, and build the site
 ```
 
-The site lands in `build/public/`. Zensical caches each rendered page in `build/.cache/`, keyed by its content, so after you change `src/`, delete that folder before you build. To preview it, run `uv run zensical serve -f build/zensical.toml` instead of the last step.
+`just build` runs `stage`, `nav`, `sources`, and `build-site`, which you can also run one at a time. The site lands in `build/public/`. To preview it, run `just serve` instead of `just build`.
 
-To preview a change to an ecosystem before you push it, stage from your checkout instead of `build/repos/`:
+Zensical caches each rendered page in `build/.cache/`, keyed by its content. After you change `src/`, run `just clean-cache` before you build.
+
+To preview a change to an ecosystem before you push it, pass your checkout to `build` or `serve`, and it stages from there instead of `build/repos/`:
 
 ```sh
-uv run scripts/stage.py stage --local dotnet=../../dotnet/main
+just serve dotnet=../../dotnet/main
 ```
 
 ### How the site updates
@@ -120,6 +118,7 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 ├── AGENTS.md               ← how agents work in this repository
 ├── ecosystems.toml         ← the ecosystem registry
 ├── houses.toml             ← the house profile registry
+├── justfile                ← every local and CI entry point: run `just` to list them
 ├── pages/                  ← the shared pages, the theme, and the brand assets
 ├── PLAN.md                 ← the organisation and website plan, deleted when it's done
 ├── pyproject.toml          ← the site's Python dependencies, and its package of Markdown extensions
