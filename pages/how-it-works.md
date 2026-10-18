@@ -22,7 +22,7 @@ A source joins the roster on its track record: at least two years of sustained w
 Two markings limit how an opinion can cite a roster source, and CI enforces both:
 
 - **Corroborate:** a long track record but thin depth. An opinion can cite the source, but every claim it supports also needs an unmarked source.
-- **Discovery-only:** an aggregator, such as a newsletter or link roundup. It's never cited, and an opinion cites the primary source it leads to instead.
+- **Discovery-only:** an aggregator, such as a newsletter or a curated list of links. It's never cited, and an opinion cites the primary source it leads to instead.
 
 <!-- diagram: source-standing -->
 
