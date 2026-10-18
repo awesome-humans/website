@@ -14,14 +14,17 @@ outputs, so build.yml sets up only those.
 
 stage copies pages/ into build/docs/, runs each ecosystem's stage command with {out}
 set to build/docs/, and writes the root llms.txt, which links to each ecosystem's
-own. It also fills the home page's ecosystem cards from ecosystems.toml, draws the
+own, and to each house profile's llms-<profile>.txt in it. It checks that every profile
+an ecosystem staged is in houses.toml for that ecosystem, warns about a listed profile an
+ecosystem staged nothing for, and writes
+javascripts/houses.js, which lists them for the header's profile picker. It also fills the home page's ecosystem cards from ecosystems.toml, draws the
 diagrams on How it works from diagrams.py, and writes javascripts/repositories.js, which
 points the header's repository link at each live ecosystem's repository under its /<id>/
 pages. --local stages from a checkout on disk instead of build/repos/<id>/, to preview
 an ecosystem change before pushing it.
 
-Exit codes: 0 done, 1 an ecosystem failed to fetch or stage, or staged outside its
-own directory, 2 not run from the repository root or bad arguments.
+Exit codes: 0 done, 1 an ecosystem failed to fetch or stage, staged outside its own
+directory, or staged a house profile houses.toml doesn't list for it, 2 not run from the repository root or bad arguments.
 """
 
 import argparse
@@ -37,7 +40,7 @@ from html import escape
 from pathlib import Path
 
 import diagrams
-from ecosystems import DOCS, REPOS, Ecosystem, live, registry, report, require_root
+from ecosystems import DOCS, REPOS, Ecosystem, House, houses, live, registry, report, require_root
 
 PAGES = Path("pages")
 SITE_CONFIG = Path("zensical.toml")
@@ -145,12 +148,53 @@ def stage(ecosystems: list[Ecosystem], local: dict[str, str]) -> int:
         if not (out / ecosystem.id / "index.md").is_file():
             errors.append(f"{ecosystem.id}: staged no {ecosystem.id}/index.md")
 
+    profiles = houses(errors)
     if not errors:
-        write_llms(ecosystems, errors)
+        staged = check_houses(ecosystems, profiles, errors)
+        write_llms(ecosystems, staged, errors)
         write_cards(errors)
         write_diagrams(errors)
         write_repositories(ecosystems)
+        write_houses(staged)
     return report(errors)
+
+
+def check_houses(ecosystems: list[Ecosystem], profiles: list[House], errors: list[str]) -> dict[str, list[str]]:
+    """Check the llms-<profile>.txt files each ecosystem staged against houses.toml, and
+    return the live ecosystems of each profile, in registry order, for the profiles that have
+    any. An ecosystem stages one for each profile its house blocks and regions belong to."""
+    listed = {(house.id, ecosystem) for house in profiles for ecosystem in house.ecosystems}
+    staged: dict[str, list[str]] = {house.id: [] for house in profiles}
+    for ecosystem in ecosystems:
+        for path in sorted((DOCS / ecosystem.id).glob("llms-*.txt")):
+            profile = path.stem.removeprefix("llms-")
+            if (profile, ecosystem.id) not in listed:
+                errors.append(
+                    f"{ecosystem.id}: staged house profile {profile}, which houses.toml doesn't list for {ecosystem.id}"
+                )
+                continue
+            staged[profile].append(ecosystem.id)
+    # Only a warning: a profile is registered before an ecosystem weaves its first opinion,
+    # so the registration can merge first, and the ecosystem's pull request builds against it.
+    for profile, ecosystem in sorted(listed):
+        if ecosystem in {live.id for live in ecosystems} and ecosystem not in staged[profile]:
+            print(
+                f"houses.toml: {profile} lists {ecosystem}, which staged no {ecosystem}/llms-{profile}.txt",
+                file=sys.stderr,
+            )
+    return {profile: found for profile, found in staged.items() if found}
+
+
+def write_houses(staged: dict[str, list[str]]) -> None:
+    """Write the house profiles with opinions on the site for javascripts/house.js, which
+    adds the header's profile picker when there's at least one."""
+    names = {house.id: house.name for house in houses([])}
+    profiles = [{"id": profile, "name": names[profile], "ecosystems": found} for profile, found in staged.items()]
+    (DOCS / "javascripts" / "houses.js").write_text(
+        "// Written by scripts/stage.py from houses.toml. javascripts/house.js reads it.\n"
+        f"window.ahHouses = {json.dumps(profiles)};\n",
+        encoding="utf-8",
+    )
 
 
 def write_cards(errors: list[str]) -> None:
@@ -212,8 +256,9 @@ def write_repositories(ecosystems: list[Ecosystem]) -> None:
     )
 
 
-def write_llms(ecosystems: list[Ecosystem], errors: list[str]) -> None:
-    """Write the root llms.txt, which links to each ecosystem's own, per llmstxt.org."""
+def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors: list[str]) -> None:
+    """Write the root llms.txt, which links to each ecosystem's own, per llmstxt.org, and to
+    each house profile's."""
     with SITE_CONFIG.open("rb") as file:
         site_url = tomllib.load(file)["project"]["site_url"]
 
@@ -240,6 +285,27 @@ def write_llms(ecosystems: list[Ecosystem], errors: list[str]) -> None:
             errors.append(f"{path}: no summary blockquote")
             continue
         lines.append(f"- [{ecosystem.name}]({site_url}{ecosystem.id}/llms.txt): {summary}")
+
+    if staged:
+        names = {house.id: house.name for house in houses([])}
+        ecosystem_names = {ecosystem.id: ecosystem.name for ecosystem in ecosystems}
+        lines += [
+            "",
+            "## House profiles",
+            "",
+            (
+                "The files above carry no house opinions. A house profile is one person's or organisation's"
+                " preferences from experience, layered over the sourced opinions. Follow one only when the user"
+                " chooses it, by reading its file for each ecosystem instead of llms.txt."
+            ),
+            "",
+        ]
+        for profile, found in staged.items():
+            for ecosystem in found:
+                lines.append(
+                    f"- [{names[profile]}, {ecosystem_names[ecosystem]}]({site_url}{ecosystem}/llms-{profile}.txt):"
+                    f" the {profile} house profile's {ecosystem_names[ecosystem]} opinions"
+                )
 
     (DOCS / "llms.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
 

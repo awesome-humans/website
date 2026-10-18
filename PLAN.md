@@ -20,9 +20,14 @@ Stopped 2026-10-18, with Phases 0 to 3 and 8 done, Phase 4 parked, both sides of
 - **Merge settings:** every repository merges by squash only, with the pull request's title and description as the commit, and deletes branches on merge.
 - **CodeRabbit:** it no longer adds a summary to pull request descriptions ([coderabbit#2](https://github.com/awesome-humans/coderabbit/pull/2)). `coderabbit`'s `main` has a `protect-main` ruleset that requires the `config` check, and .github#4 confirmed the central configuration in `.github`.
 - **Attribution:** an agent's attribution line in a comment is italic (#65, dotnet#173).
+- **House opinion profiles:** open question 5 is settled, and #72 and dotnet#175 implement it. See [House opinion profiles](#house-opinion-profiles).
 
 Pick up here:
 
+0. **House opinion profiles** (owner, then agent):
+   - **Merge #72 first, then dotnet#175.** `website` registers the profile, and builds against `dotnet`'s `main` with only a warning. `dotnet`'s link check fails on its links to `houses.toml` until `website` merges, and its preview shows the blocks as plain text until then, so re-run both after the merge.
+   - **Update the organisation's `house-opinion.md` pull request template** in `.github`. It asks for "the sourced position it overrides", and a house opinion now sits beside the sourced text instead. Ask for the profile, and the sourced text the block sits beside.
+   - **Check the `rust` scaffolding** against [What Rust follows](#what-rust-follows) before its first house opinion.
 1. **Phase 5, Want in or out?,** waits on real issues (agent):
    - **Test the transfer again.** The duplicate path works: [#54](https://github.com/awesome-humans/website/issues/54), a suggestion of Andrew Lock, got its standing and closed. The first new suggestion, [#57](https://github.com/awesome-humans/website/issues/57) for Stephen Cleary, passed the checks, but `gh issue transfer` failed with `Resource not accessible by integration (transferIssue)`, although the app token had `issues: write` on both repositories. The owner moved it by hand to [dotnet#167](https://github.com/awesome-humans/dotnet/issues/167), and `vet-source` admitted him in dotnet#168. #58 added `contents: write` to the token, which is a guess. Test with the next real new suggestion. If the transfer still fails, stop transferring: open a copy in the ecosystem with a link back, then comment and close the `website` issue.
    - **Intake tests stay out of the decision log.** #54 and any later test suggestion exercise the plumbing only. Don't record them in `AWESOME-HUMANS.md`'s decision log, and don't open a `vet-source` pull request for them. Close each with a comment that it was a test.
@@ -78,6 +83,7 @@ These are settled unless the owner says otherwise. Each gives one line on what l
 | Fonts                         | Self-host IBM Plex Sans and Mono (SIL Open Font License) as `woff2` under `website/pages/assets/fonts/`. This keeps the current rule of no third-party request on page view. Google Fonts lost for that reason                                                                                                                                                                                                                                                                                                                                     |
 | Logo                          | The cited-human mark (concept A). The owner wasn't a fan at first, but it has grown on them since it went on the app and the organisation, so Phase 3 uses it. Concepts B (prompt human) and C (the "ah" monogram) lost to it                                                                                                                                                                                                                                                                                                                      |
 | Heading case                  | The section is titled "Want in or out?", in sentence case, as the design system's content rules require for headings                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| House opinion profiles        | The site shows no house opinions by default, and a reader or agent chooses a profile per person or organisation, such as `simon-mckenna`. House opinions sit in blocks beside the sourced text. Weaving them into the sourced text lost, because it left no community default to show. A separate build per profile lost, because it multiplies pages, search results, and preview time by the number of profiles                                                                                                                                  |
 | AI review                     | [CodeRabbit](https://coderabbit.ai) reviews every pull request in every repository, from one central configuration. Its reviews are advisory: the owner's review stays the gate, and it isn't a required check, so a rate limit on the free open-source plan can't block a merge. An agent checks that each review started, and asks with `@coderabbitai review` only when it didn't. A per-repository configuration lost because the repositories share one writing style and one `AGENTS.md` shape                                               |
 | Skill names                   | `review-project` grades an external codebase against an ecosystem's opinions. It was `verify-project` until 2026-10-18: "verify" reads as pass or fail, where the skill writes a graded report, and `check-project` lost as too generic. Version-refresh skills keep the ecosystem in the name, as `refresh-<ecosystem>-versions`, because `refresh-versions` is too generic too                                                                                                                                                                   |
 
@@ -509,49 +515,38 @@ The organisation's one pull request template, in `awesome-humans/.github`, fits 
 - **Step 3:** [dotnet#166](https://github.com/awesome-humans/dotnet/pull/166) names a template in each of the six `branch-pr` skills, and repoints the three links to the default template at `opinion.md`. One rule in `dotnet`'s `AGENTS.md` says how to fill a template in, so the skills don't each repeat it. `rust` copies that rule and the template names as its skills are written.
 - **Step 5:** On a throwaway `chore/template-check` branch in `website`, since deleted, the owner opened the compare page signed in. With no parameter it filled in the organisation's default template, and `?template=opinion.md` and `?template=source.md` filled in those templates from the folder. The other three sit in the same folder, so they weren't opened one by one. `gh pr create --template --dry-run` failed without a terminal, which is why the skills use `--body-file`. The skill half of the check waits for the next skill run.
 
-## Exploration: house opinion profiles
+## House opinion profiles
 
-This isn't a phase yet. It's open question 5, written down far enough to judge whether it's feasible.
+Settled 2026-10-18 as open question 5, and prototyped in `dotnet` with its four woven house opinions (#72, dotnet#175). The site shows no house opinions by default, so every page is sourced community practice. A reader, or an agent, chooses a **house profile**: a named set of house opinions per ecosystem, owned by a person or an organisation.
 
-**The idea:** The site shows no house opinions by default, so every page is sourced community practice only. A reader, or an agent, can choose a **house profile**: a named set of house opinions per ecosystem, owned by a person (such as `simon-mckenna`) or an organisation. Choosing one layers its opinions over the defaults.
+### How it works
 
-### What stands in the way today
+- **Stored beside the sourced text, never in it.** In an opinion, a house opinion is a block that opens with `/// house | <profile>` and closes with `///`. In a template, it's a region between `house:<profile> begin` and `house:<profile> end` comment lines. The file's `sources:` names `house:<profile>`, and the bare `house` ID is gone. `HOUSE-OPINIONS.md` rule 4 now keeps both: a reader with the profile sees both, and the house opinion wins where they conflict.
+- **Checked in the ecosystem.** `validate-sources.cs` fails when a `house:<profile>` ID and its blocks or regions don't appear together, or when `**House:**` sits outside one.
+- **Registered in `website`.** [`houses.toml`](houses.toml) lists each profile's ID, name, kind, ecosystems, and the date the owner approved it. `stage.py` fails when an ecosystem stages a profile that isn't listed for it, and only warns about a listed profile an ecosystem stages nothing for, so a registration can merge first.
+- **Chosen in the browser.** `javascripts/house.js` adds a picker to the header, remembers the choice in local storage, and takes `?house=<profile>` or `?house=none`. CSS hides every element with `data-house` until its profile is chosen, so without JavaScript a reader sees the default. One build serves every profile.
+- **Files for agents.** Each ecosystem's `llms.txt` links copies of its opinions and templates with no house opinions, and `llms-<profile>.txt` links copies with only that profile's. The root `llms.txt` lists every profile's files.
+- **Private overlays.** [House profiles](pages/house-profiles.md) documents the overlay format: `house/<ecosystem>.md` in an organisation's own repository, with the same blocks under a heading per opinion file.
 
-- **Weaving is destructive.** `HOUSE-OPINIONS.md` rule 4 says a house opinion wins a conflict, and cuts the sourced position to a one-line note. With the house opinion removed, there's no full community default left to show. Four house opinions are woven into `dotnet` today: in `testing.md`, `ci.md` (two), and `project-structure.md`, plus the templates `Directory.Build.props` and `example.slnx`.
-- **There's only one owner.** `house` is a single reserved ID, and its authority is ownership of the repository.
-- **Templates are copy-paste files.** A house opinion inside `Directory.Build.props` has no page around it to hide.
+### Where it differs from the exploration
 
-### What would make it feasible
+- **Block syntax:** `/// house | <profile>` from `pymdownx.blocks.admonition`, instead of `!!! house "<profile>"`. A `!!!` admonition needs its content indented four spaces, which GitHub renders as a code block and markdownlint flags. The blocks syntax takes its content unindented, and renders as the same `admonition house`.
+- **Where a profile's opinions live:** `houses.toml` has no field for it. Every hosted profile's opinions are blocks in the ecosystems it lists, recorded in each one's `HOUSE-OPINIONS.md`.
+- **Pairing and registration are checked in two places:** the ecosystem checks that IDs and blocks pair up, because it can't read `houses.toml`, and the site checks registration from the `llms-<profile>.txt` files each ecosystem stages.
+- **Search:** House blocks and chips are left out of the index, so a result never lands on a hidden block. Labelling hits by profile lost because it needs a search UI change.
+- **Raw copies:** Only files that hold house opinions are copied, under `<id>/raw/none/` and `<id>/raw/<profile>/`. An opinion's copy ends in `.md.txt`, because Zensical renders every `.md` file as a page and `exclude_docs` drops a file instead of copying it. Every other file links GitHub's raw copy, as before.
+- **Unweaving restored no sourced text.** Three of the four house opinions were additions. The fourth, warnings as errors everywhere, replaced a CI-only position that cited no roster source (dotnet#9 dropped its attribution), so the default keeps the sourced "warnings as errors in `Directory.Build.props`". `testing.md`'s naming opinion moved from a section of its own to a block under the title, so the default has no empty heading. The `CA1707` suppression in `Example.Library.Tests.csproj` exists only for the house test naming, so it became a house region too.
 
-1. **Separate house opinions from sourced ones.** A house opinion becomes a block next to the sourced recommendation it changes, never a rewrite of it. In each opinion file, that's an admonition:
+### What Rust follows
 
-   ```markdown
-   !!! house "simon-mckenna"
-   **House:** Treat warnings as errors everywhere, not only in CI. …
-   ```
+A separate session is scaffolding `rust`. Its first house opinion uses this format from the start, so nothing needs unweaving:
 
-   The sourced text above it stays whole. Rule 4 changes from "cut the sourced position" to "keep both, and the profile decides which a reader sees". The `**House:**` marking and the `house` colour token in the design system stay as they are.
-
-2. **Namespace the ID.** The ID becomes `house:<profile>` in `sources:`. Profiles are listed in a registry, `website/houses.toml`, with each profile's ID, display name, kind (`person` or `organisation`), ecosystems, and where its opinions live. `none` is the default.
-3. **Templates use region markers** like `# house:simon-mckenna begin` and `# house:simon-mckenna end`, in the file's comment syntax. Staging writes one copy of each template per profile, removing every region that doesn't belong to it. The default copy has no house regions at all.
-4. **Validators enforce the pairing.** Every house block names a registered profile, and every `house:<profile>` in `sources:` has a block.
-
-### How a reader or agent chooses a profile
-
-- **On the site:** A profile picker in the header sets `data-house` on `<html>`, remembered in `localStorage` and overridable with `?house=<profile>`. CSS shows only the matching house blocks. Without JavaScript, the reader sees the default. This is one build, with every block in the page and the choice made in the browser. A separate build per profile (`/dotnet/house/simon-mckenna/…`) lost, because it multiplies pages, search results, and preview time by the number of profiles.
-- **For agents:** `llms.txt` stays the default. Each profile gets `llms-<profile>.txt`, linking per-profile raw Markdown with the other profiles' blocks removed, and per-profile templates. `review-project` takes an optional profile.
-- **In search:** The index holds house blocks too, so a search result may land on a block that's hidden. Label hits by profile, or leave house blocks out of the index.
-
-### Organisation profiles
-
-- **Hosted profiles:** An organisation's profile hosted on awesome-humans.net carries the site's name. Admit one only by the owner's approval, recorded in `houses.toml`, as contributor opinions are adopted today.
-- **Private overlays:** The more useful case is likely an organisation keeping its own profile private. It holds a `house/<ecosystem>.md` overlay in its own repository, and points its agents at the default `llms.txt` plus that overlay. That needs only a documented overlay format, and nothing hosted. Ship this before hosted organisation profiles.
-
-### Cost and timing
-
-- **Changes to the content model:** `HOUSE-OPINIONS.md`, the `weave-house-opinion` skill, `validate-sources`, the staging contract, and the four woven `dotnet` opinions. Unweaving those means restoring each full sourced position from git history or from `research-topic`.
-- **Site work:** the picker, the CSS, and per-profile `llms.txt` and templates. This is small next to phase 3.
-- **Timing:** Rust starts with an empty `HOUSE-OPINIONS.md`, so the cheapest time to decide is before Rust weaves its first house opinion. Prototype in `dotnet` with the four existing opinions first.
+1. **`HOUSE-OPINIONS.md`:** copy `dotnet`'s, with its Profiles table, its five rules, and a Woven table with a Profile column. The profile is `simon-mckenna`.
+2. **Blocks and regions:** a `/// house | <profile>` block in an opinion, and a `house:<profile> begin`/`end` region in a template, in the file's comment syntax: `// house:simon-mckenna begin` in a `.rs` file, and `# house:simon-mckenna begin` in TOML. Every house opinion starts with `**House:**`, and `sources:` names `house:<profile>`, never a bare `house`.
+3. **`cargo xtask` checks:** the pairing rules in `dotnet`'s `scripts/validate-sources.cs`, using `scripts/House.cs` as the reference.
+4. **`cargo xtask build-site`:** keep the blocks in the staged pages, give a profile's chip `data-house="<profile>"`, show each template's default copy with each profile's copy in a house block below it, and write `raw/none/` and `raw/<profile>/` copies, `llms.txt` without house opinions, and `llms-<profile>.txt` per profile, as `dotnet`'s `scripts/build-site.cs` does. The [staging contract](README.md#staging-contract) lists the files.
+5. **Registration:** add `rust` to the profile's `ecosystems` in `houses.toml` before `rust` weaves its first house opinion. Until then, the site build warns and doesn't fail.
+6. **Skills:** port `weave-house-opinion`, and the house rules in `review-project`, `audit-freshness`, `research-topic`, `resolve-research`, `harvest-sources`, and the version refresh, from `dotnet`.
 
 ## Open questions
 
@@ -559,4 +554,4 @@ This isn't a phase yet. It's open question 5, written down far enough to judge w
 2. ~~**The opt-out address:**~~ Settled 2026-10-17: `contact@awesome-humans.net`, already named in `SECURITY.md`, forwarded to the owner. One inbox is less to maintain than a separate opt-out address.
 3. ~~**The montage threshold:**~~ Parked with Phase 4.
 4. ~~**Opted-out sources across ecosystems:**~~ Settled 2026-10-18: an opt-out from one ecosystem opts the source out of all of them. A person's reasons for opting out don't change with the language, so one request is enough. The form asks for no ecosystem, `route_issue.py opt-out` opens an issue in every ecosystem that lists the ID, and a later suggestion of an opted-out source is turned away in any ecosystem.
-5. **House opinion profiles:** Should the site default to no house opinions, and let readers and agents choose a profile per person or organisation, such as `simon-mckenna`? It looks feasible. The main cost is changing house opinions from rewriting the sourced text to a separate block beside it. See [Exploration: house opinion profiles](#exploration-house-opinion-profiles). **Decide before the Rust repository weaves its first house opinion**, and prototype it with the four that `dotnet` has woven.
+5. ~~**House opinion profiles:**~~ Settled 2026-10-18: yes. The site defaults to no house opinions, and readers and agents choose a profile per person or organisation, such as `simon-mckenna`. For what was built, see [House opinion profiles](#house-opinion-profiles).

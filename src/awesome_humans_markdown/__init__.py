@@ -12,6 +12,13 @@ date_cells marks a table cell that holds only an ISO 8601 date with the ah-date 
 which the theme keeps on one line. A browser otherwise breaks a date at its hyphens in
 a narrow column, as in a roster's decision log or the Woven table of house opinions.
 
+house_blocks ties each house block, which an ecosystem writes as "/// house | <profile>",
+to its profile. It sets data-house to the profile, which javascripts/house.js shows only
+to a reader who chooses it, and titles the block with the profile's name from houses.toml.
+Every element with data-house, such as a profile's chip in an opinion's metadata strip,
+also gets data-search-exclude, so a search never lands on a house opinion the reader
+can't see.
+
 title_text unwraps the link that the toc extension's anchorlink puts around each page
 title. A section heading links to itself, as in "On this page", but the title isn't in
 that list, and a link to the top of the page adds nothing. The h1 keeps its id, which
@@ -19,7 +26,9 @@ the theme's toc template looks for to leave the title out.
 """
 
 import re
+import tomllib
 import xml.etree.ElementTree as etree
+from pathlib import Path
 
 from markdown import Markdown
 from markdown.extensions import Extension
@@ -30,6 +39,9 @@ TAB_LENGTH = 4
 MARKER = re.compile(r"( *)([-*+]|\d{1,9}[.)])( {1,4}|$)(.*)")
 FENCE = re.compile(r" *(`{3,}|~{3,})")
 DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
+
+# The house profile registry. The site builds from the repository root.
+HOUSES = Path("houses.toml")
 
 
 class ListIndentPreprocessor(Preprocessor):
@@ -102,6 +114,35 @@ class DateCellTreeprocessor(Treeprocessor):
                 cell.set("class", "ah-date")
 
 
+class HouseTreeprocessor(Treeprocessor):
+    """Set data-house on each house block, title it, and keep house content out of search."""
+
+    def __init__(self, md: Markdown, names: dict[str, str]) -> None:
+        super().__init__(md)
+        self.names = names
+
+    def run(self, root: etree.Element) -> None:
+        for element in root.iter():
+            classes = element.get("class", "").split()
+            if element.tag == "div" and "admonition" in classes and "house" in classes:
+                title = next((child for child in element if "admonition-title" in child.get("class", "")), None)
+                if title is not None and len(title) == 0:
+                    profile = (title.text or "").strip()
+                    element.set("data-house", profile)
+                    title.text = f"House opinion · {self.names.get(profile, profile)}"
+            if element.get("data-house") is not None:
+                element.set("data-search-exclude", "")
+
+
+def house_names() -> dict[str, str]:
+    """Each house profile's display name, by id. A build without houses.toml titles a block by its id."""
+    try:
+        with HOUSES.open("rb") as file:
+            return {house["id"]: house["name"] for house in tomllib.load(file).get("house", [])}
+    except FileNotFoundError:
+        return {}
+
+
 class TitleTextTreeprocessor(Treeprocessor):
     """Replace the anchorlink in each h1 with its contents."""
 
@@ -121,6 +162,8 @@ class ListIndentExtension(Extension):
         md.preprocessors.register(ListIndentPreprocessor(md), "list_indent", 28)
         # Tables are built by the block parser, so any priority after it works.
         md.treeprocessors.register(DateCellTreeprocessor(md), "date_cells", 5)
+        # After attr_list (8), which sets data-house on a chip.
+        md.treeprocessors.register(HouseTreeprocessor(md, house_names()), "house_blocks", 6)
         # After toc (5), which wraps each heading's contents in its anchorlink.
         md.treeprocessors.register(TitleTextTreeprocessor(md), "title_text", 4)
 

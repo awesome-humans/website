@@ -18,14 +18,30 @@ Each ecosystem's content lives in its own repository. This repository owns every
 
 The site never runs an ecosystem's tooling directly. It runs the ecosystem's `stage` command from [`ecosystems.toml`](ecosystems.toml) in a checkout of its repository, with `{out}` set to the staging directory. The command writes everything under `{out}/<id>/`, and the site builds from there. The ecosystem's own CI decides how to produce the files, in its own language.
 
-| Path in `{out}/<id>/` | Contents                                                                                                                                                                                                       |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `index.md`            | The ecosystem's overview page, which the site serves at `/<id>/`                                                                                                                                               |
-| Other `*.md` pages    | Any layout under `<id>/`. A link between them is relative, and a link to the shared pages climbs out with `../`                                                                                                |
-| `assets/`             | Images and diagrams the pages use. Nothing outside `<id>/`                                                                                                                                                     |
-| `nav.json`            | The section's navigation, valid against [`schemas/nav.schema.json`](schemas/nav.schema.json). The site places it under the ecosystem's name                                                                    |
-| `sources.json`        | The roster, exported from `AWESOME-HUMANS.md` and valid against [`schemas/sources.schema.json`](schemas/sources.schema.json). The site combines every ecosystem's export to draw the source images and montage |
-| `llms.txt`            | A complete [llms.txt](https://llmstxt.org) for the ecosystem, served at `/<id>/llms.txt`. The site's root `llms.txt` links to each one                                                                         |
+| Path in `{out}/<id>/` | Contents                                                                                                                                                                                                             |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `index.md`            | The ecosystem's overview page, which the site serves at `/<id>/`                                                                                                                                                     |
+| Other `*.md` pages    | Any layout under `<id>/`. A link between them is relative, and a link to the shared pages climbs out with `../`                                                                                                      |
+| `assets/`             | Images and diagrams the pages use. Nothing outside `<id>/`                                                                                                                                                           |
+| `nav.json`            | The section's navigation, valid against [`schemas/nav.schema.json`](schemas/nav.schema.json). The site places it under the ecosystem's name                                                                          |
+| `sources.json`        | The roster, exported from `AWESOME-HUMANS.md` and valid against [`schemas/sources.schema.json`](schemas/sources.schema.json). The site combines every ecosystem's export to draw the source images and montage       |
+| `llms.txt`            | A complete [llms.txt](https://llmstxt.org) for the ecosystem, served at `/<id>/llms.txt`, with no house opinions in the files it links. The site's root `llms.txt` links to each one                                 |
+| `llms-<profile>.txt`  | One for each house profile the ecosystem holds opinions for, linking files with only that profile's house opinions. The site checks each profile against [`houses.toml`](houses.toml)                                |
+| `raw/`                | Optional. Copies of files that differ by house profile, for the `llms` files to link, such as `raw/none/` and `raw/<profile>/`. Name a Markdown copy `*.md.txt`, because the site renders every `.md` file as a page |
+
+### House opinions
+
+A house opinion belongs to a house profile in [`houses.toml`](houses.toml), and the site shows it only to a reader who chooses that profile in the header. Stage it in a page as a block, which opens with `/// house | <profile>` and closes with `///`, each on its own line:
+
+```markdown
+/// house | simon-mckenna
+
+**House:** Treat warnings as errors on every machine, not only in CI. …
+
+///
+```
+
+The site titles the block with the profile's name, and leaves it out of search. Any other element that belongs to a profile, such as its chip in the metadata strip, carries `data-house="<profile>"` instead. For readers, see [House profiles](pages/house-profiles.md).
 
 ### Opinion metadata
 
@@ -37,12 +53,19 @@ Each opinion page opens with the design system's OpinionMeta strip, directly und
 ```
 
 - **Separate values with a space.** Two code spans with no space between them merge into one.
-- **Link each source to its roster entry,** with a relative link the build can check.
+- **Link each source to its roster entry,** with a relative link the build can check. Give a house profile's chip `data-house="<profile>"`, as in `{ .ah-chip data-house="simon-mckenna" }`.
 - **Mark the review date `fresh` or `stale`** against the ecosystem's own review tolerance, with `ah-chip--fresh` or `ah-chip--stale`. The weekly build restages every ecosystem, so the chip changes within a week of the date passing.
 
 The command exits 0 when it staged everything, 1 when it found problems in the content, and 2 when it wasn't run from the repository root. On anything but 0, the site build stops.
 
-The site rejects a staged directory whose JSON doesn't match its schema, whose `nav.json` names a page that doesn't exist, or whose `sources.json` holds a duplicate or out-of-order `id`. A source that appears in more than one ecosystem must use the same `id` and `kind` in each.
+The site rejects a staged directory when:
+
+- Its JSON doesn't match its schema.
+- Its `nav.json` names a page that doesn't exist.
+- Its `sources.json` holds a duplicate or out-of-order `id`.
+- An `llms-<profile>.txt` names a profile that `houses.toml` doesn't list for the ecosystem. A profile listed for an ecosystem that stages nothing for it only gets a warning, so a profile can be registered before its first opinion lands.
+
+A source that appears in more than one ecosystem must use the same `id` and `kind` in each.
 
 ## Local setup
 
@@ -96,6 +119,7 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 ├── .github/workflows/      ← build.yml and deploy.yml, which ecosystems call too, site.yml, intake.yml, and markdown.yml
 ├── AGENTS.md               ← how agents work in this repository
 ├── ecosystems.toml         ← the ecosystem registry
+├── houses.toml             ← the house profile registry
 ├── pages/                  ← the shared pages, the theme, and the brand assets
 ├── PLAN.md                 ← the organisation and website plan, deleted when it's done
 ├── pyproject.toml          ← the site's Python dependencies, and its package of Markdown extensions
