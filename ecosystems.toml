@@ -30,12 +30,3 @@ toolchain = "rust"
 stage = ""
 status = "soon"
 scope = "Sources being vetted."
-
-[[ecosystem]]
-id = "typescript"
-name = "TypeScript"
-repository = "awesome-humans/typescript"
-toolchain = "node"
-stage = ""
-status = "soon"
-scope = "Sources being vetted."
