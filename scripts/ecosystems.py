@@ -5,6 +5,7 @@ repository root. It isn't a script of its own.
 """
 
 import json
+import os
 import re
 import sys
 import tomllib
@@ -21,6 +22,9 @@ BUILD = Path("build")
 DOCS = BUILD / "docs"
 REPOS = BUILD / "repos"
 SCHEMAS = Path("schemas")
+# Set by build.yml to the ecosystem a pull request previews, which builds even while it's
+# soon, so its pull requests get the strict build before it goes live.
+PREVIEW = "PREVIEW_ECOSYSTEM"
 
 
 @dataclass(frozen=True)
@@ -79,6 +83,12 @@ def registry() -> list[Ecosystem]:
 def live() -> list[Ecosystem]:
     """The live ecosystems, in registry order."""
     return [ecosystem for ecosystem in registry() if ecosystem.status == "live"]
+
+
+def built() -> list[Ecosystem]:
+    """The ecosystems a build stages, in registry order: the live ones, and the one PREVIEW names."""
+    preview = os.environ.get(PREVIEW, "")
+    return [ecosystem for ecosystem in registry() if ecosystem.status == "live" or ecosystem.id == preview]
 
 
 def load_json(path: Path, errors: list[str]) -> dict | None:

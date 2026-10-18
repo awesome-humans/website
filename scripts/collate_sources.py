@@ -20,7 +20,7 @@ import json
 import sys
 from itertools import pairwise
 
-from ecosystems import BUILD, DOCS, live, load_json, report, require_root, validate
+from ecosystems import BUILD, DOCS, built, load_json, report, require_root, validate
 
 OUTPUT = BUILD / "sources.json"
 
@@ -33,7 +33,7 @@ def main() -> int:
     errors: list[str] = []
     combined: dict[str, dict] = {}
 
-    for ecosystem in live():
+    for ecosystem in built():
         path = DOCS / ecosystem.id / "sources.json"
         document = load_json(path, errors)
         if document is None or not validate(document, "sources.schema.json", path, errors):

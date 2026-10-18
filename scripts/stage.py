@@ -23,6 +23,10 @@ points the header's repository link at each live ecosystem's repository under it
 pages. --local stages from a checkout on disk instead of build/repos/<id>/, to preview
 an ecosystem change before pushing it.
 
+fetch and stage cover every live ecosystem, and the one the PREVIEW_ECOSYSTEM
+environment variable names, even while it's soon. build.yml sets it to the ecosystem a
+pull request previews.
+
 Exit codes: 0 done, 1 an ecosystem failed to fetch or stage, staged outside its own
 directory, or staged a house profile houses.toml doesn't list for it, 2 not run from the repository root or bad arguments.
 """
@@ -40,7 +44,7 @@ from html import escape
 from pathlib import Path
 
 import diagrams
-from ecosystems import DOCS, REPOS, Ecosystem, House, houses, live, registry, report, require_root
+from ecosystems import DOCS, PREVIEW, REPOS, Ecosystem, House, built, houses, registry, report, require_root
 
 PAGES = Path("pages")
 SITE_CONFIG = Path("zensical.toml")
@@ -53,7 +57,7 @@ DIAGRAM_PAGE = "how-it-works.md"
 DIAGRAM_MARKER = re.compile(r"^<!-- diagram: ([a-z-]+) -->$", re.MULTILINE)
 
 # The toolchains build.yml has a setup step for. A new one needs a step there too.
-TOOLCHAINS = {"dotnet"}
+TOOLCHAINS = {"dotnet", "rust"}
 
 SUMMARY = (
     "Opinionated best practices for each software ecosystem, distilled from the published"
@@ -64,7 +68,7 @@ SUMMARY = (
 
 
 def pairs(values: list[str], option: str, ecosystems: list[Ecosystem]) -> dict[str, str]:
-    """Parse repeated <id>=<value> options, each naming a live ecosystem."""
+    """Parse repeated <id>=<value> options, each naming an ecosystem the build stages."""
     ids = {ecosystem.id for ecosystem in ecosystems}
     parsed = {}
     for value in values:
@@ -73,7 +77,10 @@ def pairs(values: list[str], option: str, ecosystems: list[Ecosystem]) -> dict[s
             print(f"{option} {value}: expected <id>=<value>", file=sys.stderr)
             sys.exit(2)
         if id not in ids:
-            print(f"{option} {value}: {id} isn't a live ecosystem in ecosystems.toml", file=sys.stderr)
+            print(
+                f"{option} {value}: {id} isn't live in ecosystems.toml. To build a soon one, set {PREVIEW}={id}",
+                file=sys.stderr,
+            )
             sys.exit(2)
         parsed[id] = rest
     return parsed
@@ -318,7 +325,7 @@ def main() -> int:
     commands.add_parser("stage").add_argument("--local", action="append", default=[], metavar="ID=PATH")
     args = parser.parse_args()
 
-    ecosystems = live()
+    ecosystems = built()
     if args.command == "fetch":
         return fetch(ecosystems, pairs(args.ref, "--ref", ecosystems))
     return stage(ecosystems, pairs(args.local, "--local", ecosystems))
