@@ -37,6 +37,13 @@ SITE_NAV: list[dict] = [
             {"Want in or out?": "want-in-or-out.md"},
         ]
     },
+    {
+        "Conventions": [
+            {"Writing style": "conventions/writing-style.md"},
+            {"Admission criteria": "conventions/admission-criteria.md"},
+            {"House opinions": "conventions/house-opinions.md"},
+        ]
+    },
 ]
 
 
