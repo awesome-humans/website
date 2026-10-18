@@ -11,6 +11,11 @@ per level, and keeps any indentation past an item's content column.
 date_cells marks a table cell that holds only an ISO 8601 date with the ah-date class,
 which the theme keeps on one line. A browser otherwise breaks a date at its hyphens in
 a narrow column, as in a roster's decision log or the Woven table of house opinions.
+
+title_text unwraps the link that the toc extension's anchorlink puts around each page
+title. A section heading links to itself, as in "On this page", but the title isn't in
+that list, and a link to the top of the page adds nothing. The h1 keeps its id, which
+the theme's toc template looks for to leave the title out.
 """
 
 import re
@@ -97,6 +102,18 @@ class DateCellTreeprocessor(Treeprocessor):
                 cell.set("class", "ah-date")
 
 
+class TitleTextTreeprocessor(Treeprocessor):
+    """Replace the anchorlink in each h1 with its contents."""
+
+    def run(self, root: etree.Element) -> None:
+        for heading in root.iter("h1"):
+            if len(heading) == 1 and "toclink" in heading[0].get("class", "").split():
+                link = heading[0]
+                heading.remove(link)
+                heading.text = link.text
+                heading.extend(link)
+
+
 class ListIndentExtension(Extension):
     def extendMarkdown(self, md: Markdown) -> None:
         # After normalize_whitespace (30), which expands tabs, and before
@@ -104,6 +121,8 @@ class ListIndentExtension(Extension):
         md.preprocessors.register(ListIndentPreprocessor(md), "list_indent", 28)
         # Tables are built by the block parser, so any priority after it works.
         md.treeprocessors.register(DateCellTreeprocessor(md), "date_cells", 5)
+        # After toc (5), which wraps each heading's contents in its anchorlink.
+        md.treeprocessors.register(TitleTextTreeprocessor(md), "title_text", 4)
 
 
 def makeExtension(**kwargs) -> ListIndentExtension:

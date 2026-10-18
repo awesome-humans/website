@@ -238,6 +238,19 @@
   font-feature-settings: normal;
 }
 
+/* Each section heading's text links to its own anchor (the toc extension's anchorlink),
+   in place of a pilcrow; the page title stays plain text (title_text in src/). The link
+   keeps the heading's colour, so the accent stays in its four places, and turns brand
+   green on hover or focus, as the "On this page" links do, without Zensical's underline. */
+.md-typeset .toclink {
+  color: inherit;
+  text-decoration: none;
+}
+.md-typeset .toclink:hover,
+.md-typeset .toclink:focus-visible {
+  color: var(--ah-brand);
+}
+
 /* The page title, underlined with the ecosystem tick. The design system draws the tick
    above the title; the owner moved it underneath on 2026-10-16, where it reads as an
    underline rather than a rule cutting the page. */

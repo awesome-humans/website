@@ -1,6 +1,7 @@
 # Words cspell.jsonc accepts on top of its en-GB and software dictionaries:
 # names, identifiers, and terms the dictionaries lack. One per line, sorted
 # case-insensitively. Never add an American spelling.
+anchorlink
 Cleary
 extrahead
 inlinehilite
@@ -13,11 +14,13 @@ lycheecache
 lycheeverse
 NOLOGO
 OPTOUT
+pilcrow
 scannable
 scratchpad
 smol
 taplo
 tasklist
+toclink
 treeprocessor
 treeprocessors
 unpushed
