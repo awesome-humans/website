@@ -8,11 +8,10 @@ Each ecosystem's content lives in its own repository. This repository owns every
 
 [`ecosystems.toml`](ecosystems.toml) lists every ecosystem the site knows. Adding one takes an entry there, which also gives it a card on the home page, and its accent colours in [`pages/stylesheets/awesome-humans.css`](pages/stylesheets/awesome-humans.css), copied from the design system, and an option in the Ecosystem dropdown of [`suggest-source.yml`](.github/ISSUE_TEMPLATE/suggest-source.yml). Once it's live, add its repository to the app token in [`intake.yml`](.github/workflows/intake.yml).
 
-| Ecosystem  | Repository                                                        | Status |
-| ---------- | ----------------------------------------------------------------- | ------ |
-| .NET       | [awesome-humans/dotnet](https://github.com/awesome-humans/dotnet) | Live   |
-| Rust       | [awesome-humans/rust](https://github.com/awesome-humans/rust)     | Soon   |
-| TypeScript | Not created yet                                                   | Soon   |
+| Ecosystem | Repository                                                        | Status |
+| --------- | ----------------------------------------------------------------- | ------ |
+| .NET      | [awesome-humans/dotnet](https://github.com/awesome-humans/dotnet) | Live   |
+| Rust      | [awesome-humans/rust](https://github.com/awesome-humans/rust)     | Soon   |
 
 ## Staging contract
 
