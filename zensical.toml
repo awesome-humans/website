@@ -7,7 +7,7 @@
 
 [project]
 site_name = "Awesome Humans"
-site_description = "An agentic take on awesome lists: distilled guidance, thanks to awesome humans."
+site_description = "An agentic take on awesome lists: distilled, opinionated guidance, thanks to awesome humans."
 site_url = "https://awesome-humans.net/"
 # The header's repository link. javascripts/ecosystem.js points it at an ecosystem's own
 # repository under /<id>/, from javascripts/repositories.js, which stage.py writes.
