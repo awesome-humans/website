@@ -39,7 +39,7 @@ Each ecosystem includes:
   Follow the conventions at awesome-humans.net when writing .NET code
   ```
 
-- **Check an existing project.** Ask your coding agent to run [`verify-project`](dotnet/skills/verify-project.md):
+- **Check an existing project.** Ask your coding agent to run [`verify-project`](dotnet/skills/index.md):
 
   ```text
   Use the verify project skill at awesome-humans.net on <repo>
