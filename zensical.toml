@@ -13,6 +13,10 @@ site_url = "https://awesome-humans.net/"
 # repository under /<id>/, from javascripts/repositories.js, which stage.py writes.
 repo_url = "https://github.com/awesome-humans/website"
 repo_name = "awesome-humans/website"
+# The footer. Naming a language or platform needs no permission, but the site mustn't look
+# official or endorsed, under the Rust Foundation's trademark policy and Microsoft's
+# trademark guidelines.
+copyright = "Not affiliated with or endorsed by the Rust Project, the Rust Foundation, the .NET Foundation, or Microsoft."
 docs_dir = "docs"
 site_dir = "public"
 extra_css = ["stylesheets/awesome-humans.css"]
