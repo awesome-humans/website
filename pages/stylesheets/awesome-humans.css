@@ -238,10 +238,10 @@
   font-feature-settings: normal;
 }
 
-/* Each heading's text links to its own anchor (the toc extension's anchorlink), in place
-   of a pilcrow. It keeps the heading's colour, so the accent stays in its four places,
-   and turns brand green on hover or focus, as the "On this page" links do. Zensical
-   underlines every link, and an underline would double the page title's tick. */
+/* Each section heading's text links to its own anchor (the toc extension's anchorlink),
+   in place of a pilcrow; the page title stays plain text (title_text in src/). The link
+   keeps the heading's colour, so the accent stays in its four places, and turns brand
+   green on hover or focus, as the "On this page" links do, without Zensical's underline. */
 .md-typeset .toclink {
   color: inherit;
   text-decoration: none;
