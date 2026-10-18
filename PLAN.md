@@ -20,12 +20,12 @@ Stopped 2026-10-18, with Phases 0 to 3 and 8 done, Phase 4 parked, both sides of
 - **Merge settings:** every repository merges by squash only, with the pull request's title and description as the commit, and deletes branches on merge.
 - **CodeRabbit:** it no longer adds a summary to pull request descriptions ([coderabbit#2](https://github.com/awesome-humans/coderabbit/pull/2)). `coderabbit`'s `main` has a `protect-main` ruleset that requires the `config` check, and .github#4 confirmed the central configuration in `.github`.
 - **Attribution:** an agent's attribution line in a comment is italic (#65, dotnet#173).
-- **House opinion profiles:** open question 5 is settled, and #PR_WEBSITE and dotnet#PR_DOTNET implement it. See [House opinion profiles](#house-opinion-profiles).
+- **House opinion profiles:** open question 5 is settled, and #72 and dotnet#175 implement it. See [House opinion profiles](#house-opinion-profiles).
 
 Pick up here:
 
 0. **House opinion profiles** (owner, then agent):
-   - **Merge #PR_WEBSITE first, then dotnet#PR_DOTNET.** `website` registers the profile, and builds against `dotnet`'s `main` with only a warning. `dotnet`'s link check fails on its links to `houses.toml` until `website` merges, and its preview shows the blocks as plain text until then, so re-run both after the merge.
+   - **Merge #72 first, then dotnet#175.** `website` registers the profile, and builds against `dotnet`'s `main` with only a warning. `dotnet`'s link check fails on its links to `houses.toml` until `website` merges, and its preview shows the blocks as plain text until then, so re-run both after the merge.
    - **Update the organisation's `house-opinion.md` pull request template** in `.github`. It asks for "the sourced position it overrides", and a house opinion now sits beside the sourced text instead. Ask for the profile, and the sourced text the block sits beside.
    - **Check the `rust` scaffolding** against [What Rust follows](#what-rust-follows) before its first house opinion.
 1. **Phase 5, Want in or out?,** waits on real issues (agent):
@@ -517,7 +517,7 @@ The organisation's one pull request template, in `awesome-humans/.github`, fits 
 
 ## House opinion profiles
 
-Settled 2026-10-18 as open question 5, and prototyped in `dotnet` with its four woven house opinions (#PR_WEBSITE, dotnet#PR_DOTNET). The site shows no house opinions by default, so every page is sourced community practice. A reader, or an agent, chooses a **house profile**: a named set of house opinions per ecosystem, owned by a person or an organisation.
+Settled 2026-10-18 as open question 5, and prototyped in `dotnet` with its four woven house opinions (#72, dotnet#175). The site shows no house opinions by default, so every page is sourced community practice. A reader, or an agent, chooses a **house profile**: a named set of house opinions per ecosystem, owned by a person or an organisation.
 
 ### How it works
 
