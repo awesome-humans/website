@@ -39,6 +39,7 @@ Pick up here:
    - **`rust`:** Renamed in rust#1, in its README, `AGENTS.md`, and `PLAN.md`, so it merges with the new name.
    - **`feat/house-profiles`:** Its branches in `dotnet` and `website` change the same lines. Rebase them after the merge. `rust` follows them once both merge, as item 3 says.
    - **Old links:** The site has no redirects, so `/dotnet/skills/verify-project/` stops working. Nothing in the organisation links it after the rename.
+6. **Phase 9, Shared conventions,** starts once #72 and dotnet#175 merge (agent): publish the writing style, the admission criteria, and the house-opinion mechanism under `pages/conventions/`, then replace the copies in `dotnet` and `rust` with links. Check how CodeRabbit can still read them first.
 
 `gh` is signed in as `si618`, an organisation admin, without the `admin:org` scope. Repository rulesets don't need it, but listing organisation rulesets does.
 
@@ -515,6 +516,25 @@ The organisation's one pull request template, in `awesome-humans/.github`, fits 
 - **Step 3:** [dotnet#166](https://github.com/awesome-humans/dotnet/pull/166) names a template in each of the six `branch-pr` skills, and repoints the three links to the default template at `opinion.md`. One rule in `dotnet`'s `AGENTS.md` says how to fill a template in, so the skills don't each repeat it. `rust` copies that rule and the template names as its skills are written.
 - **Step 5:** On a throwaway `chore/template-check` branch in `website`, since deleted, the owner opened the compare page signed in. With no parameter it filled in the organisation's default template, and `?template=opinion.md` and `?template=source.md` filled in those templates from the folder. The other three sit in the same folder, so they weren't opened one by one. `gh pr create --template --dry-run` failed without a terminal, which is why the skills use `--body-file`. The skill half of the check waits for the next skill run.
 
+## Phase 9: Shared conventions
+
+The owner settled on 2026-10-18 that the text every repository shares lives once, in `website`, and the others link to it. See [Open questions](#open-questions) item 1. Today `dotnet`, `rust`, and `website` each hold a copy of the writing style, and `dotnet` and `rust` each hold the admission criteria and the house-opinion mechanism. Phase 9 is independent of the others, but it waits on #72 and dotnet#175, which rewrite the house-opinion mechanism.
+
+1. **Publish the shared text** (agent), on `docs/shared-conventions` in `website`, as pages under `pages/conventions/`:
+
+   | Page                    | Moved from                                                                              | Stays in each ecosystem                                                                               |
+   | ----------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+   | `writing-style.md`      | `AGENTS.md`: Writing style, from Voice to Scope of these rules                          | Who the reader is, the platform's spelling exception and its examples, and Writing style for opinions |
+   | `admission-criteria.md` | `AWESOME-HUMANS.md`: Admission criteria, and Reserved IDs, markings, and references     | The roster tables, Opted out, Source notes, and the decision log                                      |
+   | `house-opinions.md`     | `HOUSE-OPINIONS.md`: How this works, and Entry format, as #72 and dotnet#175 leave them | The Profiles table, the Inbox, and the Woven table                                                    |
+
+   Publishing them puts them at `awesome-humans.net/conventions/<page>/` and in the root `llms.txt`, so readers and agents reach them without GitHub. `website`'s own `AGENTS.md` links `writing-style.md` too, instead of keeping its copy.
+
+2. **Replace the copies** (agent), one pull request per ecosystem, after step 1 merges: `docs/link-shared-conventions` in `dotnet` and `rust`. Each section that moved becomes a one-paragraph pointer that names the page and says to read it before writing, followed by what stays. Link the page's source on GitHub, at `main`, which lychee checks and the strict build resolves. Every relative link into a moved section, such as `AGENTS.md#voice` or `AWESOME-HUMANS.md#admission-criteria`, is repointed in the same pull request. In `rust`, fold this into the house-profiles port if both are still open.
+3. **Keep CodeRabbit's guidelines whole.** CodeRabbit reads each repository's `AGENTS.md`, and won't follow a link out of it. Check first whether the central `.coderabbit.yaml` can name guideline files in another repository. If it can't, add the three pages to `reviews.path_instructions` in `coderabbit` as a short summary with the link, and record that it's a summary in the file's comment.
+4. **Forks** of an ecosystem repository either keep linking the shared pages or write their own. That's fine, and nothing needs to stop it.
+5. **Check:** each ecosystem's `AGENTS.md`, `AWESOME-HUMANS.md`, and `HOUSE-OPINIONS.md` still read as complete for that ecosystem, `grep` finds no second copy of a moved section in any repository, and a pull request in each repository shows CodeRabbit applying a writing-style rule from the shared page.
+
 ## House opinion profiles
 
 Settled 2026-10-18 as open question 5, and prototyped in `dotnet` with its four woven house opinions (#72, dotnet#175). The site shows no house opinions by default, so every page is sourced community practice. A reader, or an agent, chooses a **house profile**: a named set of house opinions per ecosystem, owned by a person or an organisation.
@@ -551,7 +571,7 @@ A separate session is scaffolding `rust`. Its first house opinion uses this form
 ## Open questions
 
 1. **Shared skills and scripts (deferred):** Many skills (`vet-source`, `audit-freshness`, `research-topic`, and the others) and the prose tooling configuration will exist as near-copies in every ecosystem repository. Consolidating them into a shared repository, or into `website`, may cut the drift. **Decide once the Rust ecosystem is up and running**, when there are two real copies to compare. Until then, keep the copies, and note each divergence in the Rust repository's pull requests.
-   - **Shared text, settled 2026-10-18:** the owner chose to move `AGENTS.md`'s writing style, the admission criteria, and the house-opinion mechanism into `website`, and link to them from each ecosystem instead of keeping copies. A fork of an ecosystem repository either adopts the linked text or writes its own. Until the move, each ecosystem keeps its current copy.
+   - **Shared text, settled 2026-10-18,** in [Phase 9](#phase-9-shared-conventions): the owner chose to move `AGENTS.md`'s writing style, the admission criteria, and the house-opinion mechanism into `website`, and link to them from each ecosystem instead of keeping copies. A fork of an ecosystem repository either adopts the linked text or writes its own. Until the move, each ecosystem keeps its current copy.
 2. ~~**The opt-out address:**~~ Settled 2026-10-17: `contact@awesome-humans.net`, already named in `SECURITY.md`, forwarded to the owner. One inbox is less to maintain than a separate opt-out address.
 3. ~~**The montage threshold:**~~ Parked with Phase 4.
 4. ~~**Opted-out sources across ecosystems:**~~ Settled 2026-10-18: an opt-out from one ecosystem opts the source out of all of them. A person's reasons for opting out don't change with the language, so one request is enough. The form asks for no ecosystem, `route_issue.py opt-out` opens an issue in every ecosystem that lists the ID, and a later suggestion of an opted-out source is turned away in any ecosystem.
