@@ -11,7 +11,7 @@ intake.yml runs it with GH_TOKEN set to the app's token. It reads the issue with
 and each live ecosystem's roster from its published sources.json.
 
 suggest checks a new or edited suggestion. A source already on the chosen ecosystem's
-roster gets its standing, and the issue closes. Otherwise a field that isn't a URL gets
+roster, or opted out of any live roster, gets its standing, and the issue closes. Otherwise a field that isn't a URL gets
 one comment, which the script updates on each edit. Otherwise the issue moves to the
 ecosystem's repository, labelled vet-source. An ecosystem that isn't live yet keeps the
 suggestion here, with a comment.
@@ -122,17 +122,23 @@ def suggest(number: int, issue: dict, dry_run: bool) -> int:
         raise RouteError(f"#{number} names the ecosystem {name!r}, which ecosystems.toml doesn't have")
 
     # A source already on the roster needs nothing else from the form, so check that
-    # first. An ecosystem that isn't live has no roster to check.
+    # first. An opt-out from one ecosystem covers them all, so the other live rosters
+    # count too, but only for their opted-out sources. An ecosystem that isn't live has
+    # no roster to check.
     main_url = form.get("Main URL", "")
-    if ecosystem.status == "live":
-        target = normalise(main_url)
-        suggested_name = form.get("Name", "").casefold()
-        for source in roster(ecosystem):
+    target = normalise(main_url)
+    suggested_name = form.get("Name", "").casefold()
+    others = [e for e in live() if e != ecosystem]
+    for listed in ([ecosystem] if ecosystem.status == "live" else []) + others:
+        for source in roster(listed):
+            if listed != ecosystem and source["standing"] != "opted-out":
+                continue
             if normalise(source["url"]) == target or source["name"].casefold() == suggested_name:
                 title, page = STANDINGS.get(source["standing"], ("Awesome humans", ""))
                 if source["standing"] == "opted-out":
                     next_step = (
-                        "They asked not to be cited, so the roster keeps them out unless they ask to opt back in."
+                        "They asked not to be cited, which covers every ecosystem, "
+                        "so the rosters keep them out unless they ask to opt back in."
                     )
                 else:
                     next_step = (
@@ -140,8 +146,8 @@ def suggest(number: int, issue: dict, dry_run: bool) -> int:
                     )
                 upsert_comment(
                     number,
-                    f"{source['name']} is already on the {ecosystem.name} roster as `{source['id']}`, "
-                    f"in [{title}]({SITE}/{ecosystem.id}/awesome-humans/{page}). {next_step}",
+                    f"{source['name']} is already on the {listed.name} roster as `{source['id']}`, "
+                    f"in [{title}]({SITE}/{listed.id}/awesome-humans/{page}). {next_step}",
                     dry_run=dry_run,
                 )
                 close = ("issue", "close", str(number), "-R", REPOSITORY, "--reason", "not planned")
