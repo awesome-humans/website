@@ -40,73 +40,10 @@ An agent that uses the author's credentials posts under the author's account, an
 
 ## Writing style
 
-These rules cover all prose in this repository: the pages, the README, this file, commit messages, pull request titles and descriptions, and the comments an agent posts on issues and pull requests. They match the ecosystems' rules, so the whole site reads in one voice.
+Follow [Writing style](pages/conventions/writing-style.md), the shared rules for all prose in every awesome-humans repository, and read it before you write. It covers the pages, the README, this file, commit messages, pull request titles and descriptions, and the comments an agent posts on issues and pull requests. This repository adds two rules:
 
-The voice follows the [Google developer documentation style guide](https://developers.google.com/style): conversational but direct, plain, and easy to scan. When a question comes up, use [Google's own order of precedence](https://developers.google.com/style#how-to-use):
-
-1. The rules in this section.
-2. The Google developer documentation style guide.
-3. For a technical term that neither settles, the [Microsoft Writing Style Guide](https://learn.microsoft.com/style-guide/welcome/), which Google names as its technical reference.
-
-Apart from spelling, which [Spelling](#spelling) covers, this repository departs from Google's guide in one place: write dates as ISO 8601 (`2026-10-15`).
-
-### Voice
-
-- **Write for a working developer.** The site's readers write code for a living. Don't explain what a pull request or a package manager is.
-- **Address the reader as "you", and use the imperative for instructions.**
-- **Use active voice and present tense.**
-- **Use common contractions.** _It's_, _don't_, _isn't_, _can't_, and _you're_ read naturally. Prefer the negative contractions: a reader scanning the page can miss _not_, but rarely misreads _don't_. Avoid rare ones, such as _it'll_ or _should've_.
-- **Use plain words.** Write _use_, not _utilize_; _about_, not _with regard to_; _for example_, not _e.g._; _that is_, not _i.e._ Use _can_ for ability and _might_ for possibility. Reserve _must_ for a hard requirement.
-- **Drop filler from instructions.** Don't write _please_, _simply_, _easy_, _quickly_, or _let's_, and don't open with a placeholder such as _please note_ or _at this time_. Avoid exclamation marks.
-- **Write for a global audience.** Avoid figurative language, idioms, and cultural references. [Stock phrases](#stock-phrases) lists the ones that got into the ecosystems.
-
-### Content
-
-- **Lead with what matters.** Put the recommendation or the action first in a section, a paragraph, and a sentence. Put the reason after it.
-- **Put a condition before the instruction it limits.** Write "For details, see [README.md](README.md)", not "See [README.md](README.md) for details". A reader the condition excludes can then skip the instruction.
-- **Make link text say where the link goes.** Use the target's title. Never use _here_, _this page_, or a bare URL.
-- **Make every sentence carry a fact the reader can act on or check.** A measured number beats an adjective.
-- **Cut what doesn't add a fact.** Delete a sentence that restates the one before it, or that comments on the text instead of the subject.
-- **Keep sentences short.** Aim for about 20 words. Split any sentence over 35 words at the clause that does separate work.
-- **Keep paragraphs short.** Three or four sentences is plenty. Break up a longer one, or turn it into a list.
-- **Make it scannable.** Use a numbered list for steps that happen in order, a bulleted list for items that don't, and a table when the same attributes repeat across items. Use sentence-style capitalisation for headings, and keep headings short and specific.
-- **Use the serial comma.** Write "opinions, templates, and skills".
-- **Write a range with _to_, not an en dash.** Write "versions 8 to 10".
-
-### Rhythm
-
-Agents write most of the prose here, and it goes wrong in rhythm more than vocabulary. Four patterns are fine occasionally and read as machine-written in bulk:
-
-- **Em dashes.** Use at most one per sentence, and only for a real turn. A colon, a comma, or a full stop usually works better.
-- **"X, not Y" contrasts.** Keep one when the rejected option is the one a reader would otherwise choose. Cut it when nobody would choose the alternative.
-- **Parenthetical asides.** If an aside carries real content, make it a sentence. If it restates the sentence it's attached to, delete it.
-- **Lists of three.** A real list can have any length. Don't pad a list to three items because three sounds complete.
-
-### Stock phrases
-
-Replace each with the plain statement it stands for.
-
-| Avoid                                              | Write instead                                   |
-| -------------------------------------------------- | ----------------------------------------------- |
-| load-bearing                                       | what depends on it                              |
-| belt and braces                                    | the second check, and what it catches           |
-| earns its keep, earns its place                    | the benefit, measured                           |
-| escape hatch                                       | the setting or API that opts out                |
-| bites                                              | the failure, and when it happens                |
-| for free                                           | without extra code, or what's actually included |
-| reach for                                          | use                                             |
-| worth noting                                       | (delete it, and state the fact)                 |
-| _honest_, _genuinely_, _quietly_ (as intensifiers) | (delete them)                                   |
-
-### Spelling
-
-- **Use British spelling, except where a platform names the word.** Write _defence_, _modelling_, _catalogue_, _behaviour_, and _colour_. Never anglicise an API, a CSS property, or a configuration key, such as `color` or `--md-default-bg-color`.
-- **`just spell` checks spelling.** When it flags a correctly spelled name or term, add the word to `cspell.words.txt` in the same commit. Never add an American spelling there. In Markdown, it skips link text, inline code, and double-quoted text.
-
-### Scope of these rules
-
-- **They're review guidance, not a build check,** except spelling, which `just spell` enforces.
-- **They apply only to prose written here.** A third-party title and its URL keep the author's wording and spelling.
+- **Write for a working developer.** The site's readers write code for a living, in any ecosystem. Don't explain what a pull request or a package manager is.
+- **Leave the web platform's spelling in code.** A CSS property, a custom property, or a configuration key keeps its American spelling, such as `color` or `--md-default-bg-color`. The prose around it stays British.
 
 ## Workflow
 

@@ -14,7 +14,7 @@ outputs, so build.yml sets up only those.
 
 stage copies pages/ into build/docs/, runs each ecosystem's stage command with {out}
 set to build/docs/, and writes the root llms.txt, which links to each ecosystem's
-own, and to each house profile's llms-<profile>.txt in it. It checks that every profile
+own, to the shared conventions, and to each house profile's llms-<profile>.txt in it. It checks that every profile
 an ecosystem staged is in houses.toml for that ecosystem, warns about a listed profile an
 ecosystem staged nothing for, and writes
 javascripts/houses.js, which lists them for the header's profile picker. It also fills the home page's ecosystem cards from ecosystems.toml, draws the
@@ -55,6 +55,18 @@ CARDS_MARKER = "<!-- ecosystem-cards -->"
 # A line in pages/how-it-works.md that a diagram from diagrams.py replaces.
 DIAGRAM_PAGE = "how-it-works.md"
 DIAGRAM_MARKER = re.compile(r"^<!-- diagram: ([a-z-]+) -->$", re.MULTILINE)
+
+# The shared conventions under pages/conventions/, which the root llms.txt links to as
+# raw Markdown, with what each covers.
+CONVENTIONS = {
+    "writing-style": ("Writing style", "the voice, spelling, and citation rules for all prose in every repository"),
+    "admission-criteria": (
+        "Admission criteria",
+        "the track record a source needs, and the IDs and markings that limit citing it",
+    ),
+    "house-opinions": ("House opinions", "how a house opinion is woven into an ecosystem, and how it's marked"),
+}
+RAW_PAGES = "https://raw.githubusercontent.com/awesome-humans/website/main/pages/"
 
 # The toolchains build.yml has a setup step for. A new one needs a step there too.
 TOOLCHAINS = {"dotnet", "rust"}
@@ -264,8 +276,8 @@ def write_repositories(ecosystems: list[Ecosystem]) -> None:
 
 
 def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors: list[str]) -> None:
-    """Write the root llms.txt, which links to each ecosystem's own, per llmstxt.org, and to
-    each house profile's."""
+    """Write the root llms.txt, which links to each ecosystem's own, per llmstxt.org, to the
+    shared conventions, and to each house profile's."""
     with SITE_CONFIG.open("rb") as file:
         site_url = tomllib.load(file)["project"]["site_url"]
 
@@ -292,6 +304,18 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
             errors.append(f"{path}: no summary blockquote")
             continue
         lines.append(f"- [{ecosystem.name}]({site_url}{ecosystem.id}/llms.txt): {summary}")
+
+    lines += [
+        "",
+        "## Conventions",
+        "",
+        "Every ecosystem follows these. Read them before writing or reviewing an opinion.",
+        "",
+    ]
+    for page, (title, covers) in CONVENTIONS.items():
+        if not (PAGES / "conventions" / f"{page}.md").is_file():
+            errors.append(f"{PAGES / 'conventions' / page}.md: missing, but CONVENTIONS lists it")
+        lines.append(f"- [{title}]({RAW_PAGES}conventions/{page}.md): {covers}")
 
     if staged:
         names = {house.id: house.name for house in houses([])}
