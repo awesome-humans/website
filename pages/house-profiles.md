@@ -6,7 +6,7 @@ Every page on this site is sourced community practice, unless you choose a house
 
 - **On the site:** Choose a profile from the picker in the header. Your browser remembers the choice. To link to a page with a profile chosen, add `?house=<profile>` to its URL, such as `?house=simon-mckenna`. To clear the choice, choose **No house opinions**, or add `?house=none`.
 - **For an agent:** Point it at an ecosystem's `llms-<profile>.txt` instead of its `llms.txt`, such as `/dotnet/llms-simon-mckenna.txt`. The root [`llms.txt`](llms.txt) lists every profile's files. Each ecosystem's `llms.txt` carries no house opinions.
-- **With `verify-project`:** Name the profile when you run the skill. Without one, it checks sourced practice only.
+- **With `review-project`:** Name the profile when you run the skill. Without one, it checks sourced practice only.
 
 Search covers the sourced text only, so a result never lands on a house opinion you can't see.
 
