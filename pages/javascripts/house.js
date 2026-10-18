@@ -4,6 +4,7 @@
 // data-house on <html>. Local storage remembers the choice. ?house=<profile> sets it, and
 // ?house=none clears it. houses.js, which stage.py writes from houses.toml, lists the
 // profiles. Without JavaScript, or with no profiles, the reader sees the default and no picker.
+// The picker shows only on a page it can change, unless a profile is chosen.
 // A block, so these names stay out of the global scope, which the theme's own scripts share.
 {
   const houses = window.ahHouses ?? [];
@@ -59,9 +60,14 @@
   }
   const current = apply(requested ?? stored() ?? none);
 
-  // The picker sits in the header, before the search box, on every page.
+  // The picker sits in the header, before the search box, only where it does something: on
+  // a page with house content, or one marked data-house-picker, such as House profiles. Once
+  // a profile is chosen, it shows on every page, so the reader can see it's on and clear it.
   const header = document.querySelector(".md-header__inner");
-  if (houses.length > 0 && header) {
+  const wanted =
+    current !== none ||
+    document.querySelector(".md-typeset [data-house], [data-house-picker]");
+  if (houses.length > 0 && header && wanted) {
     const select = document.createElement("select");
     select.className = "ah-house-picker";
     select.setAttribute("aria-label", "House profile");
