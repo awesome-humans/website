@@ -1,7 +1,7 @@
 # Editor settings for this repository's prose, configuration, and scripts.
 #
 # Values here match what the formatters produce, so the editor and a formatter
-# don't undo each other on save: Prettier (`npm run format`) for Markdown, JSON,
+# don't undo each other on save: Prettier (`just format`) for Markdown, JSON,
 # JSONC, YAML, CSS, and JavaScript, taplo for TOML, and Ruff for Python.
 
 root = true
@@ -24,4 +24,8 @@ indent_size = unset
 
 # Python follows PEP 8.
 [*.py]
+indent_size = 4
+
+# The four-space indent that `just --fmt` writes.
+[justfile]
 indent_size = 4

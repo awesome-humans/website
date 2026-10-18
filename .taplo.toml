@@ -1,5 +1,5 @@
 # Configuration for taplo, which formats and lints this repository's TOML.
-# Run `uv run taplo fmt` to format, and `uv run taplo fmt --check` to check.
+# `just format` formats, and `just format-check` checks.
 
 # Only the repository's own files: not .venv, node_modules, or build/.
 include = ["*.toml"]

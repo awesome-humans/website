@@ -101,11 +101,11 @@ Replace each with the plain statement it stands for.
 ### Spelling
 
 - **Use British spelling, except where a platform names the word.** Write _defence_, _modelling_, _catalogue_, _behaviour_, and _colour_. Never anglicise an API, a CSS property, or a configuration key, such as `color` or `--md-default-bg-color`.
-- **`npm run spell` checks spelling.** When it flags a correctly spelled name or term, add the word to `cspell.words.txt` in the same commit. Never add an American spelling there. In Markdown, it skips link text, inline code, and double-quoted text.
+- **`just spell` checks spelling.** When it flags a correctly spelled name or term, add the word to `cspell.words.txt` in the same commit. Never add an American spelling there. In Markdown, it skips link text, inline code, and double-quoted text.
 
 ### Scope of these rules
 
-- **They're review guidance, not a build check,** except spelling, which `npm run spell` enforces.
+- **They're review guidance, not a build check,** except spelling, which `just spell` enforces.
 - **They apply only to prose written here.** A third-party title and its URL keep the author's wording and spelling.
 
 ## Workflow
@@ -117,21 +117,22 @@ Work in a git worktree, with one branch per directory. The local clone is bare, 
 - **Starting:** Start every new piece of work as a new worktree, with `git worktree add -b <branch> <dir> main`.
 - **Branch names:** Use the commit's Conventional Commits type (`docs/`, `fix/`, `feat/`, `ci/`, or `chore/`) and a kebab-case slug. `automation/` is reserved for workflows. Settle the name before you open the pull request: renaming the head branch of an open pull request closes it.
 - **Directory names:** Name the directory after the branch, with slashes replaced by dashes, so `feat/scaffold` becomes `feat-scaffold/`.
-- **Setup:** A fresh worktree has no gitignored local state. Run `uv sync` and `npm install` in it.
+- **Setup:** A fresh worktree has no gitignored local state. Run `just install` in it.
 - **Finishing:** When a worktree's pull request merges, offer to delete the worktree with `git worktree remove <dir>`, and then its branch. Ask first: the branch might still hold work that never reached the pull request.
 
 ### Formatting and linting
 
 - Markdown follows GFM and markdownlint, configured in `.markdownlint-cli2.jsonc`. Spelling follows cspell, configured in `cspell.jsonc` with the `en-GB` dictionary and the repository's word list in `cspell.words.txt`.
-- Run `npm run format` to format every file, and `npm run check` to run every check that CI runs: formatting, linting, types, and spelling. Each tool is pinned, the Node ones in `package.json` and the Python ones in the dev group in `pyproject.toml`. Don't run a tool through `npx` or `uvx`, because they resolve the latest version.
-- `npm run format` runs Prettier on Markdown, JSON, YAML, CSS, and JavaScript, taplo on TOML (configured in `.taplo.toml`), and Ruff on Python. Prettier skips the Jinja template in `overrides/`, which it would break.
-- `npm run lint` runs markdownlint on Markdown, stylelint on CSS (configured in `.stylelintrc.json`), ESLint on JavaScript (configured in `eslint.config.mjs`), and Ruff on Python. The CSS and JavaScript rules catch mistakes, not style: formatting is the formatters' job.
+- Run `just format` to format every file, and `just check` to run every check that CI runs on a pull request: formatting, linting, types, and spelling. The link check and the site build run only in CI and in `just build`. Each tool is pinned, the Node ones in `package.json` and the Python ones in the dev group in `pyproject.toml`. Don't run a tool through `npx` or `uvx`, because they resolve the latest version.
+- `just format` runs Prettier on Markdown, JSON, YAML, CSS, and JavaScript, taplo on TOML (configured in `.taplo.toml`), and Ruff on Python. Prettier skips the Jinja template in `overrides/`, which it would break.
+- `just lint` runs markdownlint on Markdown, stylelint on CSS (configured in `.stylelintrc.json`), ESLint on JavaScript (configured in `eslint.config.mjs`), and Ruff on Python. The CSS and JavaScript rules catch mistakes, not style: formatting is the formatters' job.
 - It also checks the workflows. actionlint finds mistakes, including shellcheck on their `run:` scripts, and zizmor audits them for security problems (configured in `.github/zizmor.yml`). Without a GitHub token, zizmor skips its online audits and says so. CI passes one.
-- `npm run typecheck` runs pyright on the Python, configured in `pyproject.toml`.
+- `just typecheck` runs pyright on the Python, configured in `pyproject.toml`.
 
 ### Scripts
 
-- Site scripts live in `scripts/` as Python, run with `uv run scripts/<name>.py` from the repository root. Each declares its dependencies inline ([PEP 723](https://peps.python.org/pep-0723/)), with exact pins.
+- **The [`justfile`](justfile) is every local and CI entry point.** Run `just` to list its recipes. Workflows call recipes, never `npm`, `uv`, or inline logic, so a step runs the same way on your machine as in CI. A new script or check gets a recipe, and the workflow calls that. `just` is a task runner, not a toolchain: it only calls npm and uv.
+- Site scripts live in `scripts/` as Python, and each has a recipe. To run one directly, use `uv run scripts/<name>.py` from the repository root. Each declares its dependencies inline ([PEP 723](https://peps.python.org/pep-0723/)), with exact pins.
 - A script's inline dependencies also go in the dev group in `pyproject.toml`, at the same pin, so pyright can resolve its imports.
 - Python is Zensical's own language, so the site needs one toolchain. Don't add a script in an ecosystem's language here: the ecosystems dogfood their own languages in their own repositories.
 - Exit codes: 0 for success, 1 for findings, and 2 when not run from the repository root, as in the ecosystems' scripts.

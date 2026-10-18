@@ -130,7 +130,7 @@ def stage(ecosystems: list[Ecosystem], local: dict[str, str]) -> int:
     for ecosystem in ecosystems:
         checkout = Path(local[ecosystem.id]) if ecosystem.id in local else REPOS / ecosystem.id
         if not checkout.is_dir():
-            errors.append(f"{ecosystem.id}: no checkout at {checkout}/. Run `uv run scripts/stage.py fetch` first")
+            errors.append(f"{ecosystem.id}: no checkout at {checkout}/. Run `just fetch` first")
             continue
 
         # The contract allows an ecosystem to write only under its own directory.

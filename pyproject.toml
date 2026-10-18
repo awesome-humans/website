@@ -1,6 +1,6 @@
-# The site's Python environment. Run the site generator with `uv run zensical`.
-# A script under scripts/ declares its own dependencies inline (PEP 723) and runs
-# with `uv run scripts/<name>.py`.
+# The site's Python environment. The justfile runs the site generator and the scripts
+# under scripts/. Each script declares its own dependencies inline (PEP 723), so
+# `uv run scripts/<name>.py` also runs it directly.
 [project]
 name = "awesome-humans-website"
 version = "0"
@@ -22,7 +22,7 @@ build-backend = "uv_build"
 [tool.uv.build-backend]
 module-name = "awesome_humans_markdown"
 
-# Tools for working on the site, which `uv sync` installs and the build doesn't need.
+# Tools for working on the site, which `just install` installs and the build doesn't need.
 # Pinned like zensical, so a new release arrives as a reviewed Renovate pull request.
 [dependency-groups]
 dev = [
@@ -35,8 +35,8 @@ dev = [
   "zizmor==1.31.1",
 ]
 
-# Ruff formats and lints the Python in scripts/ and src/. Run `uv run ruff format`
-# and `uv run ruff check`. Lines run to 120 characters, the width the code is
+# Ruff formats and lints the Python in scripts/ and src/. `just format` and
+# `just lint` run it. Lines run to 120 characters, the width the code is
 # written to, rather than Ruff's 88.
 [tool.ruff]
 line-length = 120
