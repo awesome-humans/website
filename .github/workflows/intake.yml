@@ -53,7 +53,7 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: awesome-humans
-          repositories: website,dotnet
+          repositories: website,dotnet,rust
           permission-issues: write
           permission-contents: write
 

@@ -3,6 +3,7 @@
 # case-insensitively. Never add an American spelling.
 anchorlink
 Cleary
+Clippy
 extrahead
 inlinehilite
 javascripts
