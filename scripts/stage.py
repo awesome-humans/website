@@ -226,8 +226,9 @@ def write_houses(staged: dict[str, list[str]]) -> None:
 
 def write_cards(errors: list[str]) -> None:
     """Replace the home page's marker with a card per ecosystem, as the design system's
-    EcosystemCard shows: a link for a live one, and a muted card for one coming soon. The
-    chip says which in words, so the state doesn't rest on colour alone."""
+    EcosystemCard shows: a link for a live one, and a muted card for one coming soon. Only
+    a coming-soon card carries a chip, which says so in words, so the state doesn't rest on
+    colour alone."""
     path = DOCS / "index.md"
     text = path.read_text(encoding="utf-8")
     if text.count(CARDS_MARKER) != 1:
@@ -241,7 +242,6 @@ def write_cards(errors: list[str]) -> None:
         if ecosystem.status == "live":
             cards.append(
                 f'<a class="ah-card ah-eco-{ecosystem.id}" href="{ecosystem.id}/">'
-                f'<span class="ah-chip ah-chip--eco ah-chip--dot">live</span>'
                 f"{logo}<h3>{name}</h3><p>{scope}</p></a>"
             )
         else:
