@@ -1,6 +1,8 @@
 {#- The footer: Zensical's partial, plus a credit for each ecosystem logo that
 scripts/stage.py places from pages/assets/ecosystems/. The Rust logo's CC BY 4.0
-licence asks for credit, a link to the licence, and a note of any changes. -#}
+licence asks for credit, a link to the licence, and a note of any changes. The
+generator line is a second block, which the footer row's flex layout puts on the
+right, where Zensical's social links would go. -#}
 <div class="md-copyright">
   {% if config.copyright %}
   <div class="md-copyright__highlight">{{ config.copyright }}</div>
@@ -13,7 +15,10 @@ licence asks for credit, a link to the licence, and a note of any changes. -#}
     <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>,
     unchanged.
   </div>
-  {% if not config.extra.generator == false %} Made with
-  <a href="https://zensical.org/" target="_blank" rel="noopener"> Zensical </a>
-  {% endif %}
 </div>
+{% if not config.extra.generator == false %}
+<div class="md-copyright ah-generator">
+  Made with
+  <a href="https://zensical.org/" target="_blank" rel="noopener"> Zensical </a>
+</div>
+{% endif %}
