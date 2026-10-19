@@ -1,0 +1,19 @@
+{#- The footer: Zensical's partial, plus a credit for each ecosystem logo that
+scripts/stage.py places from pages/assets/ecosystems/. The Rust logo's CC BY 4.0
+licence asks for credit, a link to the licence, and a note of any changes. -#}
+<div class="md-copyright">
+  {% if config.copyright %}
+  <div class="md-copyright__highlight">{{ config.copyright }}</div>
+  {% endif %}
+  <div>
+    The
+    <a href="https://github.com/rust-lang/rust-artwork">Rust logo</a> is
+    licensed under
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>,
+    unchanged. The <a href="https://github.com/dotnet/brand">.NET logo</a> is
+    copyright the .NET authors, used per the .NET brand guidelines.
+  </div>
+  {% if not config.extra.generator == false %} Made with
+  <a href="https://zensical.org/" target="_blank" rel="noopener"> Zensical </a>
+  {% endif %}
+</div>

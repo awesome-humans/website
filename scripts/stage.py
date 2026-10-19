@@ -17,7 +17,7 @@ set to build/docs/, and writes the root llms.txt, which links to each ecosystem'
 own, to the shared conventions, and to each house profile's llms-<profile>.txt in it. It checks that every profile
 an ecosystem staged is in houses.toml for that ecosystem, warns about a listed profile an
 ecosystem staged nothing for, and writes
-javascripts/houses.js, which lists them for the header's profile picker. It also fills the home page's ecosystem cards from ecosystems.toml, draws the
+javascripts/houses.js, which lists them for the header's profile picker. It also fills the home page's ecosystem cards from ecosystems.toml, adds each ecosystem's logo to its card and its section index, draws the
 diagrams on How it works from diagrams.py, and writes javascripts/repositories.js, which
 points the header's repository link at each live ecosystem's repository under its /<id>/
 pages. --local stages from a checkout on disk instead of build/repos/<id>/, to preview
@@ -51,6 +51,13 @@ SITE_CONFIG = Path("zensical.toml")
 
 # The line in pages/index.md that the ecosystem cards replace.
 CARDS_MARKER = "<!-- ecosystem-cards -->"
+
+# Each ecosystem's logo, as <id>.svg, with <id>-dark.svg for the slate scheme when the
+# logo doesn't read on a dark ground. It shows on the ecosystem's card and its section
+# index. The footer credits each one, in overrides/partials/copyright.html.
+LOGOS = Path("assets/ecosystems")
+# A page's title, which the section index's logo follows.
+TITLE = re.compile(r"^# .*\n", re.MULTILINE)
 
 # A line in pages/how-it-works.md that a diagram from diagrams.py replaces.
 DIAGRAM_PAGE = "how-it-works.md"
@@ -172,6 +179,7 @@ def stage(ecosystems: list[Ecosystem], local: dict[str, str]) -> int:
         staged = check_houses(ecosystems, profiles, errors)
         write_llms(ecosystems, staged, errors)
         write_cards(errors)
+        write_section_logos(ecosystems)
         write_diagrams(errors)
         write_repositories(ecosystems)
         write_houses(staged)
@@ -229,20 +237,49 @@ def write_cards(errors: list[str]) -> None:
     cards = []
     for ecosystem in registry():
         name, scope = escape(ecosystem.name), escape(ecosystem.scope)
+        logo = logo_html(ecosystem.id, "")
         if ecosystem.status == "live":
             cards.append(
                 f'<a class="ah-card ah-eco-{ecosystem.id}" href="{ecosystem.id}/">'
                 f'<span class="ah-chip ah-chip--eco ah-chip--dot">live</span>'
-                f"<h3>{name}</h3><p>{scope}</p></a>"
+                f"{logo}<h3>{name}</h3><p>{scope}</p></a>"
             )
         else:
             cards.append(
                 f'<div class="ah-card ah-card--soon ah-eco-{ecosystem.id}">'
                 f'<span class="ah-chip ah-chip--eco ah-chip--dot">next</span>'
-                f"<h3>{name}</h3><p>{scope}</p></div>"
+                f"{logo}<h3>{name}</h3><p>{scope}</p></div>"
             )
     block = '<div class="ah-cards">\n' + "\n".join(cards) + "\n</div>"
     path.write_text(text.replace(CARDS_MARKER, block), encoding="utf-8")
+
+
+def logo_html(id: str, prefix: str) -> str:
+    """The ecosystem's logo as images, with prefix leading to the site root, or nothing if
+    it has none. The name beside it says which ecosystem it is, so the images are
+    decorative and their alt text is empty."""
+    light = LOGOS / f"{id}.svg"
+    if not (PAGES / light).is_file():
+        return ""
+    dark = LOGOS / f"{id}-dark.svg"
+    if not (PAGES / dark).is_file():
+        return f'<span class="ah-eco-logo"><img src="{prefix}{light}" alt=""></span>'
+    return (
+        f'<span class="ah-eco-logo"><img class="ah-eco-logo--light" src="{prefix}{light}" alt="">'
+        f'<img class="ah-eco-logo--dark" src="{prefix}{dark}" alt=""></span>'
+    )
+
+
+def write_section_logos(ecosystems: list[Ecosystem]) -> None:
+    """Put each ecosystem's logo under the title of its section index, which the ecosystem
+    stages from its README, so the ecosystem's own repository carries no logo."""
+    for ecosystem in ecosystems:
+        logo = logo_html(ecosystem.id, "../")
+        if not logo:
+            continue
+        path = DOCS / ecosystem.id / "index.md"
+        text = path.read_text(encoding="utf-8")
+        path.write_text(TITLE.sub(f"\\g<0>\n{logo}\n", text, count=1), encoding="utf-8")
 
 
 def write_diagrams(errors: list[str]) -> None:
