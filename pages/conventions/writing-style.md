@@ -83,6 +83,7 @@ Every repository squash-merges a pull request with its title as the commit subje
 - **End with trailers.** The last paragraph holds one trailer per line, as `Token: value`, which is a Conventional Commits footer and a git trailer at once. Use `Closes: #93` for an issue the change finishes, `Refs: #93` for one it only relates to, and `Link: https://…` for background, such as a discussion or a specification. Each issue gets its own line. The description still has to make sense without opening any of them.
 - **Delete the template's comment.** A template's `<!-- … -->` guidance would become part of the commit. The required `attribution / check` fails a description that still has one, or that has a table, a checkbox, or an inline link.
 - **Keep agent attribution out.** A description and its trailers never carry a `Co-authored-by` line or a "Generated with" footer. Each repository's `AGENTS.md` explains why, and where agent attribution goes instead.
+- **Sign an agent's comment with one italic line.** It names the harness, the model, and the skill running, if any: `_Written by an agent: Claude Code, Opus 5.5, running review-project._` Leave out a vendor name the harness already gives, so write `Opus 5.5`, not `Claude Opus 5.5`.
 
 For example:
 
