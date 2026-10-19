@@ -29,7 +29,7 @@ Apart from spelling, which [Spelling](#spelling) covers, awesome-humans departs 
 
 - **Lead with what matters.** Put the recommendation or the action first in a section, a paragraph, and a sentence. Put the reason after it.
 - **Put a condition before the instruction it limits.** Write "For details, see `testing.md`", not "See `testing.md` for details", and "To publish a crate, run `cargo publish`", not the reverse. A reader the condition excludes can then skip the instruction. The condition is the only thing that goes ahead of the action. The reason still follows it.
-- **Make link text say where the link goes.** Use the target's title, as [Citations and labels](#citations-and-labels) describes. Never use _here_, _this page_, or a bare URL.
+- **Make link text say where the link goes.** Use the target's title, as [Citations and labels](#citations-and-labels) describes. Never use _here_, _this page_, or a bare URL. A pull request description has two exceptions, which [Commit messages and pull requests](#commit-messages-and-pull-requests) describes.
 - **Make every sentence carry a fact the reader can act on or check.** Name the exact type, member, lint, key, diagnostic ID, and version (`CA1307`, `clippy::large_futures`, `[workspace.lints]`, .NET 10, Rust 1.99) instead of describing it. A measured number beats an adjective: "5.5 ms to 0.826 ms", not "much faster".
 - **Cut what doesn't add a fact.** Delete a sentence that restates the one before it. Delete one that comments on the text instead of the subject, such as "which is worth noticing" or "the part that matters".
 - **Keep sentences short.** Aim for about 20 words. Split any sentence over 35 words at the clause that does separate work.
@@ -70,6 +70,36 @@ A literal use isn't an idiom. _Silently_ for a failure that raises no error stay
 - **House:** Cite as `Source: Title`, never the reverse. The source comes first, whether it's a person or a publication: `[Toub: Performance Improvements in .NET 10]` and `[The Cargo Book: Workspaces]`, not `[Workspaces: The Cargo Book]`.
 - **A description-list line uses the same colon:** `**Label:** definition`. Don't use an em dash as the separator.
 - **Leave a source's own title as written.** A colon inside a title stays (`[Avalonia 12: Ready for What's Next]`), and an internal reference keeps its section (`[AGENTS.md: Metadata]`).
+
+## Commit messages and pull requests
+
+Every repository squash-merges a pull request with its title as the commit subject and its description as the commit body. GitHub renders the description as Markdown, but `git log` shows the same text as plain text, which GitHub wraps at 72 characters when it builds the commit. Write the description so it reads well both ways.
+
+- **Title the pull request as a [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) subject.** Use the form `<type>[(scope)]: <description>`, in lowercase and the imperative, so it completes "If applied, this commit will". Each repository's `AGENTS.md` lists its types, and a skill that sets its own title says so. Keep it under 72 characters, counting the `(#123)` that GitHub appends.
+- **Describe the change as a reader sees it, not file by file.** The diff already lists the files. Say what's different afterwards, and what you ran to check it.
+- **Say why.** State the problem or the decision in the present tense, as the code stands without the change. It's the part of the commit that `git blame` can't recover.
+- **Use only the Markdown that reads as plain text.** Paragraphs, `##` headings, `-` lists, `**Label:**` leads, and inline code read the same in both. Leave out tables, checkboxes, nested lists, and inline `[text](url)` links: GitHub's wrapping breaks a table row or a link across lines.
+- **Link with references.** Write an issue or pull request as `#93`, or `awesome-humans/rust#20` in another repository, and a commit as its short SHA. GitHub links them in the pull request and the commit, and they read as plain text. For any other link, use a reference-style link, `[text][1]`, with `[1]: https://…` on its own line after the last section.
+- **End with trailers.** The last paragraph holds one trailer per line, as `Token: value`, which is a Conventional Commits footer and a git trailer at once. Use `Closes: #93` for an issue the change finishes, `Refs: #93` for one it only relates to, and `Link: https://…` for background, such as a discussion or a specification. Each issue gets its own line. The description still has to make sense without opening any of them.
+- **Delete the template's comment.** A template's `<!-- … -->` guidance would become part of the commit. The required `attribution / check` fails a description that still has one, or that has a table, a checkbox, or an inline link.
+- **Keep agent attribution out.** A description and its trailers never carry a `Co-authored-by` line or a "Generated with" footer. Each repository's `AGENTS.md` explains why, and where agent attribution goes instead.
+
+For example:
+
+```markdown
+## What changed
+
+The home page, Want in or out?, and the suggest-source form link the shared admission criteria. Checked with `just check` and the preview.
+
+## Why
+
+The three links point at `dotnet`'s copy of the criteria, so a Rust suggestion is checked against the wrong page.
+
+Closes: #93
+Refs: awesome-humans/rust#20
+```
+
+To read a commit's message rendered as Markdown in a terminal, pipe it through a renderer such as [Glow](https://github.com/charmbracelet/glow): `git show -s --format='# %s%n%n%b' <sha> | glow -`.
 
 ## Spelling
 
