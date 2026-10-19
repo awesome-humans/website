@@ -35,13 +35,13 @@ SITE_NAV: list[dict] = [
             {"Overview": "how-it-works.md"},
             {"House profiles": "house-profiles.md"},
             {"Want in or out?": "want-in-or-out.md"},
-        ]
-    },
-    {
-        "Conventions": [
-            {"Writing style": "conventions/writing-style.md"},
-            {"Admission criteria": "conventions/admission-criteria.md"},
-            {"House opinions": "conventions/house-opinions.md"},
+            {
+                "Conventions": [
+                    {"Writing style": "conventions/writing-style.md"},
+                    {"Admission criteria": "conventions/admission-criteria.md"},
+                    {"House opinions": "conventions/house-opinions.md"},
+                ]
+            },
         ]
     },
 ]
