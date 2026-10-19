@@ -26,7 +26,7 @@ In an ecosystem's repository, a house opinion is a block beside the sourced reco
 
 A template marks a house opinion as a region between `house:<profile> begin` and `house:<profile> end` comment lines, in the file's own comment syntax. The site shows each template without its regions, and each profile's copy below it. The file's `sources:` list names the profile as `house:<profile>`.
 
-The sourced text stays whole. With a profile chosen, you see both, and the house opinion wins where they conflict. Each ecosystem's `HOUSE-OPINIONS.md` records every house opinion woven in, and the profile it belongs to.
+The sourced text stays whole. With a profile chosen, you see both, and the house opinion wins where they conflict. Each ecosystem's `HOUSE-OPINIONS.md` records every house opinion woven in, and the profile it belongs to. For how an opinion gets woven in, and the rules for marking it, see [House opinions](conventions/house-opinions.md).
 
 ## Hosted profiles
 
