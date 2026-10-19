@@ -9,7 +9,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Every suggestion goes through the ecosystem's [admission criteria](https://awesome-humans.net/dotnet/awesome-humans/#admission-criteria), and its decision log records the outcome, whether yes or no. You can suggest yourself. For how suggestions are handled, see [Want in or out?](https://awesome-humans.net/want-in-or-out/)
+        Every suggestion goes through the shared [admission criteria](https://awesome-humans.net/conventions/admission-criteria/), and its decision log records the outcome, whether yes or no. You can suggest yourself. For how suggestions are handled, see [Want in or out?](https://awesome-humans.net/want-in-or-out/)
   - type: dropdown
     id: ecosystem
     attributes:

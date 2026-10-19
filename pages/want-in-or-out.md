@@ -11,7 +11,7 @@ The goal is a montage of portraits for each ecosystem, and one for the site itse
 [Suggest a source for vetting](https://github.com/awesome-humans/website/issues/new?template=suggest-source.yml) with the issue form. It asks for the ecosystem, the source's main URL, three sample posts, and why the source qualifies. You can suggest yourself.
 
 1. **Intake checks the suggestion.** A source already on a roster gets a reply with its current standing, and the issue closes as a duplicate.
-2. **The issue moves to the ecosystem's repository,** where the `vet-source` skill checks the source against the [admission criteria](dotnet/awesome-humans/index.md#admission-criteria).
+2. **The issue moves to the ecosystem's repository,** where the `vet-source` skill checks the source against the [admission criteria](conventions/admission-criteria.md).
 3. **The decision log records the outcome,** whether yes or no, in a pull request that closes the issue. The issue gets a comment with the decision.
 
 Only published writing counts: blog posts, documentation, books, and newsletters. Videos, conference talks, and podcasts are out of scope, as material to cite and as evidence of a track record.
