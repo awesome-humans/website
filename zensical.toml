@@ -16,7 +16,7 @@ repo_name = "awesome-humans/website"
 # The footer. Naming a language or platform needs no permission, but the site mustn't look
 # official or endorsed, under the Rust Foundation's trademark policy and Microsoft's
 # trademark guidelines.
-copyright = "Not affiliated with or endorsed by the Rust Project, the Rust Foundation, the .NET Foundation, or Microsoft."
+copyright = "Not affiliated with or endorsed by the .NET Foundation, Microsoft, the Rust Project, or the Rust Foundation."
 docs_dir = "docs"
 site_dir = "public"
 extra_css = ["stylesheets/awesome-humans.css"]

@@ -309,6 +309,18 @@
   font-weight: 600;
 }
 
+/* ---- Footer: disclaimers on the left, the generator line on the right ---- */
+@media screen and (min-width: 45em) {
+  .md-copyright {
+    flex: 1 1 0;
+  }
+  .md-copyright.ah-generator {
+    flex: none;
+    align-self: flex-end;
+    text-align: right;
+  }
+}
+
 /* ---- Focus: a solid brand-mark ring, 3:1 or better on every surface ---- */
 .md-typeset a:focus-visible,
 .md-nav__link:focus-visible,
@@ -498,6 +510,29 @@
   font-size: 14px;
   line-height: 22px;
   color: var(--ah-ink-2);
+}
+/* Ecosystem logos, on each card and under each section index's title. Never smaller
+   than 50px, the .NET style guide's minimum on screen, and with clear space at least the
+   height of its "N" on every side. A logo with a -dark copy swaps to it in slate. */
+.md-typeset .ah-eco-logo {
+  display: inline-flex;
+  padding: var(--ah-space-1) 0;
+}
+.md-typeset .ah-eco-logo img {
+  display: block;
+  width: 56px;
+  height: 56px;
+}
+.md-typeset .ah-eco-logo img.ah-eco-logo--dark,
+[data-md-color-scheme="slate"] .md-typeset .ah-eco-logo img.ah-eco-logo--light {
+  display: none;
+}
+[data-md-color-scheme="slate"] .md-typeset .ah-eco-logo img.ah-eco-logo--dark {
+  display: block;
+}
+.md-typeset h1 + p > .ah-eco-logo img {
+  width: 72px;
+  height: 72px;
 }
 .md-typeset .ah-card--soon {
   background: var(--ah-surface);
