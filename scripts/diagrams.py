@@ -214,7 +214,7 @@ def pipeline() -> str:
     for key, cls, title_lines, subtitle in [
         ("roster", "store", ["AWESOME-HUMANS.md"], "the roster"),
         ("research", "store", ["research/"], "staged, unresolved"),
-        ("opinions", "store", ["opinions/", "templates/"], "what good looks like"),
+        ("opinions", "store", ["opinions/", "templates/"], "distilled guidance"),
         ("report", "ext", ["a report"], "never saved here"),
     ]:
         rows = [i for i, row in enumerate(PIPELINE_ROWS) if row[5] == key]
