@@ -196,7 +196,7 @@ def pipeline() -> str:
             d.add(
                 d.arrow(x_skill + w_skill, cy, x_agent_gate - 2, cy),
                 rect(x_agent_gate, cy - gate_half, w_agent_gate, gate_half * 2, 6, "check"),
-                text(x_agent_gate + w_agent_gate / 2, cy - 3, "CI check,", "check-t", "middle"),
+                text(x_agent_gate + w_agent_gate / 2, cy - 3, "CI checks,", "check-t", "middle"),
                 text(x_agent_gate + w_agent_gate / 2, cy + 13, "agent review", "check-t", "middle"),
                 d.arrow(x_agent_gate + w_agent_gate, cy, x_human_gate - gate_half - 2, cy),
                 # The human gate is a diamond the height of the agent checks' box.
@@ -249,7 +249,7 @@ def pipeline() -> str:
         "Maintenance pipeline",
         "Swimlane diagram of how an ecosystem's repository maintains itself: vet-source, research-topic, resolve-research,"
         " harvest-sources, the version refresh, and weave-house-opinion each work on their own branch, pass the CI"
-        " check, an agent review and the owner's review, and land in the roster, research/ or the opinions and"
+        " checks, an agent review and the owner's review, and land in the roster, research/ or the opinions and"
         " templates; audit-freshness and review-project only report. Their findings, the release watch and the harvest reminder start the next run.",
     )
 
