@@ -7,6 +7,14 @@ hide:
 
 Agent skills maintain each ecosystem's repository, and nothing becomes an opinion without passing CI and the owner's review. The diagrams below are an overview. Where one disagrees with a skill or the [admission criteria](conventions/admission-criteria.md), follow the skill or the criteria.
 
+## Each ecosystem is its own repository
+
+An ecosystem's opinions, templates, skills, and source roster live in its own repository, and `website` publishes them all. When an ecosystem's `main` changes, it asks `website` to rebuild. Every build takes every ecosystem at `main`, so the site is the same whichever repository started it. A pull request in an ecosystem builds a preview of the whole site with its change.
+
+Suggestions from the site's issue forms move to the ecosystem they name. Two shared repositories serve every pull request: `.github` holds the attribution check, and `coderabbit` the review configuration.
+
+<!-- diagram: repositories -->
+
 ## Every change is a pull request
 
 Each skill works on its own branch, and its changes land through a pull request. CI checks the metadata on every opinion and template, that every cited source is on the roster and citable, and that every link resolves. The owner then reviews and merges it.

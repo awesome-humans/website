@@ -4,6 +4,7 @@
 anchorlink
 Cleary
 Clippy
+coderabbit
 extrahead
 inlinehilite
 javascripts
