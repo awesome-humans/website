@@ -42,7 +42,7 @@ Each ecosystem includes:
 - **Check an existing project.** Ask your coding agent to run [`review-project`](dotnet/skills/review-project.md):
 
   ```text
-  Use the review project skill at awesome-humans.net on <repository>
+  Use the review-project skill at awesome-humans.net on <repository>
   ```
 
   To narrow the review, say what to include or leave out, such as "focus on testing, skip CI".
