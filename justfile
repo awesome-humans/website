@@ -76,11 +76,6 @@ nav:
 sources:
     uv run scripts/collate_sources.py
 
-# Export the site's build dependencies from uv.lock as a CycloneDX SBOM, which Credits and
-# licences links. Run after stage, which recreates build/docs/
-sbom:
-    uv export --format cyclonedx1.5 --preview-features sbom-export --no-dev --frozen --quiet -o build/docs/sbom.cdx.json
-
 # Build build/public/ from what's staged, failing on any broken link or anchor
 build-site:
     uv run zensical build --strict -f build/zensical.toml
@@ -90,7 +85,6 @@ build *locals:
     just stage "$@"
     just nav
     just sources
-    just sbom
     just build-site
 
 # Stage, merge, and serve the site locally, each <id>=<path> from that checkout. Run fetch first
@@ -98,7 +92,6 @@ serve *locals:
     just stage "$@"
     just nav
     just sources
-    just sbom
     uv run zensical serve -f build/zensical.toml
 
 # Delete Zensical's page cache, which keeps stale pages after a change to src/

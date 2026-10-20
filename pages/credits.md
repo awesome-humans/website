@@ -20,7 +20,3 @@ The site's source, and every ecosystem's opinions, templates, and skills, are li
 
 - **IBM Plex Sans and IBM Plex Mono:** copyright IBM Corp., licensed under the [SIL Open Font License 1.1](https://github.com/awesome-humans/website/blob/main/pages/assets/fonts/OFL.txt). The site serves a Latin-1 subset.
 - **[Zensical](https://zensical.org):** builds the site, under the MIT License.
-
-## Software bill of materials
-
-[`sbom.cdx.json`](sbom.cdx.json) lists the Python packages that build the site, with their versions and hashes, in [CycloneDX 1.5](https://cyclonedx.org/docs/1.5/json/). Each build exports it from the site's lock file, so it always matches the published site. It leaves out the tools that only check the source, such as the formatters and lint tools.
