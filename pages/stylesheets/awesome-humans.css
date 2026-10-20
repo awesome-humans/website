@@ -845,6 +845,10 @@
   fill: var(--ah-muted);
   font-size: 14px;
 }
+/* On a light surface, muted reads too faint at subtitle size, so light takes ink-2. */
+[data-md-color-scheme="default"] .ah-diagram .ts {
+  fill: var(--ah-ink-2);
+}
 .ah-diagram .th {
   fill: var(--ah-muted);
   font-size: 13px;
