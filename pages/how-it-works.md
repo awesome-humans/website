@@ -45,10 +45,10 @@ A source joins the roster on its track record: at least two years of sustained w
 
 A source goes on the watch list if it:
 
-- Has less than two years of writing
+- Has less than two years of sustained writing
 - Has been dormant for over a year, unless their writing clearly continues elsewhere
 
-The watch list supplies leads, but its sources are never cited. A source is vetted again when it goes quiet or a blocker clears.
+The watch list supplies leads, but its sources are never cited. A source is vetted again when it goes quiet, its writing weakens, or a blocker clears.
 
 Two markings limit how an opinion can cite a roster source, and CI enforces both:
 
