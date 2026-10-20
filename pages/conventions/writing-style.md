@@ -59,6 +59,7 @@ A few agent idioms did get in. Replace each with the plain statement it stands f
 | escape hatch                                       | the setting or API that opts out                |
 | bites                                              | the failure, and when it happens                |
 | for free                                           | without extra code, or what's actually included |
+| pull the other way                                 | the opposing claim, and who makes it            |
 | reach for                                          | use                                             |
 | worth noting                                       | (delete it, and state the fact)                 |
 | _honest_, _genuinely_, _quietly_ (as intensifiers) | (delete them)                                   |
