@@ -54,7 +54,7 @@ CARDS_MARKER = "<!-- ecosystem-cards -->"
 
 # Each ecosystem's logo, as <id>.svg, with <id>-dark.svg for the slate scheme when the
 # logo doesn't read on a dark ground. It shows on the ecosystem's card and its section
-# index. The footer credits each one, in overrides/partials/copyright.html.
+# index. pages/credits.md credits each one.
 LOGOS = Path("assets/ecosystems")
 # A page's title, which the section index's logo follows.
 TITLE = re.compile(r"^# .*\n", re.MULTILINE)

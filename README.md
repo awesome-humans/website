@@ -6,7 +6,13 @@ Each ecosystem's content lives in its own repository. This repository owns every
 
 ## Ecosystems
 
-[`ecosystems.toml`](ecosystems.toml) lists every ecosystem the site knows. Adding one takes an entry there, which also gives it a card on the home page, and its accent colours in [`pages/stylesheets/awesome-humans.css`](pages/stylesheets/awesome-humans.css), copied from the design system, and an option in the Ecosystem dropdown of [`suggest-source.yml`](.github/ISSUE_TEMPLATE/suggest-source.yml). Once it's live, add its repository to the app token in [`intake.yml`](.github/workflows/intake.yml). Its logo, if the site shows one, goes in [`pages/assets/ecosystems/`](pages/assets/ecosystems) as `<id>.svg`, with `<id>-dark.svg` when it doesn't read on a dark ground, and its credit goes in [`overrides/partials/copyright.html`](overrides/partials/copyright.html).
+[`ecosystems.toml`](ecosystems.toml) lists every ecosystem the site knows. To add one:
+
+1. Add its entry to [`ecosystems.toml`](ecosystems.toml), which also gives it a card on the home page.
+2. Copy its accent colours from the design system into [`pages/stylesheets/awesome-humans.css`](pages/stylesheets/awesome-humans.css).
+3. Add it to the Ecosystem dropdown of [`suggest-source.yml`](.github/ISSUE_TEMPLATE/suggest-source.yml).
+4. Once it's live, add its repository to the app token in [`intake.yml`](.github/workflows/intake.yml).
+5. If the site shows its logo, add it to [`pages/assets/ecosystems/`](pages/assets/ecosystems) as `<id>.svg`, with `<id>-dark.svg` when it doesn't read on a dark ground, and credit it in [`pages/credits.md`](pages/credits.md).
 
 | Ecosystem | Repository                                                        | Status |
 | --------- | ----------------------------------------------------------------- | ------ |
