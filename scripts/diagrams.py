@@ -404,7 +404,138 @@ def research() -> str:
     )
 
 
+# ---- Repositories ----
+
+# What passes between the ecosystems and website: its direction, and its label. Each
+# arrow runs between the ecosystems' column and website's left edge.
+LINKS = [
+    ("to-site", "dispatch when main changes"),
+    ("to-ecosystem", "checks out main, runs stage"),
+    ("to-site", "pull request: preview build"),
+    ("to-ecosystem", "suggestions, as vet-source issues"),
+]
+
+
+def repositories() -> str:
+    d = Drawing("repositories")
+    # The site's own diagram, with no counterpart in an ecosystem's README: an ecosystem
+    # never draws the repositories around it.
+    top, height = 44, 220
+    eco_x, eco_width = 20, 256
+    site_x, site_width = 540, 250
+    out_x, out_width = 930, 210
+    shared_y = 340
+
+    d.add(
+        text(eco_x, 24, "content", "th"),
+        text(site_x, 24, "publishing", "th"),
+        text(out_x, 24, "the site", "th"),
+        rect(eco_x, top, eco_width, height, 8, "chip"),
+        node(
+            eco_x + 16,
+            top + 16,
+            eco_width - 32,
+            64,
+            "awesome-humans/dotnet",
+            "opinions, skills, the roster",
+            title_cls="tm",
+        ),
+        node(
+            eco_x + 16,
+            top + 92,
+            eco_width - 32,
+            64,
+            "awesome-humans/rust",
+            "opinions, skills, the roster",
+            title_cls="tm",
+        ),
+        lines(eco_x + 16, top + 192, ["one for each ecosystem", "in ecosystems.toml"], "ts"),
+        rect(site_x, top, site_width, height, 8, "box"),
+        f'<rect x="{n(site_x)}" y="{n(top)}" width="4" height="{n(height)}" rx="2" class="accent"/>',
+        text(site_x + 16, top + 30, "awesome-humans/website", "tm"),
+        lines(
+            site_x + 16,
+            top + 120,
+            [
+                "stages every ecosystem,",
+                "then builds the site:",
+                "theme, shared pages,",
+                "source images, intake",
+                "",
+                "rebuilds weekly too",
+            ],
+            "ts",
+        ),
+    )
+    for i, (direction, label) in enumerate(LINKS):
+        y = top + 36 + i * 52
+        if direction == "to-site":
+            d.add(d.arrow(eco_x + eco_width, y, site_x - 2, y))
+        else:
+            d.add(d.arrow(site_x, y, eco_x + eco_width + 2, y))
+        d.add(text((eco_x + eco_width + site_x) / 2, y - 8, label, "ts", "middle"))
+
+    # The site and its readers, who reach back through the issue forms.
+    readers_y = top + 140
+    d.add(
+        node(out_x, top, out_width, 80, "awesome-humans.net", "and a preview per PR", accent=True),
+        d.arrow(site_x + site_width, top + 40, out_x - 2, top + 40),
+        text((site_x + site_width + out_x) / 2, top + 32, "deploys", "ts", "middle"),
+        node(out_x, readers_y, out_width, 80, "Readers", "developers and agents", cls="ext"),
+        d.arrow(out_x + out_width / 2, top + 80, out_x + out_width / 2, readers_y - 2),
+        text(out_x + out_width / 2 + 12, top + 116, "reads", "ts"),
+        d.arrow(out_x, readers_y + 40, site_x + site_width + 2, readers_y + 40),
+        text((site_x + site_width + out_x) / 2, readers_y + 32, "issue forms", "ts", "middle"),
+        text((site_x + site_width + out_x) / 2, readers_y + 60, "suggest, opt out", "ts", "middle"),
+    )
+
+    # The shared repositories serve every repository's pull requests.
+    bracket_y = 300
+    github_x, github_width = 20, 380
+    coderabbit_x, coderabbit_width = 420, 370
+    eco_mid, site_mid = eco_x + eco_width / 2, site_x + site_width / 2
+    d.add(
+        node(
+            github_x,
+            shared_y,
+            github_width,
+            64,
+            "awesome-humans/.github",
+            "attribution check, profile, PR template",
+            title_cls="tm",
+        ),
+        node(
+            coderabbit_x,
+            shared_y,
+            coderabbit_width,
+            64,
+            "awesome-humans/coderabbit",
+            "one review configuration for all",
+            title_cls="tm",
+        ),
+        f'<path d="M{n(github_x + github_width / 2)} {n(shared_y)}V{n(bracket_y)}" class="edge"/>',
+        f'<path d="M{n(coderabbit_x + coderabbit_width / 2)} {n(shared_y)}V{n(bracket_y)}" class="edge"/>',
+        f'<path d="M{n(eco_mid)} {n(bracket_y)}H{n(site_mid)}" class="edge"/>',
+        d.arrow(eco_mid, bracket_y, eco_mid, top + height + 2),
+        d.arrow(site_mid, bracket_y, site_mid, top + height + 2),
+        text((eco_mid + site_mid) / 2, bracket_y + 22, "every repository's pull requests", "ts", "middle"),
+    )
+
+    return d.svg(
+        out_x + out_width + 20,
+        shared_y + 84,
+        "Repositories",
+        "Block diagram of the awesome-humans repositories. Each ecosystem, such as dotnet and rust, holds its own opinions,"
+        " skills and roster. When its main changes, it dispatches to website, which checks out every ecosystem at main,"
+        " runs its stage command, builds the site and deploys awesome-humans.net. An ecosystem's pull request builds a"
+        " preview through website's build. Readers' suggestions arrive through website's issue forms and move to the"
+        " ecosystem as vet-source issues. The .github repository supplies the attribution check and coderabbit the review"
+        " configuration for every repository's pull requests.",
+    )
+
+
 DIAGRAMS = {
+    "repositories": repositories,
     "maintenance-pipeline": pipeline,
     "source-standing": standing,
     "research-lifecycle": research,
