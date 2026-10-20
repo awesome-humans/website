@@ -9,7 +9,7 @@ Agent skills maintain each ecosystem's repository, and nothing becomes an opinio
 
 ## Each ecosystem is its own repository
 
-An ecosystem's opinions, templates, skills, and source roster live in its own repository, and `website` publishes them all. When an ecosystem's `main` changes, it asks `website` to rebuild. Every build takes every ecosystem at `main`, so the site is the same whichever repository started it. A pull request in an ecosystem builds a preview of the whole site with its change.
+An ecosystem's opinions, templates, skills, and source roster live in its own repository, and `website` publishes them all. When an ecosystem's `main` changes, it asks `website` to rebuild. A production build takes every ecosystem at `main`, so the site is the same whichever repository started it. A pull request in an ecosystem builds a preview of the whole site, with its change and every other ecosystem at `main`.
 
 Suggestions from the site's issue forms move to the ecosystem they name. Two shared repositories serve every pull request: `.github` holds the attribution check, and `coderabbit` the review configuration.
 
