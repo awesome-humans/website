@@ -167,7 +167,7 @@ def pipeline() -> str:
         (x_band, "lane"),
         (x_picks_up, "picks up"),
         (x_skill, "skill"),
-        (x_agent_gate, "agent gate"),
+        (x_agent_gate, "agent checks"),
         (x_human_gate - gate_half, "human gate"),
         (x_lands_in, "lands in"),
     ]:
@@ -196,10 +196,10 @@ def pipeline() -> str:
             d.add(
                 d.arrow(x_skill + w_skill, cy, x_agent_gate - 2, cy),
                 rect(x_agent_gate, cy - gate_half, w_agent_gate, gate_half * 2, 6, "check"),
-                text(x_agent_gate + w_agent_gate / 2, cy - 3, "CI: metadata,", "check-t", "middle"),
-                text(x_agent_gate + w_agent_gate / 2, cy + 13, "sources, links", "check-t", "middle"),
+                text(x_agent_gate + w_agent_gate / 2, cy - 3, "CI check,", "check-t", "middle"),
+                text(x_agent_gate + w_agent_gate / 2, cy + 13, "agent review", "check-t", "middle"),
                 d.arrow(x_agent_gate + w_agent_gate, cy, x_human_gate - gate_half - 2, cy),
-                # The human gate is a diamond the height of the agent gate's box.
+                # The human gate is a diamond the height of the agent checks' box.
                 diamond(x_human_gate, cy, gate_half, "gate"),
                 d.arrow(x_human_gate + gate_half, cy, x_lands_in - 2, cy),
                 text(x_human_gate + gate_half + 8, cy - 9, human_gate, "gate-t"),
@@ -248,9 +248,9 @@ def pipeline() -> str:
         loop_y + 50,
         "Maintenance pipeline",
         "Swimlane diagram of how an ecosystem's repository maintains itself: vet-source, research-topic, resolve-research,"
-        " harvest-sources, the version refresh, and weave-house-opinion each work on their own branch, pass CI and the"
-        " owner's review, and land in the roster, research/ or the opinions and templates; audit-freshness and"
-        " review-project only report. Their findings, the release watch and the harvest reminder start the next run.",
+        " harvest-sources, the version refresh, and weave-house-opinion each work on their own branch, pass the CI"
+        " check, an agent review and the owner's review, and land in the roster, research/ or the opinions and"
+        " templates; audit-freshness and review-project only report. Their findings, the release watch and the harvest reminder start the next run.",
     )
 
 
