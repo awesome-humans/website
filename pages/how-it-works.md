@@ -35,6 +35,7 @@ Any of these starts the next run:
 - Findings from either skill
 - A scheduled release watch
 - A monthly harvest reminder
+- A request from the owner
 
 <!-- diagram: maintenance-pipeline -->
 
@@ -45,7 +46,7 @@ A source joins the roster on its track record: at least two years of sustained w
 A source goes on the watch list if it:
 
 - Has less than two years of writing
-- Has been dormant for over a year
+- Has been dormant for over a year, unless their writing clearly continues elsewhere
 
 The watch list supplies leads, but its sources are never cited. A source is vetted again when it goes quiet or a blocker clears.
 
@@ -58,7 +59,7 @@ Two markings limit how an opinion can cite a roster source, and CI enforces both
 
 ## Research is staged, never merged in place
 
-A research topic saves the evidence on a subject in its own pull request. A second pull request then promotes it into the opinions and templates, or discards it, and deletes the topic either way.
+A research topic saves the evidence on a subject in its own pull request. A second pull request then promotes it into the opinions and templates, or discards it, and deletes the topic. A partial promotion keeps the blocked remainder staged until `vet-source` clears its source.
 
 <!-- diagram: research-lifecycle -->
 

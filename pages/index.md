@@ -59,7 +59,7 @@ Agents build and maintain this project, but it wouldn't exist without the people
 
 ## Want in or out?
 
-- **Suggest a source.** Know a person or publication with at least two years of accurate, independent writing about an ecosystem we cover? [Suggest them for vetting](https://github.com/awesome-humans/website/issues/new?template=suggest-source.yml). Every suggestion goes through the same [admission criteria](conventions/admission-criteria.md), and the decision log records each outcome, whether yes or no.
-- **Opt out.** If you're a listed source and don't want your work cited, [ask to opt out](https://github.com/awesome-humans/website/issues/new?template=opt-out.yml), or email <contact@awesome-humans.net> if you'd rather not ask in public. We remove citations of your work within 30 days.
+- **Suggest a source.** Know a person or publication with at least two years of accurate, independent writing about an ecosystem we cover? [Suggest them for vetting](https://github.com/awesome-humans/website/issues/new?template=suggest-source.yml). Every new source goes through the same [admission criteria](conventions/admission-criteria.md), and the decision log records each outcome, whether yes or no.
+- **Opt out.** If you're a listed source and don't want your work cited, [ask to opt out](https://github.com/awesome-humans/website/issues/new?template=opt-out.yml), or email <contact@awesome-humans.net> if you'd rather not ask in public. Once the owner verifies that you control the source, we remove citations of your work within 30 days.
 
 For how we handle both requests, see [Want in or out?](want-in-or-out.md)
