@@ -7,7 +7,7 @@ hide:
 
 Agent skills maintain each ecosystem's repository, and nothing becomes an opinion without passing CI and the owner's review. The diagrams below are an overview. If a diagram disagrees with a skill or the [admission criteria](conventions/admission-criteria.md), follow the skill or the criteria.
 
-## Each ecosystem is its own repository
+## Each ecosystem has its own repository
 
 An ecosystem's opinions, templates, skills, and source roster live in its own repository, and the `website` repository publishes them. When an ecosystem's `main` changes, it asks `website` to rebuild. A production build takes every ecosystem at `main`, so the site is the same whichever repository started it. A pull request in an ecosystem builds a preview of the whole site, with its change and every other ecosystem at `main`.
 
