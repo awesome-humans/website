@@ -26,10 +26,10 @@ Every opinion states its recommendation first, cites its sources, and targets th
 
 Each ecosystem includes:
 
+- **Awesome humans:** The roster of sources that the opinions cite.
 - **Opinions:** One topic per page, with its recommendation, rationale, and sources.
 - **Templates:** Files that encode the opinions.
 - **Skills:** Agent skills that check a project against the opinions and keep the opinions current.
-- **Awesome humans:** The roster of sources that the opinions cite.
 
 ## Usage
 
