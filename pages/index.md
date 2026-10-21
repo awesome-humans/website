@@ -45,7 +45,11 @@ Each ecosystem includes:
   Use the review-project skill at awesome-humans.net on <repository>
   ```
 
-  To narrow the review, say what to include or leave out, such as "focus on testing, skip CI".
+  To narrow the review, say what to include or leave out, and optionally name a house profile:
+
+  ```text
+  Use the review-project skill at awesome-humans.net on <repository>, focus on logging and testing, skip CI, use house profile of simon-mckenna
+  ```
 
 - **Start a project from the templates.** Copy the [.NET templates](dotnet/templates/index.md) into a new project, trimming what you don't need.
 
