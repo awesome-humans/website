@@ -608,6 +608,15 @@
   color: var(--ah-ink);
 }
 
+/* A text fence holds a prompt to paste, not code, so it wraps instead of scrolling,
+   with room on the right for the copy button. Wrapping is visual only: the button
+   copies the code element's text, which keeps each prompt on its one line. */
+.md-typeset .language-text pre > code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding-right: 2.75em;
+}
+
 /* Admonitions: !!! house "House opinion" and !!! preview "Coming next" */
 .md-typeset .admonition.house,
 .md-typeset details.house,
