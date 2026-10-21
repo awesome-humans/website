@@ -59,7 +59,7 @@ To understand how sources are vetted and how opinions stay current, see [How it 
 
 ## Acknowledgement
 
-Agents build and maintain this project, but it wouldn't exist without the people whose writing it draws on. Every opinion cites their work. Thank you to all of these awesome humans, and to everyone who supports them.
+Agents build and maintain this project, so the [usual disclaimers](credits.md#disclaimer) apply, but it wouldn't exist without the people whose writing it draws on. Every opinion cites their work. Thank you to all of these awesome humans, and to everyone who supports them.
 
 ## Want in or out?
 
