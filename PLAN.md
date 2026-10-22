@@ -51,7 +51,7 @@ Pick up here:
    - **Step 5, next:** check that CodeRabbit applies a writing-style rule from the shared page. Neither rust#20, dotnet#187, #91, nor #92 cited `pages/conventions/` in a finding, so watch the next pull request with prose findings.
 7. **Want in, beyond sources:** [#93](https://github.com/awesome-humans/website/issues/93) asks Want in or out? to cover challenging an opinion, proposing a sourced or house opinion, and fixing templates, skills, or the site. Its three open questions need the owner: issue or pull request first, a form for challenges, and `CONTRIBUTING.md` or the page as the single reference.
 8. **References** (2026-10-23): #118 extends the shared admission criteria. A project's design documents, tests, and source count as references, and four rules cover guidance, roster sources' repositories, archived repositories, and line anchors. rust#42 names `rust-lang/rfcs` and `rust-lang/rust` under a Named references section, and adds three references to `rust.md`. Merge #118 first.
-   - **`dotnet`:** the `references/official-repos` branch has no pull request yet. Before opening one, point its Named references rules at the shared page, and rename the branch with a `docs/` prefix.
+   - **`dotnet`:** the `docs/official-repo-references` branch, renamed from `references/official-repos`, links the shared rules instead of copying them, and is ready for a pull request. Its first two commits were rewritten to drop `Co-Authored-By` and `Claude-Session` trailers and the `Claude <noreply@anthropic.com>` author.
 
 `gh` is signed in as `si618`, an organisation admin, without the `admin:org` scope. Repository rulesets don't need it, but listing organisation rulesets does.
 
