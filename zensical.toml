@@ -20,6 +20,7 @@ extra_javascript = [
   "javascripts/repositories.js",
   "javascripts/ecosystem.js",
   "javascripts/open-details.js",
+  "javascripts/date-sort.js",
   "javascripts/houses.js",
   "javascripts/house.js",
 ]
