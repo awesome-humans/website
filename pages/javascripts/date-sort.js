@@ -3,8 +3,8 @@
 // date, which the date_cells extension in src/ marks with ah-date, so a column with a
 // placeholder, such as the watch list's Since, stays in source order. The first click
 // sorts newest first, and each click after that reverses the order. ISO 8601 dates sort
-// as text, and rows with the same date keep their source order. The theme draws the
-// arrow from role and aria-sort on the header.
+// as text, trimmed as date_cells trims them, and rows with the same date keep their
+// source order. The theme draws the arrow from role and aria-sort on the header.
 // A block, so these names stay out of the global scope, which the theme's own scripts share.
 {
   function sortable(table, index) {
@@ -26,9 +26,9 @@
 
     const body = table.tBodies[0];
     const rows = [...body.rows].sort((a, b) => {
-      const order = a.cells[index].textContent.localeCompare(
-        b.cells[index].textContent,
-      );
+      const order = a.cells[index].textContent
+        .trim()
+        .localeCompare(b.cells[index].textContent.trim());
       return descending ? -order : order;
     });
     body.append(...rows);
