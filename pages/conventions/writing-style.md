@@ -13,7 +13,7 @@ The voice follows the [Google developer documentation style guide](https://devel
 Apart from spelling, which [Spelling](#spelling) covers, awesome-humans departs from Google's guide in two places:
 
 - **Pre-release features:** Google says not to pre-announce. An ecosystem's opinion can still carry a clearly marked "Coming next" note about a preview or nightly-only feature, where the ecosystem's `AGENTS.md` allows it.
-- **Dates:** Write dates as ISO 8601 (`2026-10-19`). Google accepts any unambiguous format.
+- **Dates:** Write dates as ISO 8601 (`2026-10-19`), in UTC. Google accepts any unambiguous format. The rule covers every date in a repository, commit, or pull request, such as `last-reviewed`, a decision-log row, a "read" note, a "Review by" marking, and a harvest window. CI, GitHub, and the site builds run in UTC, so a date in a timezone ahead of UTC can read as a future date. An agent gets the date with `date -u +%F`. Leave an existing date as written.
 
 ## Voice
 
