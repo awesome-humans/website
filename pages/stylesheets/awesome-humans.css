@@ -78,12 +78,81 @@
     U+2039-203A, U+2044, U+20AC, U+2122, U+2212, U+FB01-FB02;
 }
 
+/* ---- Fallbacks: Arial and Courier New, resized to IBM Plex's metrics ----
+   Text draws in these until IBM Plex loads, so the swap doesn't move the text.
+   size-adjust matches each weight's average letter width, weighted by English letter
+   frequency, and the overrides match Plex's ascent and descent at that size.
+   Liberation Sans and Arimo share Arial's metrics, and Liberation Mono and Cousine
+   Courier New's. Each face covers only Plex's own characters, so others still fall
+   through to system-ui. */
+@font-face {
+  font-family: "IBM Plex Sans Fallback";
+  font-weight: 400;
+  src:
+    local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+  size-adjust: 101.2%;
+  ascent-override: 101.3%;
+  descent-override: 27.2%;
+  line-gap-override: 0%;
+  unicode-range:
+    U+0000, U+000D, U+0020-007E, U+00A0-00A3, U+00A4-00FF, U+0131, U+0152-0153,
+    U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022,
+    U+2026, U+2030, U+2039-203A, U+2044, U+2074, U+20AC, U+2122, U+2212,
+    U+FB01-FB02;
+}
+@font-face {
+  font-family: "IBM Plex Sans Fallback";
+  font-weight: 500;
+  src:
+    local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
+  size-adjust: 103.4%;
+  ascent-override: 99.1%;
+  descent-override: 26.6%;
+  line-gap-override: 0%;
+  unicode-range:
+    U+0000, U+000D, U+0020-007E, U+00A0-00A3, U+00A4-00FF, U+0131, U+0152-0153,
+    U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022,
+    U+2026, U+2030, U+2039-203A, U+2044, U+2074, U+20AC, U+2122, U+2212,
+    U+FB01-FB02;
+}
+@font-face {
+  font-family: "IBM Plex Sans Fallback";
+  font-weight: 600 700;
+  src:
+    local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"),
+    local("Arimo Bold");
+  size-adjust: 96.9%;
+  ascent-override: 105.8%;
+  descent-override: 28.4%;
+  line-gap-override: 0%;
+  unicode-range:
+    U+0000, U+000D, U+0020-007E, U+00A0-00A3, U+00A4-00FF, U+0131, U+0152-0153,
+    U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022,
+    U+2026, U+2030, U+2039-203A, U+2044, U+2074, U+20AC, U+2122, U+2212,
+    U+FB01-FB02;
+}
+/* Courier New is 0.6em wide, as Plex Mono is, so only the vertical metrics change. */
+@font-face {
+  font-family: "IBM Plex Mono Fallback";
+  font-weight: 400 700;
+  src: local("Courier New"), local("Liberation Mono"), local("Cousine");
+  ascent-override: 102.5%;
+  descent-override: 27.5%;
+  line-gap-override: 0%;
+  unicode-range:
+    U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC,
+    U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022, U+2026, U+2030,
+    U+2039-203A, U+2044, U+20AC, U+2122, U+2212, U+FB01-FB02;
+}
+
 /* ---- Tokens ---- */
 :root {
   --ah-font-sans:
-    "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    "IBM Plex Sans", "IBM Plex Sans Fallback", system-ui, -apple-system,
+    "Segoe UI", sans-serif;
   --ah-font-mono:
-    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, "SFMono-Regular",
+    Menlo, Consolas, monospace;
 
   --ah-space-1: 4px;
   --ah-space-2: 8px;
@@ -441,7 +510,9 @@
   font-size: 17px;
   line-height: 28px;
   color: var(--ah-ink-2);
-  max-width: 62ch;
+  /* 62ch in IBM Plex Sans, whose digits are 0.6em wide. In ch, the box would narrow
+     while the fallback draws, and the swap would rewrap the text. */
+  max-width: 37.2em;
   margin: 0 0 var(--ah-space-6);
   text-wrap: pretty;
 }
