@@ -11,6 +11,12 @@ per level, and keeps any indentation past an item's content column.
 date_cells marks a table cell that holds only an ISO 8601 date with the ah-date class,
 which the theme keeps on one line. A browser otherwise breaks a date at its hyphens in
 a narrow column, as in a roster's decision log or the Woven table of house opinions.
+It also marks a cell that holds only an id in code, such as a house profile, with the
+ah-id class, which the theme keeps on one line for the same reason.
+
+path_breaks lets a path in a table cell's link text, such as
+templates/projects/Example.Library.Tests.csproj in the Woven table, break after each
+slash. Without it, the path can't break at all, and its column takes the width.
 
 house_blocks ties each house block, which an ecosystem writes as "/// house | <profile>",
 to its profile. It sets data-house to the profile, which javascripts/house.js shows only
@@ -34,11 +40,14 @@ from markdown import Markdown
 from markdown.extensions import Extension
 from markdown.preprocessors import Preprocessor
 from markdown.treeprocessors import Treeprocessor
+from markdown.util import HTML_PLACEHOLDER_RE
 
 TAB_LENGTH = 4
 MARKER = re.compile(r"( *)([-*+]|\d{1,9}[.)])( {1,4}|$)(.*)")
 FENCE = re.compile(r" *(`{3,}|~{3,})")
 DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
+ID = re.compile(r"[\w.-]+")
+PATH = re.compile(r"\S+/\S+")
 
 # The house profile registry. The site builds from the repository root.
 HOUSES = Path("houses.toml")
@@ -106,12 +115,46 @@ class ListIndentPreprocessor(Preprocessor):
 
 
 class DateCellTreeprocessor(Treeprocessor):
-    """Add the ah-date class to each table cell whose whole text is an ISO 8601 date."""
+    """Add the ah-date class to each table cell whose whole text is an ISO 8601 date, and
+    the ah-id class to each that holds only an id in code."""
 
     def run(self, root: etree.Element) -> None:
         for cell in root.iter("td"):
             if len(cell) == 0 and DATE.fullmatch((cell.text or "").strip()):
                 cell.set("class", "ah-date")
+            elif (
+                len(cell) == 1
+                and not (cell.text or "").strip()
+                and not (cell[0].tail or "").strip()
+                and cell[0].tag == "code"
+                and ID.fullmatch(self.code_text(cell[0]))
+            ):
+                cell.set("class", "ah-id")
+
+    def code_text(self, code: etree.Element) -> str:
+        """The text of inline code, which inlinehilite leaves in the HTML stash until after
+        the tree is built."""
+        text = code.text or ""
+        placeholder = HTML_PLACEHOLDER_RE.fullmatch(text)
+        if placeholder is None:
+            return text
+        stashed = self.md.htmlStash.rawHtmlBlocks[int(placeholder.group(1))]
+        return stashed if isinstance(stashed, str) else ""
+
+
+class PathBreakTreeprocessor(Treeprocessor):
+    """Add a <wbr> after each slash in a table cell's link text that is a path."""
+
+    def run(self, root: etree.Element) -> None:
+        for cell in root.iter("td"):
+            for link in cell.iter("a"):
+                text = link.text or ""
+                if len(link) == 0 and PATH.fullmatch(text):
+                    first, *rest = text.split("/")
+                    link.text = f"{first}/"
+                    for index, part in enumerate(rest):
+                        wbr = etree.SubElement(link, "wbr")
+                        wbr.tail = part if index == len(rest) - 1 else f"{part}/"
 
 
 class HouseTreeprocessor(Treeprocessor):
@@ -162,6 +205,7 @@ class ListIndentExtension(Extension):
         md.preprocessors.register(ListIndentPreprocessor(md), "list_indent", 28)
         # Tables are built by the block parser, so any priority after it works.
         md.treeprocessors.register(DateCellTreeprocessor(md), "date_cells", 5)
+        md.treeprocessors.register(PathBreakTreeprocessor(md), "path_breaks", 5)
         # After attr_list (8), which sets data-house on a chip.
         md.treeprocessors.register(HouseTreeprocessor(md, house_names()), "house_blocks", 6)
         # After toc (5), which wraps each heading's contents in its anchorlink.
