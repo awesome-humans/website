@@ -5,11 +5,11 @@ hide:
 
 # How it works
 
-Agent skills maintain each ecosystem's repository, and nothing becomes an opinion without passing CI and the owner's review. The diagrams below are an overview. If a diagram disagrees with a skill or the [admission criteria](conventions/admission-criteria.md), follow the skill or the criteria.
+Agent skills maintain each ecosystem's repository, and nothing becomes an opinion until it passes CI and the repository owner's review, with another agent reviewing it first.
 
 ## Each ecosystem has its own repository
 
-An ecosystem's opinions, templates, skills, and source roster live in its own repository, and the `website` repository publishes them. When an ecosystem's `main` changes, it asks `website` to rebuild. A production build takes every ecosystem at `main`, so the site is the same whichever repository started it. A pull request in an ecosystem builds a preview of the whole site, with its change and every other ecosystem at `main`.
+An ecosystem's opinions, templates, skills, and source roster live in its own repository, and the `website` repository publishes them. When an ecosystem's `main` changes, it asks `website` to rebuild. A production build always uses every ecosystem's `main`, whichever repository triggered it. A pull request in an ecosystem builds a full-site preview from its own branch and every other ecosystem's `main`.
 
 Suggestions from the site's issue forms move to the ecosystem they name. Two shared repositories serve every pull request: `.github` holds the attribution check, and `coderabbit` the review configuration.
 
@@ -17,13 +17,13 @@ Suggestions from the site's issue forms move to the ecosystem they name. Two sha
 
 ## Every change is a pull request
 
-Each skill works on its own branch, and its changes land through a pull request. CI checks that:
+Skills work on their own branch, and all changes arrive through a pull request. CI checks that:
 
 - Every opinion and template has valid metadata
 - Every cited source is on the roster and citable
 - Every link resolves
 
-The owner then reviews and merges the pull request.
+The agent reviewer (currently CodeRabbit) also checks the change, with the owner's agent answering each finding. Its review is advisory: the owner reviews and merges the pull request.
 
 Two skills report without modifying anything:
 
