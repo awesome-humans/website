@@ -38,6 +38,17 @@ Apart from spelling, which [Spelling](#spelling) covers, awesome-humans departs 
 - **Use the serial comma.** Write "opinions, templates, and skills".
 - **Write a range with _to_, not an en dash.** Write "22.2% to 22.3%" and "versions 8 to 10". Use a hyphen only where a compound modifier needs one, as in "a long-running service".
 
+## Order
+
+A page that's read from top to bottom follows its topic. A list that a reader looks up follows the alphabet.
+
+- **Group an opinion's sections by topic.** Put related sections next to each other, with the foundations first: hosting before hardening, for example. Don't sort the sections alphabetically. That would put "Open redirects" between "OpenAPI" and "Rate limiting", away from the rest of security.
+- **Add a new section to its group, not to the end of the page.** If no group fits, start one where a reader would expect it. A page loses its order one appended section at a time.
+- **Sort a template's interchangeable entries within their group.** Package versions, package references, and lints don't change meaning when reordered, so sort them by name, ignoring case. A group is an MSBuild `ItemGroup`, or a run of TOML keys between blank lines. A comment stays with the entry below it. Each ecosystem's CI checks this order.
+- **Order by meaning where order is meaning.** F# compiles files in the order the project lists them, and an `.editorconfig` section groups its settings under the comment that explains them. Leave those in that order.
+
+Each repository's `AGENTS.md` sets the order of its own indexes, such as a README's list of opinions.
+
 ## Rhythm
 
 Agents write most of the prose here, and it goes wrong in rhythm more than vocabulary. The well-known tells (_delve_, _leverage_, _seamless_, _robust_, _comprehensive_, _in today's_, a "here is" lead-in, an "in conclusion" wrap-up) don't appear here, so don't hunt for them. Four patterns are fine occasionally and read as machine-written in bulk:
@@ -112,6 +123,6 @@ To read a commit's message rendered as Markdown in a terminal, pipe it through a
 
 ## Scope of these rules
 
-- **They're review guidance, not a build check.** Whether a contrast is justified can't be decided by counting. Read for these patterns in review, and don't add a check that fails a build over them. Spelling is the exception: a misspelled word is wrong whatever its context, so `just spell` fails the build over it.
+- **They're review guidance, not a build check.** Whether a contrast is justified can't be decided by counting. Read for these patterns in review, and don't add a check that fails a build over them. Spelling is one exception: a misspelled word is wrong whatever its context, so `just spell` fails the build over it. A template's sorted entries are the other, because sorting by name needs no judgement.
 - **They apply only to prose written here.** A third-party title and its URL keep the author's wording and spelling, American or British, so Andrew Lock's "Adding Localisation to an ASP.NET Core application" stays as written. Correcting a source misquotes it, and correcting a URL breaks it.
 - **They don't apply to other people's code.** `review-project` reviews a codebase against an ecosystem's opinions. Spelling and wording in someone else's identifiers, comments, or documentation is never a finding.
