@@ -121,6 +121,6 @@ To read a commit's message rendered as Markdown in a terminal, pipe it through a
 
 ## Scope of these rules
 
-- **They're review guidance, not a build check.** Whether a contrast is justified can't be decided by counting. Read for these patterns in review, and don't add a check that fails a build over them. Spelling is one exception: a misspelled word is wrong whatever its context, so `just spell` fails the build over it. A template's sorted entries are the other, because sorting by name needs no judgement.
+- **They're review guidance, not a build check.** Whether a contrast is justified can't be decided by counting, so read for these patterns in review. Only two rules need no judgement, and CI checks them: spelling, with `just spell`, and the order of a template's sorted entries.
 - **They apply only to prose written here.** A third-party title and its URL keep the author's wording and spelling, American or British, so Andrew Lock's "Adding Localisation to an ASP.NET Core application" stays as written. Correcting a source misquotes it, and correcting a URL breaks it.
 - **They don't apply to other people's code.** `review-project` reviews a codebase against an ecosystem's opinions. Spelling and wording in someone else's identifiers, comments, or documentation is never a finding.
