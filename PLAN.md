@@ -153,7 +153,7 @@ The owner does these in the GitHub web UI.
 
    **Progress (2026-10-15):** Created with App ID `5322859`, transferred to the organisation, and installed on all repositories with the permissions above. `APP_ID` and `APP_PRIVATE_KEY` are set, and the key was tested by signing an app token. The owner uploaded the logo the same day.
 
-   **Progress (2026-10-23):** `APP_CLIENT_ID` is set to the app's client ID, and the workflows sign with it in place of `APP_ID` (#125, awesome-humans/dotnet#211, awesome-humans/rust#50). Delete the `APP_ID` variable once all three merge.
+   **Progress (2026-10-23):** `APP_CLIENT_ID` is set to the app's client ID, and the workflows sign with it in place of `APP_ID` (#125, awesome-humans/dotnet#211, awesome-humans/rust#50). The owner deleted the `APP_ID` variable the same day, once all three had merged.
 
    **Logo:** The app's avatar appears on every commit, comment, and pull request it makes, so give it the cited-human mark rather than GitHub's generated identicon.
    1. Download `mark-cited-human.svg` from the design system's Logos asset group.
