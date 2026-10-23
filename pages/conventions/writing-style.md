@@ -40,8 +40,6 @@ Apart from spelling, which [Spelling](#spelling) covers, awesome-humans departs 
 
 ## Order
 
-A page that's read from top to bottom follows its topic. A list that a reader looks up follows the alphabet.
-
 - **Group an opinion's sections by topic.** Put related sections next to each other, with the foundations first: hosting before hardening, for example. Don't sort the sections alphabetically. That would put "Open redirects" between "OpenAPI" and "Rate limiting", away from the rest of security.
 - **Add a new section to its group, not to the end of the page.** If no group fits, start one where a reader would expect it. A page loses its order one appended section at a time.
 - **Sort a template's interchangeable entries within their group.** Package versions, package references, and lints don't change meaning when reordered, so sort them by name, ignoring case. A group is an MSBuild `ItemGroup`, or a run of TOML keys between blank lines. A comment stays with the entry below it. Each ecosystem's CI checks this order.
