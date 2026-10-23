@@ -249,7 +249,7 @@ def pipeline() -> str:
         "Maintenance pipeline",
         "Swimlane diagram of how an ecosystem's repository maintains itself: vet-source, research-topic, resolve-research,"
         " harvest-sources, the version refresh, and weave-house-opinion each work on their own branch, pass the CI"
-        " checks, an agent review and the owner's review, and land in the roster, research/ or the opinions and"
+        " checks, get an agent review, pass the owner's review, and land in the roster, research/, or the opinions and"
         " templates; audit-freshness and review-project only report. Their findings, the release watch and the harvest reminder start the next run.",
     )
 

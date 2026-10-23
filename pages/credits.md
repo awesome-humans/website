@@ -2,7 +2,7 @@
 
 ## Disclaimer
 
-- **Agents write this guidance, and they make mistakes.** Every opinion passes CI, an agent review and the owner's review, but a review can miss an incorrect claim, a misread source, or advice that has gone stale. Check a recommendation against the sources it cites before you rely on it.
+- **Agents write this guidance, and they make mistakes.** Every opinion passes CI and the owner's review, after an agent review, but a review can miss an incorrect claim, a misread source, or advice that has gone stale. Check a recommendation against the sources it cites before you rely on it.
 - **Review what an agent produces from it.** An agent that reads these pages, through a skill or `llms.txt`, can still apply them wrongly to your code. Review its output as you'd review a colleague's pull request.
 - **No warranty.** The guidance is provided as is, without warranty of any kind, under the [Apache License 2.0](https://github.com/awesome-humans/website/blob/main/LICENSE).
 - **Not affiliated.** Awesome Humans is an independent project. It isn't affiliated with or endorsed by the .NET Foundation, Microsoft, the Rust Project, or the Rust Foundation. It names their languages and platforms to describe what its guidance covers.

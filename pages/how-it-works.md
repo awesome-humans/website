@@ -5,7 +5,7 @@ hide:
 
 # How it works
 
-Agent skills maintain each ecosystem's repository, and nothing becomes an opinion until it passes CI, another agent's review and the repository owner's review.
+Agent skills maintain each ecosystem's repository, and nothing becomes an opinion until it passes CI and the repository owner's review, with another agent reviewing it first.
 
 ## Each ecosystem is its own repository
 
