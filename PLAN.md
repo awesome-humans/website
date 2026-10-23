@@ -149,9 +149,11 @@ The owner does these in the GitHub web UI.
    - Actions: read
    - Metadata: read
 
-   Store its app ID as the organisation variable `APP_ID`, and its private key as the organisation secret `APP_PRIVATE_KEY`.
+   Store its client ID as the organisation variable `APP_CLIENT_ID`, and its private key as the organisation secret `APP_PRIVATE_KEY`. `actions/create-github-app-token` v3 deprecates the app ID input.
 
    **Progress (2026-10-15):** Created with App ID `5322859`, transferred to the organisation, and installed on all repositories with the permissions above. `APP_ID` and `APP_PRIVATE_KEY` are set, and the key was tested by signing an app token. The owner uploaded the logo the same day.
+
+   **Progress (2026-10-23):** `APP_CLIENT_ID` is set to `Iv23liRSYD56N26K4OOx`, and the workflows sign with it in place of `APP_ID` (#125, awesome-humans/dotnet#211, awesome-humans/rust#50). `APP_ID` can go once all three merge.
 
    **Logo:** The app's avatar appears on every commit, comment, and pull request it makes, so give it the cited-human mark rather than GitHub's generated identicon.
    1. Download `mark-cited-human.svg` from the design system's Logos asset group.
