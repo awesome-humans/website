@@ -20,6 +20,8 @@ This project documents current best practice in code and updates it as ecosystem
 
 Every opinion states its recommendation first, cites its sources, and targets the latest released versions.
 
+**Agents:** Start at [`/llms.txt`](llms.txt). It links every ecosystem's opinions, templates, and skills as raw Markdown.
+
 ## Ecosystems
 
 <!-- ecosystem-cards -->
@@ -36,22 +38,24 @@ Each ecosystem includes:
 - **Point your agent at it.** Tell your coding agent to follow the opinions when it writes code:
 
   ```text
-  Follow the conventions at awesome-humans.net when writing .NET code
+  Follow the conventions at awesome-humans.net/llms.txt when writing code
   ```
 
-- **Check an existing project.** Ask your coding agent to run [`review-project`](dotnet/skills/review-project.md):
+  The agent picks the ecosystem from your project's files, such as `Cargo.toml` or a `.csproj`. In an empty project there's nothing to pick from, so name the ecosystem, as in `when writing Rust code`.
+
+- **Check an existing project.** Ask your coding agent to run `review-project`, for [.NET](dotnet/skills/review-project.md) or [Rust](rust/skills/review-project.md):
 
   ```text
-  Use the review-project skill at awesome-humans.net on <repository>
+  Use the review-project skill at awesome-humans.net/llms.txt on <repository>
   ```
 
   To narrow the review, say what to include or leave out, and optionally name a house profile:
 
   ```text
-  Use the review-project skill at awesome-humans.net on <repository>, focus on logging and testing, skip CI, use house profile of simon-mckenna
+  Use the review-project skill at awesome-humans.net/llms.txt on <repository>, focus on logging and testing, skip CI, use house profile of simon-mckenna
   ```
 
-- **Start a project from the templates.** Copy the [.NET templates](dotnet/templates/index.md) into a new project, trimming what you don't need.
+- **Start a project from the templates.** Copy the [.NET templates](dotnet/templates/index.md) or the [Rust templates](rust/templates/index.md) into a new project, trimming what you don't need.
 
 - **Read the opinions.** Each page gives its recommendation, with the rationale and sources behind it.
 
