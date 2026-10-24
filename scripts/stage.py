@@ -323,24 +323,23 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
         "",
         f"> {SUMMARY}",
         "",
-        "Each ecosystem has its own llms.txt, which links to its opinions, templates, and skills as raw Markdown.",
-        "",
         "## Ecosystems",
+        "",
+        "Read the llms.txt for the project's ecosystem. Each links its opinions, templates, and skills as raw Markdown.",
         "",
     ]
     for ecosystem in ecosystems:
-        # The ecosystem's own summary is the blockquote at the top of its llms.txt.
         path = DOCS / ecosystem.id / "llms.txt"
         if not path.is_file():
             errors.append(f"{ecosystem.id}: staged no {ecosystem.id}/llms.txt")
             continue
-        summary = next(
-            (line[2:] for line in path.read_text(encoding="utf-8").splitlines() if line.startswith("> ")), None
-        )
-        if summary is None:
+        # llmstxt.org asks for a summary blockquote at the top of each file.
+        if not any(line.startswith("> ") for line in path.read_text(encoding="utf-8").splitlines()):
             errors.append(f"{path}: no summary blockquote")
             continue
-        lines.append(f"- [{ecosystem.name}]({site_url}{ecosystem.id}/llms.txt): {summary}")
+        # The card's scope line, not the ecosystem's own summary, which repeats the site's
+        # for each ecosystem. A short line keeps the link when a fetch tool summarises.
+        lines.append(f"- [{ecosystem.name}]({site_url}{ecosystem.id}/llms.txt): {ecosystem.scope.rstrip('.')}")
 
     lines += [
         "",
@@ -362,9 +361,8 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
             "## House profiles",
             "",
             (
-                "The files above carry no house opinions. A house profile is one person's or organisation's"
-                " preferences from experience, layered over the sourced opinions. Follow one only when the user"
-                " chooses it, by reading its file for each ecosystem instead of llms.txt."
+                "The files above carry no house opinions. Follow a profile only when the user chooses one,"
+                " by reading its file instead of the ecosystem's llms.txt."
             ),
             "",
         ]
