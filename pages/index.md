@@ -1,5 +1,6 @@
 <!-- The hero and the ecosystem cards are the design system's Hero and EcosystemCard,
-     written as HTML. The hero's h1 is the page title and ends with a full stop. -->
+     written as HTML. The hero's h1 is the page title and ends with a full stop.
+     scripts/stage.py replaces each marker from ecosystems.toml. -->
 <!-- markdownlint-disable MD026 MD033 MD041 -->
 
 <section class="ah-hero" markdown>
@@ -11,8 +12,7 @@ distilled, opinionated guidance, thanks to awesome humans.
 
 <div class="ah-row">
 <a class="ah-btn" href="how-it-works/">How it works</a>
-<a class="ah-btn" href="dotnet/">Browse .NET</a>
-<a class="ah-btn" href="rust/">Browse Rust</a>
+<!-- ecosystem-buttons -->
 </div>
 
 </section>

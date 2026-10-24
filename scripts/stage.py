@@ -17,7 +17,7 @@ set to build/docs/, and writes the root llms.txt, which links to each ecosystem'
 own, to the shared conventions, and to each house profile's llms-<profile>.txt in it. It checks that every profile
 an ecosystem staged is in houses.toml for that ecosystem, warns about a listed profile an
 ecosystem staged nothing for, and writes
-javascripts/houses.js, which lists them for the header's profile picker. It also fills the home page's ecosystem cards from ecosystems.toml, adds each ecosystem's logo to its card and its section index, draws the
+javascripts/houses.js, which lists them for the header's profile picker. It also fills the home page's ecosystem cards and the hero's Browse buttons from ecosystems.toml, adds each ecosystem's logo to its card and its section index, draws the
 diagrams on How it works from diagrams.py, and writes javascripts/repositories.js, which
 points the header's repository link at each live ecosystem's repository under its /<id>/
 pages. --local stages from a checkout on disk instead of build/repos/<id>/, to preview
@@ -51,6 +51,8 @@ SITE_CONFIG = Path("zensical.toml")
 
 # The line in pages/index.md that the ecosystem cards replace.
 CARDS_MARKER = "<!-- ecosystem-cards -->"
+# The line in pages/index.md's hero that a Browse button per live ecosystem replaces.
+BUTTONS_MARKER = "<!-- ecosystem-buttons -->"
 
 # Each ecosystem's logo, as <id>.svg, with <id>-dark.svg for the slate scheme when the
 # logo doesn't read on a dark ground. It shows on the ecosystem's card and its section
@@ -179,6 +181,7 @@ def stage(ecosystems: list[Ecosystem], local: dict[str, str]) -> int:
         staged = check_houses(ecosystems, profiles, errors)
         write_llms(ecosystems, staged, errors)
         write_cards(errors)
+        write_buttons(errors)
         write_section_logos(ecosystems)
         write_diagrams(errors)
         write_repositories(ecosystems)
@@ -252,6 +255,24 @@ def write_cards(errors: list[str]) -> None:
             )
     block = '<div class="ah-cards">\n' + "\n".join(cards) + "\n</div>"
     path.write_text(text.replace(CARDS_MARKER, block), encoding="utf-8")
+
+
+def write_buttons(errors: list[str]) -> None:
+    """Replace the hero's marker with a Browse button per live ecosystem, in the order
+    ecosystems.toml lists them. An ecosystem coming soon has no pages to browse, so it gets
+    no button."""
+    path = DOCS / "index.md"
+    text = path.read_text(encoding="utf-8")
+    if text.count(BUTTONS_MARKER) != 1:
+        errors.append(f"{PAGES / 'index.md'}: expected one {BUTTONS_MARKER} line")
+        return
+
+    buttons = [
+        f'<a class="ah-btn" href="{ecosystem.id}/">Browse {escape(ecosystem.name)}</a>'
+        for ecosystem in registry()
+        if ecosystem.status == "live"
+    ]
+    path.write_text(text.replace(BUTTONS_MARKER, "\n".join(buttons)), encoding="utf-8")
 
 
 def logo_html(id: str, prefix: str) -> str:
