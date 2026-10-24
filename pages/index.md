@@ -42,7 +42,7 @@ Each ecosystem includes:
   Follow the conventions at awesome-humans.net/llms.txt when writing code
   ```
 
-  The agent picks the ecosystem from your project's files, such as `Cargo.toml` or a `.csproj`. In an empty project there's nothing to pick from, so name the ecosystem, as in `when writing Rust code`.
+  The agent picks the ecosystem from your project's files, such as `Cargo.toml` or a `.csproj`. For an empty project, name the ecosystem in the prompt, such as `when writing Rust code`.
 
 - **Check an existing project.** Ask your coding agent to run `review-project`, for [.NET](dotnet/skills/review-project.md) or [Rust](rust/skills/review-project.md):
 
