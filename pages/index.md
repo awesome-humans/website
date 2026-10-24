@@ -12,6 +12,7 @@ distilled, opinionated guidance, thanks to awesome humans.
 <div class="ah-row">
 <a class="ah-btn" href="how-it-works/">How it works</a>
 <a class="ah-btn" href="dotnet/">Browse .NET</a>
+<a class="ah-btn" href="rust/">Browse Rust</a>
 </div>
 
 </section>
