@@ -393,7 +393,7 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
             for ecosystem in found:
                 lines.append(
                     f"- [{names[profile]}, {ecosystem_names[ecosystem]}]({site_url}{ecosystem}/llms-{profile}.txt):"
-                    f" the {profile} house profile's {ecosystem_names[ecosystem]} opinions"
+                    f" the {ecosystem_names[ecosystem]} opinions and templates, with {names[profile]}'s house opinions"
                 )
 
     (DOCS / "llms.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
