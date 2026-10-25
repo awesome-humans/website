@@ -39,7 +39,7 @@ For a small factual fix, such as a misquote, a broken citation, or a wrong versi
 
 A new sourced opinion starts as a research topic, which saves the evidence in one pull request, and the owner promotes it into the opinions in a second. For details, see [How it works: Research is staged, never merged in place](how-it-works.md#research-is-staged-never-merged-in-place). Take one of these routes:
 
-- **Research it yourself.** Run the ecosystem's `research-topic` skill with your coding agent, and open its pull request with the [research pull request template](https://github.com/awesome-humans/.github/blob/main/PULL_REQUEST_TEMPLATE/research.md). A topic can cite a source from outside the roster if it flags it.
+- **Research it yourself.** Run the ecosystem's `research-topic` skill with your coding agent, and open its pull request with the [research pull request template](https://github.com/awesome-humans/.github/blob/main/PULL_REQUEST_TEMPLATE/research.md). A topic can cite a source from outside the roster if the topic flags that source.
 - **Ask the owner to research it.** Open an issue in the ecosystem's repository that names the topic and links what you've read.
 
 Either way, the owner promotes or discards the topic with the `resolve-research` skill.
@@ -60,7 +60,7 @@ To use a pull request template, add `template=<file>` to the new pull request's 
 - **CI checks every pull request:** formatting, linting, spelling, links, each file's metadata, and that every cited source is on the roster and citable. Each repository's `AGENTS.md` says how to run the same checks locally.
 - **CodeRabbit reviews it.** Its findings are advisory, but answer each one: fix it, or reply with the reason you didn't.
 - **The owner reviews and merges it.** CI and CodeRabbit never merge a pull request on their own.
-- **The title follows [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/),** such as `docs: correct the EF Core version in data-access`. The pull request squash-merges, so its title becomes the commit subject and its description the commit message.
+- **The title follows [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/),** such as `docs: correct the EF Core version in data-access`. Every repository squash-merges a pull request, so its title becomes the commit subject and its description the commit message.
 - **The prose follows the [writing style](conventions/writing-style.md),** which every repository shares.
 
 ## Opt out
