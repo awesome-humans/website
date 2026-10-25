@@ -41,6 +41,7 @@ import subprocess
 import sys
 import tomllib
 from html import escape
+from itertools import takewhile
 from pathlib import Path
 
 import diagrams
@@ -333,8 +334,9 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
         if not path.is_file():
             errors.append(f"{ecosystem.id}: staged no {ecosystem.id}/llms.txt")
             continue
-        # llmstxt.org asks for a summary blockquote at the top of each file.
-        if not any(line.startswith("> ") for line in path.read_text(encoding="utf-8").splitlines()):
+        # llmstxt.org asks for a summary blockquote after the title, before the first section.
+        opening = takewhile(lambda line: not line.startswith("## "), path.read_text(encoding="utf-8").splitlines())
+        if not any(line.startswith("> ") for line in opening):
             errors.append(f"{path}: no summary blockquote")
             continue
         # The card's scope line, not the ecosystem's own summary, which repeats the site's
