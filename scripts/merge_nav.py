@@ -40,6 +40,7 @@ SITE_NAV: list[dict] = [
                     {"Writing style": "conventions/writing-style.md"},
                     {"Admission criteria": "conventions/admission-criteria.md"},
                     {"House opinions": "conventions/house-opinions.md"},
+                    {"New ecosystems": "conventions/new-ecosystems.md"},
                 ]
             },
         ]
