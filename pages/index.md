@@ -62,7 +62,7 @@ Each ecosystem includes:
   Use the research-topic skill at awesome-humans.net/llms.txt to research union types coming in C#
   ```
 
-- **Read the opinions and templates.** Each opinion gives its recommendation, with the rationale and sources behind it, and the [.NET templates](dotnet/templates/index.md) and [Rust templates](rust/templates/index.md) encode them.
+- **Read the opinions and templates.** Each opinion gives its recommendation, with the rationale and sources behind it, and the [.NET templates](dotnet/templates/index.md) and [Rust templates](rust/templates/index.md) encode those opinions.
 
 To understand how sources are vetted and how opinions stay current, see [How it works](how-it-works.md).
 
