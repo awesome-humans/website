@@ -56,9 +56,13 @@ Each ecosystem includes:
   Use the review-project skill at awesome-humans.net/llms.txt on <repository>, focus on logging and testing, skip CI, use house profile of simon-mckenna
   ```
 
-- **Start a project from the templates.** Copy the [.NET templates](dotnet/templates/index.md) or the [Rust templates](rust/templates/index.md) into a new project, trimming what you don't need.
+- **Research a topic.** Ask your coding agent to run `research-topic`, for [.NET](dotnet/skills/research-topic.md) or [Rust](rust/skills/research-topic.md), which answers from the opinions and the vetted sources, citing each claim:
 
-- **Read the opinions.** Each page gives its recommendation, with the rationale and sources behind it.
+  ```text
+  Use the research-topic skill at awesome-humans.net/llms.txt to research union types coming in C#
+  ```
+
+- **Read the opinions and templates.** Each opinion gives its recommendation, with the rationale and sources behind it, and the [.NET templates](dotnet/templates/index.md) and [Rust templates](rust/templates/index.md) encode those opinions.
 
 To understand how sources are vetted and how opinions stay current, see [How it works](how-it-works.md).
 
