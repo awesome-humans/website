@@ -16,7 +16,7 @@ dependencies = [
 # which zensical.toml loads by name. uv installs it into the environment.
 [build-system]
 # Pinned like zensical, so Renovate's pep621 manager bumps it in a reviewed pull request.
-requires = ["uv_build==0.13.1"]
+requires = ["uv_build==0.13.5"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -30,7 +30,7 @@ dev = [
   # merge_nav.py and collate_sources.py declare it inline. Here at the same pin, so
   # pyright can resolve their imports.
   "jsonschema==4.26.0",
-  "ruff==0.17.1",
+  "ruff==0.17.2",
   "taplo==0.9.3",
   "zizmor==1.31.1",
 ]
