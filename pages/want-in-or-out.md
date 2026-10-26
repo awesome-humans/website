@@ -2,10 +2,6 @@
 
 Citation is opt-out. Anyone can suggest a source or improve the opinions, and any listed source can ask to stop being cited. A source suggestion or an opt-out is a GitHub issue in [awesome-humans/website](https://github.com/awesome-humans/website), unless you send the opt-out by email. A change to an opinion, a template, or a skill goes to the ecosystem's own repository.
 
-The site shows no portraits or logos. Each source appears by name, with a link to their work.
-
-The goal is a montage of portraits for each ecosystem, and one for the site itself. Unlike citation, a portrait is opt-in: a face appears only with the person's recorded permission. Asking means the owner writes to every source on every roster and follows up each reply. That's more correspondence than one maintainer can take on yet, so portraits are on hold.
-
 ## Want in
 
 Find your change in the table, then follow its section. Each ecosystem's pages link its repository in the header.
