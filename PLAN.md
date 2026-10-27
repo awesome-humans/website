@@ -55,7 +55,7 @@ Pick up here:
 
 `gh` is signed in as `si618`, an organisation admin, without the `admin:org` scope. Repository rulesets don't need it, but listing organisation rulesets does.
 
-**Agent notes:** Read the repository's `AGENTS.md` before the first commit. Commits and pull request descriptions carry no agent attribution: no `Co-Authored-By` trailer and no "Generated with" line. `npm ci` before `npm run check` in a fresh worktree. The agent can merge a pull request with `gh pr merge` when the owner asks, but can't write secrets.
+**Agent notes:** Read the repository's `AGENTS.md` before the first commit. Commits and pull request descriptions carry no agent attribution: no `Co-Authored-By` trailer and no "Generated with" line. Run `just install` before `just check` in a fresh worktree. The agent can merge a pull request with `gh pr merge` when the owner asks, but can't write secrets.
 
 ## Where things stand (checked 2026-10-18)
 
