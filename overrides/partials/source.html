@@ -1,0 +1,18 @@
+{#- The header's repository link: Zensical's partial without
+data-md-component="source", so the theme's bundle doesn't call the GitHub API for
+the stars, forks, and latest release. The repositories have no releases, so that
+call fails with 404, and a visitor past GitHub's unauthenticated rate limit gets
+403, both as console errors. javascripts/ecosystem.js finds the link by
+data-ah-source instead. -#}
+<a
+  href="{{ config.repo_url }}"
+  title="{{ lang.t('source') }}"
+  class="md-source"
+  data-ah-source
+>
+  <div class="md-source__icon md-icon">
+    {% set icon = config.theme.icon.repo or "fontawesome/brands/git-alt" %}
+    {% include ".icons/" ~ icon ~ ".svg" %}
+  </div>
+  <div class="md-source__repository">{{ config.repo_name }}</div>
+</a>
