@@ -10,29 +10,12 @@ if (segment) {
 // Points the header's repository link at the ecosystem's own repository under /<id>/,
 // from repositories.js, which stage.py writes. Every other page keeps zensical.toml's
 // repo_url, the website repository. The theme renders the link twice, in the header
-// and in the navigation drawer that narrow screens show, so this updates both. It runs
-// before the theme reads the links.
+// and in the navigation drawer that narrow screens show, so this updates both.
+// overrides/partials/source.html marks them with data-ah-source.
 const repository = window.ahRepositories?.[segment];
-const sources = document.querySelectorAll('[data-md-component="source"]');
 if (repository) {
-  for (const source of sources) {
+  for (const source of document.querySelectorAll("[data-ah-source]")) {
     source.href = `https://github.com/${repository}`;
     source.querySelector(".md-source__repository").textContent = repository;
-  }
-}
-
-// The theme caches one repository's stars and forks in session storage, whichever
-// repository they came from. Drop them when the link names a different repository, so
-// the theme fetches that one's.
-const [source] = sources;
-if (source) {
-  try {
-    const key = `${__md_scope.pathname}.__source`;
-    if (sessionStorage.getItem("ah.source") !== source.href) {
-      sessionStorage.removeItem(key);
-      sessionStorage.setItem("ah.source", source.href);
-    }
-  } catch {
-    // Storage can be blocked. The theme then fetches the facts on every page.
   }
 }
