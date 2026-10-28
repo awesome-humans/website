@@ -16,7 +16,7 @@ dependencies = [
 # which zensical.toml loads by name. uv installs it into the environment.
 [build-system]
 # Pinned like zensical, so Renovate's pep621 manager bumps it in a reviewed pull request.
-requires = ["uv_build==0.13.5"]
+requires = ["uv_build==0.13.6"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
