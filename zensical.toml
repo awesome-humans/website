@@ -19,6 +19,7 @@ extra_css = ["stylesheets/awesome-humans.css"]
 extra_javascript = [
   "javascripts/repositories.js",
   "javascripts/ecosystem.js",
+  "javascripts/accessible-names.js",
   "javascripts/open-details.js",
   "javascripts/date-sort.js",
   "javascripts/houses.js",
