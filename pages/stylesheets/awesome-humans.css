@@ -402,6 +402,17 @@
   outline-offset: 2px;
 }
 
+/* Text for screen readers and agents only, such as the header buttons' names that
+   javascripts/accessible-names.js adds. */
+.ah-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* ---- Structure from hairlines, not shadows ---- */
 .md-typeset pre > code {
   border: var(--ah-hairline) solid var(--ah-line);
