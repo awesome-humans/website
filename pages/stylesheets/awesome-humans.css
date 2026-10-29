@@ -3,8 +3,8 @@
    here, and its components/bundle.css the ah- component rules, with the tokens renamed
    --ah-*. Change a value there first, then copy it here.
 
-   Light follows Zensical's default scheme and dark its slate scheme. The modern variant
-   keeps the header and tabs on the page background, so brand green stays on links. */
+   Light follows Zensical's default scheme and dark its slate scheme, on the modern
+   variant. */
 
 /* ---- Fonts: IBM Plex, self-hosted, Latin-1 subsets as IBM ships them ---- */
 @font-face {
@@ -172,9 +172,13 @@
 }
 
 [data-md-color-scheme="default"] {
-  --ah-bg: #ffffff;
-  --ah-surface: #f6f7f8;
-  --ah-raised: #eef0f2;
+  /* The page and its panels take a faint tint of the ecosystem accent, like the
+     header's solid bar. */
+  --ah-bg: color-mix(in srgb, var(--ah-eco) 3%, #ffffff);
+  --ah-surface: color-mix(in srgb, var(--ah-eco) 3%, #f6f7f8);
+  --ah-raised: color-mix(in srgb, var(--ah-eco) 3%, #eef0f2);
+  /* Code keeps the plain surface, which the theme's syntax colours are set against. */
+  --ah-code: #f6f7f8;
   --ah-line: #e3e6ea;
   --ah-ink: #0d1117;
   --ah-ink-2: #3b4450;
@@ -196,12 +200,14 @@
   --ah-lane-reports: #8253ac;
   --ah-header-bg: var(--ah-eco);
   --ah-header-ink: #ffffff;
+  --ah-header-shadow: 0 0 4px rgb(0 0 0 / 10%), 0 4px 8px rgb(0 0 0 / 20%);
 }
 
 [data-md-color-scheme="slate"] {
-  --ah-bg: #0d1117;
-  --ah-surface: #151a21;
-  --ah-raised: #1c232c;
+  --ah-bg: color-mix(in srgb, var(--ah-eco) 2%, #0d1117);
+  --ah-surface: color-mix(in srgb, var(--ah-eco) 2%, #151a21);
+  --ah-raised: color-mix(in srgb, var(--ah-eco) 2%, #1c232c);
+  --ah-code: #151a21;
   --ah-line: #2a323c;
   --ah-ink: #e8ecf0;
   --ah-ink-2: #c3cad2;
@@ -223,6 +229,8 @@
   --ah-lane-reports: #c9a5e9;
   --ah-header-bg: color-mix(in srgb, var(--ah-eco) 28%, var(--ah-bg));
   --ah-header-ink: var(--ah-ink);
+  /* A black shadow barely shows on a near-black page, so dark mode's is deeper. */
+  --ah-header-shadow: 0 0 4px rgb(0 0 0 / 25%), 0 4px 10px rgb(0 0 0 / 45%);
 }
 
 /* The ecosystem accent. javascripts/ecosystem.js sets data-ecosystem on <html> from the
@@ -269,7 +277,7 @@
   --md-accent-fg-color--transparent: var(--ah-brand-tint);
   --md-accent-bg-color: var(--ah-on-brand);
 
-  --md-code-bg-color: var(--ah-surface);
+  --md-code-bg-color: var(--ah-code);
   --md-code-fg-color: var(--ah-ink);
   --md-code-hl-comment-color: var(--ah-muted);
 
@@ -344,9 +352,7 @@
 .md-header {
   background-color: var(--ah-header-bg);
   color: var(--ah-header-ink);
-  box-shadow:
-    0 0 4px rgb(0 0 0 / 10%),
-    0 4px 8px rgb(0 0 0 / 20%);
+  box-shadow: var(--ah-header-shadow);
 }
 .md-header__title {
   font-weight: 600;
