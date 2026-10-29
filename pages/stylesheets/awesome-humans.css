@@ -3,8 +3,8 @@
    here, and its components/bundle.css the ah- component rules, with the tokens renamed
    --ah-*. Change a value there first, then copy it here.
 
-   Light follows Zensical's default scheme and dark its slate scheme. The modern variant
-   keeps the header and tabs on the page background, so brand green stays on links. */
+   Light follows Zensical's default scheme and dark its slate scheme, on the modern
+   variant. */
 
 /* ---- Fonts: IBM Plex, self-hosted, Latin-1 subsets as IBM ships them ---- */
 @font-face {
@@ -172,9 +172,13 @@
 }
 
 [data-md-color-scheme="default"] {
-  --ah-bg: #ffffff;
-  --ah-surface: #f6f7f8;
-  --ah-raised: #eef0f2;
+  /* The page and its panels take a faint tint of the ecosystem accent, like the
+     header's solid bar. */
+  --ah-bg: color-mix(in srgb, var(--ah-eco) 3%, #ffffff);
+  --ah-surface: color-mix(in srgb, var(--ah-eco) 3%, #f6f7f8);
+  --ah-raised: color-mix(in srgb, var(--ah-eco) 3%, #eef0f2);
+  /* Code keeps the plain surface, which the theme's syntax colours are set against. */
+  --ah-code: #f6f7f8;
   --ah-line: #e3e6ea;
   --ah-ink: #0d1117;
   --ah-ink-2: #3b4450;
@@ -194,12 +198,16 @@
   --ah-lane-research: #6d7123;
   --ah-lane-opinions: #955080;
   --ah-lane-reports: #8253ac;
+  --ah-header-bg: var(--ah-eco);
+  --ah-header-ink: #ffffff;
+  --ah-header-shadow: 0 0 4px rgb(0 0 0 / 10%), 0 4px 8px rgb(0 0 0 / 20%);
 }
 
 [data-md-color-scheme="slate"] {
-  --ah-bg: #0d1117;
-  --ah-surface: #151a21;
-  --ah-raised: #1c232c;
+  --ah-bg: color-mix(in srgb, var(--ah-eco) 2%, #0d1117);
+  --ah-surface: color-mix(in srgb, var(--ah-eco) 2%, #151a21);
+  --ah-raised: color-mix(in srgb, var(--ah-eco) 2%, #1c232c);
+  --ah-code: #151a21;
   --ah-line: #2a323c;
   --ah-ink: #e8ecf0;
   --ah-ink-2: #c3cad2;
@@ -219,6 +227,10 @@
   --ah-lane-research: #b9be71;
   --ah-lane-opinions: #e79bce;
   --ah-lane-reports: #c9a5e9;
+  --ah-header-bg: color-mix(in srgb, var(--ah-eco) 28%, var(--ah-bg));
+  --ah-header-ink: var(--ah-ink);
+  /* A black shadow barely shows on a near-black page, so dark mode's is deeper. */
+  --ah-header-shadow: 0 0 4px rgb(0 0 0 / 25%), 0 4px 10px rgb(0 0 0 / 45%);
 }
 
 /* The ecosystem accent. javascripts/ecosystem.js sets data-ecosystem on <html> from the
@@ -265,7 +277,7 @@
   --md-accent-fg-color--transparent: var(--ah-brand-tint);
   --md-accent-bg-color: var(--ah-on-brand);
 
-  --md-code-bg-color: var(--ah-surface);
+  --md-code-bg-color: var(--ah-code);
   --md-code-fg-color: var(--ah-ink);
   --md-code-hl-comment-color: var(--ah-muted);
 
@@ -333,31 +345,30 @@
   letter-spacing: -0.015em;
 }
 
-/* ---- Header: on bg, a hairline, and the ecosystem stripe along the bottom ---- */
-.md-header,
-.md-tabs {
-  background-color: var(--ah-bg);
-  color: var(--ah-ink);
-}
+/* ---- Header: a solid bar of the ecosystem accent, with a soft shadow below ----
+   In dark mode the accent is a light tint, so the bar takes a deep shade of it instead,
+   with light ink. The tabs below it stay on bg, and only the active one is underlined,
+   in the accent. */
 .md-header {
-  box-shadow: none;
-}
-.md-header::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: var(--ah-stripe);
-  background: var(--ah-eco);
+  background-color: var(--ah-header-bg);
+  color: var(--ah-header-ink);
+  box-shadow: var(--ah-header-shadow);
 }
 .md-header__title {
   font-weight: 600;
 }
 .md-tabs {
-  border-bottom: var(--ah-hairline) solid var(--ah-line);
+  background-color: var(--ah-bg);
+  color: var(--ah-ink);
+  box-shadow: none;
+}
+/* A shorter row than the theme's 2.4rem, so the active underline sits closer to its
+   label. */
+.md-tabs__item {
+  height: 2rem;
 }
 .md-tabs__link {
+  margin-top: 0.6rem;
   color: var(--ah-ink-2);
   opacity: 1;
 }
@@ -365,9 +376,48 @@
 .md-tabs__link:focus {
   color: var(--ah-brand);
 }
+.md-tabs__item--active {
+  border-bottom: var(--ah-stripe) solid var(--ah-eco);
+}
 .md-tabs__item--active .md-tabs__link {
   color: var(--ah-eco);
   font-weight: 600;
+}
+/* The logo reversed out in the bar's ink, since its green would vanish on the brand
+   bar. */
+.md-header__button.md-logo img {
+  filter: brightness(0) invert(1);
+}
+/* The search button and the header's icons, light on the accent. */
+@media screen and (min-width: 45em) {
+  .md-header .md-search__button {
+    color: var(--ah-header-ink);
+    background-color: rgb(0 0 0 / 18%);
+  }
+  .md-header .md-search__button:hover,
+  .md-header .md-search__button:focus {
+    color: var(--ah-header-ink);
+    background-color: rgb(0 0 0 / 28%);
+  }
+  .md-header .md-search__button::before {
+    background-color: var(--ah-header-ink);
+  }
+  .md-header .md-search__button::after {
+    color: var(--ah-header-ink);
+    background-color: transparent;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 45%);
+  }
+}
+.md-header .md-header__button,
+.md-header .md-source {
+  color: var(--ah-header-ink);
+}
+/* The brand-mark focus ring would vanish on the bar, so it takes the bar's ink. */
+.md-header .md-header__button:focus-visible,
+.md-header .md-search__button:focus-visible,
+.md-header .md-source:focus-visible {
+  outline: var(--ah-stripe) solid var(--ah-header-ink);
+  outline-offset: 2px;
 }
 
 /* ---- Navigation: the active page takes the ecosystem accent ---- */
@@ -390,11 +440,11 @@
   }
 }
 
-/* ---- Focus: a solid brand-mark ring, 3:1 or better on every surface ---- */
+/* ---- Focus: a solid brand-mark ring, 3:1 or better on every surface ----
+   The header bar's controls take its ink instead, set with the header. */
 .md-typeset a:focus-visible,
 .md-nav__link:focus-visible,
 .md-tabs__link:focus-visible,
-.md-header__button:focus-visible,
 .ah-btn:focus-visible,
 .ah-card:focus-visible,
 .ah-chip:focus-visible {
