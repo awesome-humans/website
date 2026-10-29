@@ -412,6 +412,13 @@
 .md-header .md-source {
   color: var(--ah-header-ink);
 }
+/* The brand-mark focus ring would vanish on the bar, so it takes the bar's ink. */
+.md-header .md-header__button:focus-visible,
+.md-header .md-search__button:focus-visible,
+.md-header .md-source:focus-visible {
+  outline: var(--ah-stripe) solid var(--ah-header-ink);
+  outline-offset: 2px;
+}
 
 /* ---- Navigation: the active page takes the ecosystem accent ---- */
 .md-nav__item .md-nav__link--active,
@@ -433,11 +440,11 @@
   }
 }
 
-/* ---- Focus: a solid brand-mark ring, 3:1 or better on every surface ---- */
+/* ---- Focus: a solid brand-mark ring, 3:1 or better on every surface ----
+   The header bar's controls take its ink instead, set with the header. */
 .md-typeset a:focus-visible,
 .md-nav__link:focus-visible,
 .md-tabs__link:focus-visible,
-.md-header__button:focus-visible,
 .ah-btn:focus-visible,
 .ah-card:focus-visible,
 .ah-chip:focus-visible {
