@@ -17,7 +17,7 @@ Each ecosystem's content lives in its own repository. This repository owns every
 | Ecosystem | Repository                                                        | Status |
 | --------- | ----------------------------------------------------------------- | ------ |
 | .NET      | [awesome-humans/dotnet](https://github.com/awesome-humans/dotnet) | Live   |
-| Rust      | [awesome-humans/rust](https://github.com/awesome-humans/rust)     | Soon   |
+| Rust      | [awesome-humans/rust](https://github.com/awesome-humans/rust)     | Live   |
 
 ## Staging contract
 
