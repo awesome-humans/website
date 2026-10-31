@@ -18,22 +18,22 @@ Each stage ends with a check you can run or read. For the full steps, see Rust's
 8. **Hold the checks to the opinions.** Read every check written in the ecosystem's language against its opinions and templates, and fix what doesn't follow them. The repository should follow the practices it recommends. Done when every check has been read against them, and the fixes have merged.
 9. **Delete the plan.** Once every topic in the table is promoted or discarded, delete `PLAN.md` in the pull request that resolves the last one. The ecosystem is then established.
 
-## While research comes in
+## While research outnumbers opinions
 
-Between stages 6 and 9, the repository has more research than opinions. On 2026-10-25, Rust had one opinion, two merged topics waiting on `resolve-research`, and seven topics in open pull requests. That's normal, and so are these:
+This is stages 6 to 9. On 2026-10-25, Rust had one opinion, two merged topics waiting on `resolve-research`, and seven topics in open pull requests. That's normal, and so are these:
 
 - **Readers and agents see little of the research.** The site marks a merged topic with an "Unresolved research" lead. The ecosystem's `llms.txt` lists opinions, templates, and skills, but never research. A topic in an open pull request isn't on the site at all.
 - **Research finds gaps in the rules.** Topics written in parallel apply an unsettled rule in different ways: Rust's open topics linked RFCs and RustSec advisories in three URL forms before rust#60 settled them. Fix the rule in its own pull request, then check each open topic against it. Don't fix it inside a research pull request, because the other topics won't see it.
 - **Topics need sources the plan didn't expect.** The plan expected `research/rust.md` to draw its idioms from `rust-docs`, `rust-blog`, and `niko-matsakis`. It drew on `burntsushi`, `corrode`, and `matklad` instead, which were already Citable. When a source isn't on the roster, run `vet-source` for it, or promote the covered part and leave the rest staged.
 - **Resolve in the plan's order.** The table puts the foundations first, such as the language and project structure, so a later opinion can link to an earlier one instead of restating it.
 
-## Skills on a thin corpus
+## Skills with few opinions
 
 Most skills work on opinions, so before stage 7 they have little to do. Read their results with that in mind:
 
 - **`audit-freshness`** reports nothing to check while the repository has no opinions, and fails. It flags a research topic 90 days after its `last-reviewed` date, so a merged topic left unresolved becomes a finding.
-- **`review-project`** compares a project only with the areas the opinions cover. A short report from a thin corpus means little coverage, not a compliant project.
+- **`review-project`** compares a project only with the areas the opinions cover. A short report from few opinions means little coverage, not a compliant project.
 - **`review-opinions`** checks only opinions and templates, so before stage 7 it has little more than the template comments to read. Run a full pass when the first opinion merges, so the opinions start from citations known to hold. After that, `harvest-sources` checks the citations each harvest changes.
-- **The agent reviewer** follows `REVIEW.md`, whose Important findings cover opinions, templates, skills, and checks. In a research pull request, the only Important finding is a rule changed alongside the topic, so the owner's review carries the rest.
-- **`harvest-sources`** edits only opinions that exist. For a post on any other topic, it first checks `research/` and the open research pull requests, and adds the post to a topic that covers it. If none does, it adds a stub opinion.
+- **The agent reviewer** follows `REVIEW.md`, whose Important findings cover opinions, templates, skills, and checks. The one Important finding specific to research is a rule changed alongside a topic, so the owner's review carries the rest of a research pull request.
+- **`harvest-sources`** edits an existing opinion when a post fits one. For a post on any other topic, it first checks `research/` and the open research pull requests, and adds the post to a topic that covers it. If none does, it adds a stub opinion.
 - **The version refresh skill,** such as `refresh-rust-versions`, updates opinions and templates only. Research topics keep the versions they were written against until `resolve-research` updates them.
