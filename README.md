@@ -6,7 +6,7 @@ Each ecosystem's content lives in its own repository. This repository owns every
 
 ## Ecosystems
 
-[`ecosystems.toml`](ecosystems.toml) lists every ecosystem the site knows. To add one:
+[`ecosystems.toml`](ecosystems.toml) lists every ecosystem the site knows. [New ecosystems](pages/conventions/new-ecosystems.md) describes the stages an ecosystem goes through, from an empty repository to an established set of opinions. To add one to the site:
 
 1. Add its entry to [`ecosystems.toml`](ecosystems.toml), which also gives it a card on the home page.
 2. Copy its accent colours from the design system into [`pages/stylesheets/awesome-humans.css`](pages/stylesheets/awesome-humans.css).
