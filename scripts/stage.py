@@ -75,6 +75,10 @@ CONVENTIONS = {
         "the track record a source needs, and the IDs and markings that limit citing it",
     ),
     "house-opinions": ("House opinions", "how a house opinion is woven into an ecosystem, and how it's marked"),
+    "new-ecosystems": (
+        "New ecosystems",
+        "the stages from an empty repository to an established set of opinions, and what to expect between",
+    ),
 }
 RAW_PAGES = "https://raw.githubusercontent.com/awesome-humans/website/main/pages/"
 
