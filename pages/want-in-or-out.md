@@ -54,8 +54,8 @@ To use a pull request template, add `template=<file>` to the new pull request's 
 ### What to expect
 
 - **CI checks every pull request:** formatting, linting, spelling, links, each file's metadata, and that every cited source is on the roster and citable. Each repository's `AGENTS.md` says how to run the same checks locally.
-- **CodeRabbit reviews it.** Its findings are advisory, but answer each one: fix it, or reply with the reason you didn't.
-- **The owner reviews and merges it.** CI and CodeRabbit never merge a pull request on their own.
+- **The agent reviewer (currently CodeRabbit) reviews it.** Its findings are advisory, but answer each one: fix it, or reply with the reason you didn't.
+- **The owner reviews and merges it.** CI and the agent reviewer never merge a pull request on their own.
 - **The title follows [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/),** such as `docs: correct the EF Core version in data-access`. Every repository squash-merges a pull request, so its title becomes the commit subject and its description the commit message.
 - **The prose follows the [writing style](conventions/writing-style.md),** which every repository shares.
 
