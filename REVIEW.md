@@ -1,6 +1,6 @@
 # Review instructions
 
-These instructions tune automated pull request review in this repository. The agent reviewer (currently CodeRabbit) reads them, and so can any other agent asked to review a pull request here. They add to [AGENTS.md](AGENTS.md), which stays the source of every rule.
+These instructions tune automated pull request review in this repository. The agent reviewer (currently CodeRabbit) reads them, and so can any other agent asked to review a pull request here. They add review-specific guidance, such as what each severity means, to [AGENTS.md](AGENTS.md), which stays the source of every other rule.
 
 This repository builds and deploys awesome-humans.net from every ecosystem's staged pages. A finding matters when it would break the build or the deployment, publish something it shouldn't, or misstate a shared convention that every repository links.
 
