@@ -2,13 +2,13 @@
 
 These are the stages a new ecosystem goes through, from an empty repository to an established set of opinions, and what to expect in the stretch between the first research and that set. They live here once, so each ecosystem's `PLAN.md` can point to them instead of repeating them. Rust is the worked example: `awesome-humans/rust` started on 2026-10-14.
 
-A third ecosystem is on hold until `dotnet` and `rust` have settled the multi-repository approach. For details, see the website's `PLAN.md`.
+A third ecosystem has been on hold since 2026-10-18, until `dotnet` and `rust` have settled the multi-repository approach. Its teething problems are easier to fix across two repositories than three or more.
 
 ## Stages
 
 Each stage ends with a check you can run or read. Rust's `PLAN.md` holds the full steps for each one.
 
-1. **Scaffold the repository.** Copy the layout, `AGENTS.md`, and CI from an existing ecosystem, and port its checks to the ecosystem's own language, such as Go for a Kubernetes ecosystem, so the repository dogfoods the language it writes about. Done when `just verify` passes on empty `opinions/`, `research/`, and `templates/` directories.
+1. **Scaffold the repository.** Copy the layout, `AGENTS.md`, and CI from an existing ecosystem, and port its checks to the ecosystem's own language, such as Go for a Kubernetes ecosystem, so the repository dogfoods the language it writes about. Adapt `REVIEW.md` alongside them, because it names the checks CI runs and the toolchain an example must build with. A pull request that changes one ecosystem's `REVIEW.md` names the others. Done when `just verify` passes on empty `opinions/`, `research/`, and `templates/` directories.
 2. **Vet the roster.** Run `vet-source` for each candidate in `AWESOME-HUMANS.md`. Done when every topic in the plan's first-opinions table has a Citable source expected to carry it.
 3. **Settle the reference rules.** Name the repositories that count as references under Named references in `AWESOME-HUMANS.md`, and the URL form each one takes. Done before the first `research-topic` run, because most topics cite one.
 4. **Add the skills.** Done when each skill's `SKILL.md` names the repository and its paths, and `skills-ref` validates it.
@@ -34,5 +34,6 @@ Most skills work on opinions, so they have little to do before stage 7. Read the
 - **`audit-freshness`** reports that there's nothing to check when the repository has no opinions, and doesn't pass. It reports a research topic 90 days after its `last-reviewed` date, so a merged topic left unresolved becomes a finding.
 - **`review-project`** compares a project only with the areas the opinions cover. A short report from a thin corpus means little coverage, not a compliant project.
 - **`review-opinions`** checks only opinions and templates, not `research/`, so before stage 7 it has little more than the template comments to read. A full pass is small while the corpus is thin. Run one when the first opinion merges, so the opinions start from citations that are known to hold. After that, `harvest-sources` runs its citation check on each harvest's changes.
+- **The agent reviewer** follows `REVIEW.md`, whose Important findings cover opinions, templates, skills, and checks, not `research/`. A research pull request mostly gets Nits, so the owner's review carries it.
 - **`harvest-sources`** edits only opinions that exist, and turns a post on any other topic into a stub opinion. Before you add a stub, check `research/` and the open research pull requests. If a topic covers the subject, add the post to that topic instead.
 - **The version refresh skill,** such as `refresh-rust-versions`, updates opinions and templates only. Research topics keep the versions they were written against until `resolve-research` updates them.
