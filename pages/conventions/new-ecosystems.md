@@ -8,18 +8,19 @@ A third ecosystem is on hold until `dotnet` and `rust` have settled the multi-re
 
 Each stage ends with a check you can run or read. Rust's `PLAN.md` holds the full steps for each one.
 
-1. **Scaffold the repository.** Copy the layout, `AGENTS.md`, and CI from an existing ecosystem, and port its checks. Done when `just verify` passes on empty `opinions/`, `research/`, and `templates/` directories.
+1. **Scaffold the repository.** Copy the layout, `AGENTS.md`, and CI from an existing ecosystem, and port its checks to the ecosystem's own language, such as Go for a Kubernetes ecosystem, so the repository dogfoods the language it writes about. Done when `just verify` passes on empty `opinions/`, `research/`, and `templates/` directories.
 2. **Vet the roster.** Run `vet-source` for each candidate in `AWESOME-HUMANS.md`. Done when every topic in the plan's first-opinions table has a Citable source expected to carry it.
-3. **Settle the reference rules.** Name the repositories that count as references under Named references in `AWESOME-HUMANS.md`, and the URL form each one takes. Done before the first `research-topic` run, because every topic cites references.
+3. **Settle the reference rules.** Name the repositories that count as references under Named references in `AWESOME-HUMANS.md`, and the URL form each one takes. Done before the first `research-topic` run, because most topics cite one.
 4. **Add the skills.** Done when each skill's `SKILL.md` names the repository and its paths, and `skills-ref` validates it.
 5. **Join the site.** Add the ecosystem to `ecosystems.toml` in this repository with `status = "soon"`. The home page shows it as coming, and only its own pull request previews build it. Done when a preview stages its pages.
 6. **Research the first topics.** Run `research-topic` for each topic in the plan's table, one pull request each.
 7. **Resolve them into opinions.** Run `resolve-research` for each merged topic. When the first opinion merges, set `status = "live"`. Rust went live on 2026-10-18, when website#91 published it, the day rust#18 merged `opinions/rust.md`.
-8. **Delete the plan.** Once every topic in the table is promoted or discarded, delete `PLAN.md` in the pull request that resolves the last one. The ecosystem is then established.
+8. **Hold the checks to the opinions.** Review every check written in the ecosystem's language against its opinions and templates, and fix what doesn't follow them. The repository should always follow the practices it recommends. Done when `review-project`, run on the repository's own checks, reports no violations.
+9. **Delete the plan.** Once every topic in the table is promoted or discarded, delete `PLAN.md` in the pull request that resolves the last one. The ecosystem is then established.
 
 ## While research comes in
 
-Between stages 6 and 8, the repository has more research than opinions. On 2026-10-25, Rust had one opinion, two merged topics waiting on `resolve-research`, and seven topics in open pull requests. Expect that shape, and expect these:
+Between stages 6 and 9, the repository has more research than opinions. On 2026-10-25, Rust had one opinion, two merged topics waiting on `resolve-research`, and seven topics in open pull requests. Expect that shape, and expect these:
 
 - **Readers and agents see only the opinions.** The site renders a merged topic with an "Unresolved research" lead, and the ecosystem's `llms.txt` lists opinions, templates, and skills, never research. A topic in an open pull request isn't on the site at all.
 - **Research finds gaps in the rules.** Topics written in parallel apply an unsettled rule in different ways. Rust's open topics linked RFCs and RustSec advisories in three URL forms before rust#60 settled them. Fix the rule in its own pull request, then check each open topic against it. Don't fix a rule inside a research pull request, because the next topic won't see it.
