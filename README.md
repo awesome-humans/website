@@ -131,7 +131,6 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 ├── houses.toml             ← the house profile registry
 ├── justfile                ← every local and CI entry point: run `just` to list them
 ├── pages/                  ← the shared pages, the theme, and the brand assets
-├── PLAN.md                 ← the organisation and website plan, deleted when it's done
 ├── pyproject.toml          ← the site's Python dependencies, and its package of Markdown extensions
 ├── schemas/                ← the staging contract's JSON schemas
 ├── src/                    ← the site's Markdown extensions, which zensical.toml loads
