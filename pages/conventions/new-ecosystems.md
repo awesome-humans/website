@@ -15,7 +15,7 @@ Each stage ends with a check you can run or read. Rust's `PLAN.md` holds the ful
 5. **Join the site.** Add the ecosystem to `ecosystems.toml` in this repository with `status = "soon"`. The home page shows it as coming, and only its own pull request previews build it. Done when a preview stages its pages.
 6. **Research the first topics.** Run `research-topic` for each topic in the plan's table, one pull request each. Done when every topic in the table has a merged research topic.
 7. **Resolve them into opinions.** Run `resolve-research` for each merged topic. When the first opinion merges, set `status = "live"`. Done when the first opinion has merged and the ecosystem's `status` is `live`. Rust went live on 2026-10-18, when website#91 published it, the day rust#18 merged `opinions/rust.md`.
-8. **Hold the checks to the opinions.** Review every check written in the ecosystem's language against its opinions and templates, and fix what doesn't follow them. The repository should always follow the practices it recommends. Done when `review-project`, run on the repository's own checks, reports no violations.
+8. **Hold the checks to the opinions.** Review every check written in the ecosystem's language against its opinions and templates, and fix what doesn't follow them. The repository should always follow the practices it recommends. Done when every check has been read against each opinion and template, and what doesn't follow them is fixed.
 9. **Delete the plan.** Once every topic in the table is promoted or discarded, delete `PLAN.md` in the pull request that resolves the last one. The ecosystem is then established.
 
 ## While research comes in
