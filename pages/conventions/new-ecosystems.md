@@ -20,7 +20,7 @@ Each stage ends with a check you can run or read. For the full steps, see Rust's
 
 ## While research outnumbers opinions
 
-This is stages 6 to 9. On 2026-10-25, Rust had one opinion, two merged topics waiting on `resolve-research`, and seven topics in open pull requests. That's normal, and so are these:
+This happens in stages 6 to 9. On 2026-10-25, Rust had one opinion, two merged topics waiting on `resolve-research`, and seven topics in open pull requests. That's normal, and so are these:
 
 - **Readers and agents see little of the research.** The site marks a merged topic with an "Unresolved research" lead. The ecosystem's `llms.txt` lists opinions, templates, and skills, but never research. A topic in an open pull request isn't on the site at all.
 - **Research finds gaps in the rules.** Topics written in parallel apply an unsettled rule in different ways: Rust's open topics linked RFCs and RustSec advisories in three URL forms before rust#60 settled them. Fix the rule in its own pull request, then check each open topic against it. Don't fix it inside a research pull request, because the other topics won't see it.
