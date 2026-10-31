@@ -24,7 +24,7 @@ Between stages 6 and 9, the repository has more research than opinions. On 2026-
 
 - **Readers and agents see only the opinions.** The site renders a merged topic with an "Unresolved research" lead, and the ecosystem's `llms.txt` lists opinions, templates, and skills, never research. A topic in an open pull request isn't on the site at all.
 - **Research finds gaps in the rules.** Topics written in parallel apply an unsettled rule in different ways. Rust's open topics linked RFCs and RustSec advisories in three URL forms before rust#60 settled them. Fix the rule in its own pull request, then check each open topic against it. Don't fix a rule inside a research pull request, because the next topic won't see it.
-- **Topics need sources the plan didn't expect.** `research/rust.md` drew on `burntsushi`, `corrode`, and `matklad` for its idioms, though the plan expected `rust-docs`, `rust-blog`, and `niko-matsakis`. All three were already Citable. When a source isn't on the roster, run `vet-source` for it, or promote the part that's covered and leave the rest staged.
+- **Topics need sources the plan didn't expect.** `research/rust.md` drew on `burntsushi`, `corrode`, and `matklad` for its idioms, though the plan expected `rust-docs`, `rust-blog`, and `niko-matsakis`. The three it drew on were already Citable. When a source isn't on the roster, run `vet-source` for it, or promote the part that's covered and leave the rest staged.
 - **Resolve in the plan's order.** The table puts the foundations first, such as the language and project structure, so a later opinion can link to an earlier one instead of restating it.
 
 ## Skills on a thin corpus
