@@ -64,7 +64,7 @@ Work in a git worktree, with one branch per directory. The local clone is bare, 
 - Run `just format` to format every file, and `just check` to run every check that CI runs on a pull request: formatting, linting, types, and spelling. The link check runs only in CI. The site build runs in CI and in `just build`. Each tool is pinned, the Node ones in `package.json` and the Python ones in the dev group in `pyproject.toml`. Don't run a tool through `npx` or `uvx`, because they resolve the latest version.
 - `just format` runs Prettier on Markdown, JSON, YAML, CSS, and JavaScript, taplo on TOML (configured in `.taplo.toml`), and Ruff on Python. Prettier skips the Jinja template in `overrides/`, which it would break.
 - `just lint` runs markdownlint on Markdown, stylelint on CSS (configured in `.stylelintrc.json`), ESLint on JavaScript (configured in `eslint.config.mjs`), and Ruff on Python. The CSS and JavaScript rules catch mistakes, not style: formatting is the formatters' job.
-- It also checks the workflows. actionlint finds mistakes, including shellcheck on their `run:` scripts, and zizmor audits them for security problems (configured in `.github/zizmor.yml`). Without a GitHub token, zizmor skips its online audits and says so. CI passes one.
+- It also checks the workflows. actionlint finds mistakes, including shellcheck on their `run:` scripts, and zizmor audits them for security problems. Without a GitHub token, zizmor skips its online audits and says so. CI passes `github.token` as `GH_TOKEN`.
 - `just typecheck` runs pyright on the Python, configured in `pyproject.toml`.
 
 ### Scripts

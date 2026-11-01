@@ -25,13 +25,15 @@ concurrency:
   group: site-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
   cancel-in-progress: true
 
+# zizmor's self-repository audit asks for the $/ form of both uses: below, which GitHub
+# added in July 2026. actionlint 1.7.12 rejects that form, so keep ./ until it accepts it.
 jobs:
   build:
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/build.yml # zizmor: ignore[self-repository]
 
   deploy:
     needs: build
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/deploy.yml # zizmor: ignore[self-repository]
     with:
       preview-alias: ${{ github.event_name == 'pull_request' && format('pr-website-{0}', github.event.pull_request.number) || '' }}
     secrets:
