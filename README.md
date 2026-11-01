@@ -34,6 +34,17 @@ The site never runs an ecosystem's tooling directly. It runs the ecosystem's `st
 | `llms-<profile>.txt`  | One for each house profile the ecosystem holds opinions for, linking files with only that profile's house opinions. The site checks each profile against [`houses.toml`](houses.toml)                                |
 | `raw/`                | Optional. Copies of files that differ by house profile, for the `llms` files to link, such as `raw/none/` and `raw/<profile>/`. Name a Markdown copy `*.md.txt`, because the site renders every `.md` file as a page |
 
+The `stage` command exits 0 when it staged everything, 1 when it found problems in the content, and 2 when it wasn't run from the repository root. On anything but 0, the site build stops.
+
+The site rejects a staged directory when:
+
+- Its JSON doesn't match its schema.
+- Its `nav.json` names a page that doesn't exist.
+- Its `sources.json` holds a duplicate or out-of-order `id`.
+- An `llms-<profile>.txt` names a profile that `houses.toml` doesn't list for the ecosystem. A profile listed for an ecosystem that stages nothing for it only gets a warning, so a profile can be registered before its first opinion lands.
+
+A source that appears in more than one ecosystem must use the same `id` and `kind` in each.
+
 ### House opinions
 
 A house opinion belongs to a house profile in [`houses.toml`](houses.toml), and the site shows it only to a reader who chooses that profile in the header. Stage it in a page as a block, which opens with `/// house | <profile>` and closes with `///`, each on its own line:
@@ -60,17 +71,6 @@ Each opinion page opens with the design system's OpinionMeta strip, directly und
 - **Separate values with a space.** Two code spans with no space between them merge into one.
 - **Link each source to its roster entry,** with a relative link the build can check. Give a house profile's chip `data-house="<profile>"`, as in `{ .ah-chip data-house="simon-mckenna" }`.
 - **Mark the review date `fresh` or `stale`** against the ecosystem's own review tolerance, with `ah-chip--fresh` or `ah-chip--stale`. The weekly build restages every ecosystem, so the chip changes within a week of the date passing.
-
-The command exits 0 when it staged everything, 1 when it found problems in the content, and 2 when it wasn't run from the repository root. On anything but 0, the site build stops.
-
-The site rejects a staged directory when:
-
-- Its JSON doesn't match its schema.
-- Its `nav.json` names a page that doesn't exist.
-- Its `sources.json` holds a duplicate or out-of-order `id`.
-- An `llms-<profile>.txt` names a profile that `houses.toml` doesn't list for the ecosystem. A profile listed for an ecosystem that stages nothing for it only gets a warning, so a profile can be registered before its first opinion lands.
-
-A source that appears in more than one ecosystem must use the same `id` and `kind` in each.
 
 ## Local setup
 

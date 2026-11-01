@@ -14,7 +14,7 @@ House opinions are preferences from experience, not from a vetted source. Each b
 
    The inbox entry then moves to the ecosystem's Woven table, with a link.
 
-3. **The marking is a fixed string.** Every house opinion starts with exactly `**House:**`, bold with the colon inside, so `grep -F '**House:**'` finds it. A `house:<profile>` ID and that profile's blocks or regions always appear together, `**House:**` appears only inside one, and `just validate-sources` fails the pull request otherwise.
+3. **The marking is a fixed string.** Every house opinion starts with exactly `**House:**`, bold with the colon inside, so `grep -F '**House:**'` finds it. `just validate-sources` fails a pull request unless a `house:<profile>` ID and that profile's blocks or regions appear together, and `**House:**` appears only inside one.
 4. **Keep both, and the profile decides which a reader sees.** This is the canonical statement, and other files link here. The sourced text stays whole, and the house block sits beside it. A reader or agent with the profile sees both, and the house opinion wins where they conflict. Everyone else sees only the sourced text. Harvest, refresh, and audit runs never remove, weaken, or unmark a house block, and never cut sourced text because a house block disagrees with it.
 5. **Other contributors propose opinions in a pull request,** as the organisation's [opinion pull request template](https://github.com/awesome-humans/.github/blob/main/PULL_REQUEST_TEMPLATE/opinion.md) describes. When a profile's owner accepts an experience-based opinion, they adopt it into their profile, and the Woven table's Provenance column credits the contributor and the pull request.
 

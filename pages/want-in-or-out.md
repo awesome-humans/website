@@ -21,7 +21,7 @@ Find your change in the table, then follow its section. Each ecosystem's pages l
 
 1. **Intake checks the suggestion.** A source already on a roster gets a reply with its current standing, and the issue closes as a duplicate.
 2. **The issue moves to the ecosystem's repository,** where the `vet-source` skill checks the source against the [admission criteria](conventions/admission-criteria.md).
-3. **The decision log records the outcome,** whether yes or no, in a pull request that closes the issue. The issue gets a comment with the decision.
+3. **The decision log records the outcome** in a pull request that closes the issue. The issue gets a comment with the decision.
 
 Only published writing counts: blog posts, documentation, books, and newsletters. Videos, conference talks, and podcasts are out of scope, as material to cite and as evidence of a track record.
 
@@ -71,7 +71,7 @@ Use one of these:
 - **Your domain:** Publish a page or post on the source's domain that names the issue.
 - **Email:** Send the request from an address on the source's domain.
 
-The owner checks the proof and decides. If the proof doesn't check out, you get one reply that explains these options, and the issue stays open for 30 days.
+The owner checks the proof and decides. If the proof fails, you get one reply that explains these options, and the issue stays open for 30 days.
 
 ### Opt out by email
 
