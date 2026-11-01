@@ -2,7 +2,7 @@ name: Deploy
 
 # Deploys the site artifact that build.yml uploaded in the same run to Cloudflare, using
 # wrangler.jsonc. Reusable: site.yml here calls it, and so does each ecosystem's
-# site-preview.yml, with secrets: inherit for the organisation's Cloudflare secrets.
+# site-preview.yml, which passes the organisation's Cloudflare secrets.
 #
 # With a preview alias, it uploads a preview version at its own URL without touching the
 # live site. Without one, it deploys to awesome-humans.net.
