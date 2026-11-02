@@ -80,7 +80,7 @@ A literal use isn't an idiom. _Silently_ for a failure that raises no error stay
 - **House:** Cite as `Source: Title`, never the reverse. The source comes first, whether it's a person or a publication: `[Toub: Performance Improvements in .NET 10]` and `[The Cargo Book: Workspaces]`, not `[Workspaces: The Cargo Book]`.
 - **A description-list line uses the same colon:** `**Label:** definition`. Don't use an em dash as the separator.
 - **Leave a source's own title as written.** A colon inside a title stays (`[Avalonia 12: Ready for What's Next]`), and an internal reference keeps its section (`[AGENTS.md: Metadata]`).
-- **A citation at the end of a sentence or bullet covers only that sentence or bullet.** Don't attach a citation for a whole section to its last sentence.
+- **A citation at the end of a paragraph or bullet covers that paragraph or bullet.** Where a paragraph or bullet has several citations, each one covers the sentences since the last. Don't attach a citation for a whole section to its last paragraph or bullet.
 - **A citation that covers a whole block goes on a line of its own after it.** A block is a section, a list, a table, or a code sample.
 
 ## Commit messages and pull requests
