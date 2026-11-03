@@ -35,6 +35,7 @@ Apart from spelling, which [Spelling](#spelling) covers, awesome-humans departs 
 - **Keep sentences short.** Aim for about 20 words. Split any sentence over 35 words at the clause that does separate work.
 - **Keep paragraphs short.** Three or four sentences is plenty. Break up a longer one, or turn it into a list.
 - **Make it scannable.** Use a numbered list for steps that happen in order, a bulleted list for items that don't, and a table when the same attributes repeat across items. Use sentence-style capitalisation for headings, and keep headings short and specific.
+- **Give a note that expires a review date.** A note that matters only for a while, such as a migration off a retired tool, opens with `**Review by YYYY-MM-DD.**` and says what ends it. It can go in any file. A comment in a configuration file uses the same words without the bold. Once the date passes, drop the note, or check that it still applies and re-date it. Never delete the marking alone. Each ecosystem's `audit-freshness` skill reports a passed date. Don't fail CI on one, because that blocks unrelated pull requests on the day it passes.
 - **Use the serial comma.** Write "opinions, templates, and skills".
 - **Write a range with _to_, not an en dash.** Write "22.2% to 22.3%" and "versions 8 to 10". Use a hyphen only where a compound modifier needs one, as in "a long-running service".
 
