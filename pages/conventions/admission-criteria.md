@@ -17,8 +17,8 @@ A **source** is the published work of an awesome human: a person or a publicatio
 
 Two rules qualify these criteria:
 
-- **An independence concern is a usage limit, not a lower rank.** A concern is live when vendor developer relations, product-team work, or project marketing produces adoption-focused content with little critical distance. The source is still admitted, and its section under the roster's Source notes says what a citation can rest on, usually how something works, not whether to adopt it.
-  - Working for a vendor, or maintaining a package, isn't a concern by itself. Depth with critical distance needs no limit. A conflict is recorded where an opinion might recommend the source's own package or product.
+- **An independence concern is a usage limit, not a lower rank.** A concern applies when vendor developer relations, product-team work, or project marketing produces adoption-focused content with little critical distance. The source is still admitted, and its section under the roster's Source notes says what a citation can rest on, usually how something works, not whether to adopt it.
+  - Working for a vendor, or maintaining a package, isn't a concern by itself. Depth with critical distance needs no limit. Record a conflict where an opinion might recommend the source's own package or product.
   - A concern that no limit could contain leads to a decline or the watch list.
 - **Dormancy blocks admission, with one exception.** A candidate who hasn't published for over a year goes on the watch list, unless the person's **writing** clearly continues elsewhere, such as official documentation, another publication, or a book. Then the track record follows the person, and the notes record the dormant channel.
   - Repository activity isn't evidence. Opinions don't cite commits, releases, or issue threads, so a busy GitHub profile beside a silent blog is still dormant.
@@ -35,7 +35,17 @@ Each roster's Watch list tracks candidates that don't qualify yet, and `vet-sour
 
 **Reserved marking: `**Corroborate.**`.** Some sources have a long track record but thin depth: SEO-shaped roundups, course funnels, community catalogues, or release paraphrase with occasional substance. They're admitted and marked. The marking limits how you cite the source, not its standing. An opinion can cite it, but never alone: every claim it supports also needs an unmarked citable source. `just validate-sources` rejects an opinion or template whose citable sources are all marked. Neither a `house:` ID nor a Discovery-only ID counts as the unmarked source.
 
-**References: a named package's own material.** When an opinion or template names a package or tool, you can link the project's own material inline as a reference: its documentation site or in-repository docs, its generated API documentation, release notes and changelogs, issues and pull requests, its design documents, its tests and source code, or its page on the package registry. The standard behind a named format or protocol qualifies on the same terms, such as an RFC or the IANA time zone database. An ecosystem's `AWESOME-HUMANS.md` can name more repositories that qualify, such as a language's proposals, under a Named references section.
+**References: a named package's own material.** When an opinion or template names a package or tool, you can link the project's own material inline as a reference:
+
+- Its documentation site or in-repository docs
+- Its generated API documentation
+- Release notes and changelogs
+- Issues and pull requests
+- Its design documents
+- Its tests and source code
+- Its page on the package registry
+
+The standard behind a named format or protocol qualifies on the same terms, such as an RFC or the IANA time zone database. An ecosystem's `AWESOME-HUMANS.md` can name more repositories that qualify, such as a language's proposals, under a Named references section.
 
 - A reference corroborates a claim and never carries it. It can confirm how something is set up, what it supports, and where it falls short, but the claim still rests on a roster source. A package's own material never decides whether to adopt that package.
 - A reference needs no `vet-source` pass and never appears in `sources:`, so `just validate-sources` doesn't see it.

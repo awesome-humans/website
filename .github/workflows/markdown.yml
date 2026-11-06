@@ -3,14 +3,14 @@ name: Markdown
 on:
   pull_request:
   # A pull request can only restore caches saved on its own ref or on main, so
-  # without a run on main after each merge, every PR restores the cache from the
-  # last weekly run and discards it as older than --max-cache-age.
+  # without a run on main after each merge, every pull request restores the cache
+  # from the last weekly run and discards it as older than --max-cache-age.
   push:
     branches: [main]
   workflow_dispatch:
   schedule:
     # Weekly, Mondays 06:00 UTC. The link check runs on a schedule, not only on
-    # PRs, because links break even when the repository doesn't change.
+    # pull requests, because links break even when the repository doesn't change.
     - cron: "0 6 * * 1"
 
 permissions:
@@ -18,8 +18,9 @@ permissions:
 
 jobs:
   format-and-lint:
-    # Formatting, linting, types, and spelling are deterministic, so they gate PRs.
-    # On a push to main they would only repeat what the merged PR already passed.
+    # Formatting, linting, types, and spelling are deterministic, so they gate pull
+    # requests. On a push to main they would only repeat what the merged pull request
+    # already passed.
     if: github.event_name != 'schedule' && github.event_name != 'push'
     runs-on: ubuntu-latest
     steps:
@@ -76,7 +77,7 @@ jobs:
           persist-credentials: false
 
       # Restore lychee's result cache, so a run doesn't request every host again.
-      # The action has no cache input of its own — this is the supported way.
+      # The action has no cache input of its own, so this is the supported way.
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: .lycheecache

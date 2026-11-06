@@ -33,5 +33,5 @@ exclude_path = [
   "public",
 ]
 
-# Example URLs that are illustrative and not meant to resolve.
+# Example URLs, which are placeholders, not real links.
 exclude = ["^https://example\\."]
