@@ -87,7 +87,7 @@ TOOLCHAINS = {"dotnet", "rust"}
 
 SUMMARY = (
     "Opinionated best practices for each software ecosystem, distilled from the published"
-    " writing of people and publications with a proven, multi-year track record. Each opinion"
+    " writing of vetted people and publications with a multi-year track record. Each opinion"
     " states its recommendation first, then the rationale, then its sources, and targets the"
     " latest released versions."
 )
