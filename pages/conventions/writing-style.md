@@ -79,7 +79,7 @@ A literal use isn't an idiom. _Silently_ for a failure that raises no error stay
 
 ## Citations and labels
 
-- **House:** Cite as `Source: Title`, never the reverse. The source comes first, whether it's a person or a publication: `[Toub: Performance Improvements in .NET 10]` and `[The Cargo Book: Workspaces]`, not `[Workspaces: The Cargo Book]`.
+- **Cite as `Source: Title`, never the reverse.** The source comes first, whether it's a person or a publication: `[Toub: Performance Improvements in .NET 10]` and `[The Cargo Book: Workspaces]`, not `[Workspaces: The Cargo Book]`.
 - **A description-list line uses the same colon:** `**Label:** definition`. Don't use an em dash as the separator.
 - **Leave a source's own title as written.** A colon inside a title stays (`[Avalonia 12: Ready for What's Next]`), and an internal reference keeps its section (`[AGENTS.md: Metadata]`).
 - **A citation at the end of a paragraph or bullet covers that paragraph or bullet.** Where a paragraph or bullet has several citations, each one covers the sentences since the last. Don't attach a citation for a whole section to its last paragraph or bullet.
@@ -89,7 +89,7 @@ A literal use isn't an idiom. _Silently_ for a failure that raises no error stay
 
 Every repository squash-merges a pull request with its title as the commit subject and its description as the commit body. GitHub renders the description as Markdown, but `git log` shows the same text as plain text, which GitHub wraps at 72 characters when it builds the commit. Write the description so it reads well both ways.
 
-- **Title the pull request as a [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) subject.** Use the form `<type>[(scope)]: <description>`, in lowercase and the imperative, so it completes "If applied, this commit will". Each repository's `AGENTS.md` lists its types, and a skill that sets its own title says so. Keep it under 72 characters, counting the `(#123)` that GitHub appends.
+- **Title the pull request as a [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) subject.** Use the form `<type>[(scope)]: <description>`, in lowercase and the imperative, so it completes "If applied, this commit will". Each repository's `AGENTS.md` lists its types, and a skill that sets its own title says so. Keep it to 72 characters or fewer, counting the `(#123)` that GitHub appends.
 - **Describe the change as a reader sees it, not file by file.** The diff already lists the files. Say what's different afterwards, and what you ran to check it.
 - **Say why.** State the problem or the decision in the present tense, as the code stands without the change. It's the part of the commit that `git blame` can't recover.
 - **Use only the Markdown that reads as plain text.** Paragraphs, `##` headings, `-` lists, `**Label:**` leads, and inline code read the same in both. Leave out tables, checkboxes, nested lists, and inline `[text](url)` links: GitHub's wrapping breaks a table row or a link across lines.
@@ -97,7 +97,7 @@ Every repository squash-merges a pull request with its title as the commit subje
 - **End with trailers.** The last paragraph holds one trailer per line, as `Token: value`, which is a Conventional Commits footer and a git trailer at once. Put it after any link definitions because git reads trailers only from the last paragraph. Use `Closes: #93` for an issue the change finishes, `Refs: #93` for one it only relates to, and `Link: https://…` for background, such as a discussion or a specification. Each issue gets its own line. The description still has to make sense without opening any of them.
 - **Delete the template's comment.** A template's `<!-- … -->` guidance would become part of the commit. The required `attribution / check` fails a description that still has one, or that has a table, a checkbox, or an inline link.
 - **Keep agent attribution out.** A description and its trailers never include a `Co-authored-by` line or a "Generated with" footer. Each repository's `AGENTS.md` explains why, and where agent attribution goes instead.
-- **Sign an agent's comment with one line in small italics.** It names the harness, the model, and the skill running, if any: `<sub><i>Written by an agent: Claude Code, Opus 5.5, running review-project.</i></sub>` GitHub renders the HTML tags in a comment, so the line reads as a footnote, like CodeRabbit's own notice. Leave out a vendor name the harness already gives, so write `Opus 5.5`, not `Claude Opus 5.5`.
+- **Sign an agent's comment with one line in small italics.** It names the harness, the model, and the skill running, if any: `<sub><i>Written by an agent: Claude Code, Opus 5.5, running review-project.</i></sub>`. GitHub renders the HTML tags in a comment, so the line reads as a footnote, like CodeRabbit's own notice. Leave out a vendor name the harness already gives, so write `Opus 5.5`, not `Claude Opus 5.5`.
 
 For example:
 
@@ -125,6 +125,6 @@ To read a commit's message rendered as Markdown in a terminal, pipe it through a
 
 ## Scope of these rules
 
-- **They're review guidance, not a build check.** Whether a contrast is justified can't be decided by counting, so read for these patterns in review. Only two rules need no judgement, and CI checks them: spelling, with `just spell`, and the order of a template's sorted entries.
+- **They're review guidance, not a build check.** Whether a contrast is justified can't be decided by counting, so read for these patterns in review. Only three need no judgement, and CI checks them: spelling, with `just spell`, the order of a template's sorted entries, and a pull request's title length and description Markdown, with `attribution / check`.
 - **They apply only to prose written here.** A third-party title and its URL keep the author's wording and spelling, American or British, so Andrew Lock's "Adding Localisation to an ASP.NET Core application" stays as written. Correcting a source misquotes it, and correcting a URL breaks it.
 - **They don't apply to other people's code.** `review-project` reviews a codebase against an ecosystem's opinions. Spelling and wording in someone else's identifiers, comments, or documentation is never a finding.

@@ -22,6 +22,8 @@ The site registers every profile in [`houses.toml`](https://github.com/awesome-h
 
 The `house:` prefix is reserved, as [Admission criteria](admission-criteria.md#reserved-ids-markings-and-references) records. A profile skips the admission criteria because its authority is its owner's experience, which is why it's marked wherever it's used.
 
+A woven block in `opinions/` looks like this:
+
 ```markdown
 /// house | simon-mckenna
 

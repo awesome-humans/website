@@ -478,7 +478,7 @@
 }
 
 /* Wider pages on large screens. The theme caps the page at 61rem with a 12.1rem sidebar
-   each side, which shrinks the diagrams, drawn 1100 to 1220 units wide, to about 70% in a
+   each side, which shrinks the widest diagram, drawn 1160 units wide, to about 75% in a
    column some 880px across. An 80rem cap and narrower sidebars give the content column
    most of a desktop window. */
 @media screen and (min-width: 76.25em) {
@@ -505,7 +505,8 @@
   align-items: center;
 }
 
-/* Hero: the home banner. The montage of cited faces arrives with the source images. */
+/* Hero: the home banner. The montage rules are the design system's, and no page uses
+   them yet. */
 .md-typeset .ah-hero {
   position: relative;
   isolation: isolate;

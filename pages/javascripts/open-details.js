@@ -1,5 +1,5 @@
 // Opens the collapsed block a link points at, such as a source's notes on the roster pages,
-// which build-site.cs collapses. Without it, a link to a closed block scrolls to its summary
+// which each ecosystem's stage command collapses. Without it, a link to a closed block scrolls to its summary
 // and leaves the notes hidden.
 function openLinkedDetails() {
   const id = decodeURIComponent(location.hash.slice(1));

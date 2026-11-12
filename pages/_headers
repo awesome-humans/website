@@ -2,7 +2,7 @@
 # built site and doesn't serve it. Every other path keeps Cloudflare's default, which
 # revalidates on each request, so a deploy shows at once.
 
-# Zensical names its own scripts and stylesheets by content hash, so a URL never changes.
+# Zensical names its own scripts and stylesheets by content hash, so the file at a URL never changes.
 /assets/javascripts/*
   Cache-Control: public, max-age=31536000, immutable
 /assets/stylesheets/*

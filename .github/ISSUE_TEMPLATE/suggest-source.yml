@@ -1,4 +1,4 @@
-# The "Suggest a source" form, linked from the home page and the policy page. The
+# The "Suggest a source" form, linked from the home page and Want in or out? The
 # intake workflow routes each suggestion to its ecosystem's repository, where the
 # vet-source skill decides it. Keep the ecosystem options in step with ecosystems.toml.
 name: Suggest a source

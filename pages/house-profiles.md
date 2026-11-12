@@ -30,7 +30,7 @@ The sourced text stays whole. With a profile chosen, you see both, and the house
 
 ## Hosted profiles
 
-The site registers each profile in [`houses.toml`](https://github.com/awesome-humans/website/blob/main/houses.toml), with the ecosystems that hold its opinions. The header's picker lists them. A hosted profile is published under the site's name, so the repository owner approves each one, as for a contributor's opinion.
+The site registers each profile in [`houses.toml`](https://github.com/awesome-humans/website/blob/main/houses.toml), with the ecosystems that hold its opinions. The header's picker lists each profile that has opinions on the site. A hosted profile is published under the site's name, so the repository owner approves each one, as for a contributor's opinion.
 
 ## Keep your own profile private
 

@@ -1,7 +1,7 @@
 """The ecosystem and house profile registries, and the staging paths that the site scripts share.
 
-Imported by stage.py, merge_nav.py, and collate_sources.py, which run from the
-repository root. It isn't a script of its own.
+Imported by stage.py, merge_nav.py, collate_sources.py, and route_issue.py, which run
+from the repository root. It isn't a script of its own.
 """
 
 import json

@@ -1,11 +1,11 @@
-# Markdown tooling (package.json): devDependencies only
+# The Node tools (package.json): devDependencies only
 node_modules/
 
 # Python: uv's project environment and bytecode
 .venv/
 __pycache__/
 
-# The staged sources and the built site
+# The fetched ecosystems, the staged pages, and the built site
 build/
 public/
 

@@ -3,7 +3,7 @@ name: Site
 # Builds awesome-humans.net from this repository and every live ecosystem at main, and
 # deploys it. Four triggers keep it current: a push to main here, an ecosystem-updated
 # dispatch from an ecosystem's site-dispatch.yml when its main changes, a weekly schedule,
-# and a manual run. Every build takes every ecosystem at main, so whichever repository
+# and a manual run. Every build takes every live ecosystem at main, so whichever repository
 # triggers it, the result is the same. A pull request here builds and deploys a preview.
 on:
   pull_request:

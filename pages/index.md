@@ -76,4 +76,4 @@ Agents build and maintain this project, so the [usual disclaimers](credits.md#di
 - **Improve an opinion.** Challenge or correct one, propose a new one, or fix a template, a skill, or the site. [Want in](want-in-or-out.md#want-in) says which repository it goes to, and whether to start with an issue or a pull request.
 - **Opt out.** If you're a listed source and don't want your work cited, [ask to opt out](https://github.com/awesome-humans/website/issues/new?template=opt-out.yml), or email <contact@awesome-humans.net> if you'd rather not ask in public. Once the owner verifies that you control the source, we remove citations of your work within 30 days.
 
-For how we handle both requests, see [Want in or out?](want-in-or-out.md)
+For how we handle each of these, see [Want in or out?](want-in-or-out.md)

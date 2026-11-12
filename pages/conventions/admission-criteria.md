@@ -25,7 +25,7 @@ Two rules qualify these criteria:
   - Documentation written in a repository counts. The test is what was published, not where the commits landed.
   - The same rule triggers re-evaluation of admitted sources. For details, see `vet-source`.
 
-Each roster's Watch list tracks candidates that don't qualify yet, and `vet-source` re-evaluates them. An opt-out in one ecosystem covers all of them, so `vet-source` reads every roster's Opted out section before it gathers any evidence. The decision log at the end of each roster records every admission and demotion.
+Each roster's Watch list tracks candidates that don't qualify yet, and `vet-source` re-evaluates them. An opt-out in one ecosystem covers every ecosystem, so `vet-source` reads every roster's Opted out section before it gathers any evidence. The decision log at the end of each roster records every admission, decline, and demotion.
 
 ## Reserved IDs, markings, and references
 
