@@ -12,7 +12,7 @@ The voice follows the [Google developer documentation style guide](https://devel
 
 Apart from spelling, which [Spelling](#spelling) covers, awesome-humans departs from Google's guide in two places:
 
-- **Pre-release features:** Google says not to pre-announce. An ecosystem's opinion can still carry a clearly marked "Coming next" note about a preview or nightly-only feature, where the ecosystem's `AGENTS.md` allows it.
+- **Pre-release features:** Google says not to pre-announce. An ecosystem's opinion can still include a clearly marked "Coming next" note about a preview or nightly-only feature, where the ecosystem's `AGENTS.md` allows it.
 - **Dates:** Write dates as ISO 8601 (`2026-10-19`), in UTC. Google accepts any unambiguous format. The rule covers every date in a repository, commit, or pull request, such as `last-reviewed`, a decision-log row, a "read" note, a "Review by" marking, and a harvest window. CI, GitHub, and the site builds run in UTC, so a date in a timezone ahead of UTC can read as a future date. An agent gets the date with `date -u +%F`. Leave an existing date as written.
 
 ## Voice
@@ -30,7 +30,7 @@ Apart from spelling, which [Spelling](#spelling) covers, awesome-humans departs 
 - **Lead with what matters.** Put the recommendation or the action first in a section, a paragraph, and a sentence. Put the reason after it.
 - **Put a condition before the instruction it limits.** Write "For details, see `testing.md`", not "See `testing.md` for details", and "To publish a crate, run `cargo publish`", not the reverse. A reader the condition excludes can then skip the instruction. The condition is the only thing that goes ahead of the action. The reason still follows it.
 - **Make link text say where the link goes.** Use the target's title, as [Citations and labels](#citations-and-labels) describes. Never use _here_, _this page_, or a bare URL. A pull request description has two exceptions, which [Commit messages and pull requests](#commit-messages-and-pull-requests) describes.
-- **Make every sentence carry a fact the reader can act on or check.** Name the exact type, member, lint, key, diagnostic ID, and version (`CA1307`, `clippy::large_futures`, `[workspace.lints]`, .NET 10, Rust 1.99) instead of describing it. A measured number beats an adjective: "5.5 ms to 0.826 ms", not "much faster".
+- **Give every sentence a fact the reader can act on or check.** Name the exact type, member, lint, key, diagnostic ID, and version (`CA1307`, `clippy::large_futures`, `[workspace.lints]`, .NET 10, Rust 1.99) instead of describing it. A measured number beats an adjective: "5.5 ms to 0.826 ms", not "much faster".
 - **Cut what doesn't add a fact.** Delete a sentence that restates the one before it. Delete one that comments on the text instead of the subject, such as "which is worth noticing" or "the part that matters".
 - **Keep sentences short.** Aim for about 20 words. Split any sentence over 35 words at the clause that does separate work.
 - **Keep paragraphs short.** Three or four sentences is plenty. Break up a longer one, or turn it into a list.
@@ -54,7 +54,7 @@ Agents write most of the prose here, and it goes wrong in rhythm more than vocab
 
 - **Em dashes.** Use at most one per sentence, and only for a real turn. A colon, a comma, or a full stop usually works better.
 - **"X, not Y" contrasts.** Keep one when the rejected option is the one a reader would otherwise choose: "Pin to commit SHAs, not mutable tags". Cut it when nobody would choose the alternative: "a build artefact, not an afterthought".
-- **Parenthetical asides.** If an aside carries real content, make it a sentence. If it restates the sentence it's attached to, delete it.
+- **Parenthetical asides.** If an aside holds real content, make it a sentence. If it restates the sentence it's attached to, delete it.
 - **Lists of three.** A real list can have any length. Don't pad a list to three items because three sounds complete.
 
 ## Stock phrases
@@ -71,6 +71,7 @@ A few agent idioms did get in. Replace each with the plain statement it stands f
 | for free                                           | without extra code, or what's actually included |
 | pull the other way                                 | the opposing claim, and who makes it            |
 | reach for                                          | use                                             |
+| carry (a claim, a header, a note)                  | supports, has, includes, or records             |
 | worth noting                                       | (delete it, and state the fact)                 |
 | _honest_, _genuinely_, _quietly_ (as intensifiers) | (delete them)                                   |
 
@@ -95,7 +96,7 @@ Every repository squash-merges a pull request with its title as the commit subje
 - **Link with references.** Write an issue or pull request as `#93`, or `awesome-humans/rust#20` in another repository, and a commit as its short SHA. GitHub links them in the pull request and the commit, and they read as plain text. For any other link, use a reference-style link, `[text][1]`, with `[1]: https://…` on its own line after the last section and before the trailers.
 - **End with trailers.** The last paragraph holds one trailer per line, as `Token: value`, which is a Conventional Commits footer and a git trailer at once. Put it after any link definitions because git reads trailers only from the last paragraph. Use `Closes: #93` for an issue the change finishes, `Refs: #93` for one it only relates to, and `Link: https://…` for background, such as a discussion or a specification. Each issue gets its own line. The description still has to make sense without opening any of them.
 - **Delete the template's comment.** A template's `<!-- … -->` guidance would become part of the commit. The required `attribution / check` fails a description that still has one, or that has a table, a checkbox, or an inline link.
-- **Keep agent attribution out.** A description and its trailers never carry a `Co-authored-by` line or a "Generated with" footer. Each repository's `AGENTS.md` explains why, and where agent attribution goes instead.
+- **Keep agent attribution out.** A description and its trailers never include a `Co-authored-by` line or a "Generated with" footer. Each repository's `AGENTS.md` explains why, and where agent attribution goes instead.
 - **Sign an agent's comment with one line in small italics.** It names the harness, the model, and the skill running, if any: `<sub><i>Written by an agent: Claude Code, Opus 5.5, running review-project.</i></sub>` GitHub renders the HTML tags in a comment, so the line reads as a footnote, like CodeRabbit's own notice. Leave out a vendor name the harness already gives, so write `Opus 5.5`, not `Claude Opus 5.5`.
 
 For example:

@@ -31,7 +31,7 @@ Each roster's Watch list tracks candidates that don't qualify yet, and `vet-sour
 
 **Reserved prefix: `house:`.** A house profile's opinions use the source ID `house:<profile>`, such as `house:simon-mckenna`. A profile's authority is its owner's experience, not a track record, so it skips the admission criteria, and every house opinion is visibly marked instead. [House opinions](house-opinions.md) is the canonical definition of the marking, of how a house opinion sits beside the sourced text, and of contributor adoption. A `house:` ID never appears in the roster tables.
 
-**Reserved marking: `**Discovery-only.**`.** Aggregators, such as link roundups, newsletters, and curated lists, are admitted for discovery and never cited. They lead to a primary source, and the opinion cites that. CI rejects the ID of a source whose notes carry this marking in any `sources:` list under `opinions/` or `templates/`. Like `**House:**`, it's a fixed string, so a check can match it exactly.
+**Reserved marking: `**Discovery-only.**`.** Aggregators, such as link roundups, newsletters, and curated lists, are admitted for discovery and never cited. They lead to a primary source, and the opinion cites that. CI rejects the ID of a source whose notes have this marking in any `sources:` list under `opinions/` or `templates/`. Like `**House:**`, it's a fixed string, so a check can match it exactly.
 
 **Reserved marking: `**Corroborate.**`.** Some sources have a long track record but thin depth: SEO-shaped roundups, course funnels, community catalogues, or release paraphrase with occasional substance. They're admitted and marked. The marking limits how you cite the source, not its standing. An opinion can cite it, but never alone: every claim it supports also needs an unmarked citable source. `just validate-sources` rejects an opinion or template whose citable sources are all marked. Neither a `house:` ID nor a Discovery-only ID counts as the unmarked source.
 
@@ -47,7 +47,7 @@ Each roster's Watch list tracks candidates that don't qualify yet, and `vet-sour
 
 The standard behind a named format or protocol qualifies on the same terms, such as an RFC or the IANA time zone database. An ecosystem's `AWESOME-HUMANS.md` can name more repositories that qualify, such as a language's proposals, under a Named references section.
 
-- A reference corroborates a claim and never carries it. It can confirm how something is set up, what it supports, and where it falls short, but the claim still rests on a roster source. A package's own material never decides whether to adopt that package.
+- A reference corroborates a claim and never supports it alone. It can confirm how something is set up, what it supports, and where it falls short, but the claim still rests on a roster source. A package's own material never decides whether to adopt that package.
 - A reference needs no `vet-source` pass and never appears in `sources:`, so `just validate-sources` doesn't see it.
 - Cite it in the same `Source: Title` form as anything else, as in `[xUnit.net: Testing with Native AOT]`.
 - Guidance isn't a reference. A repository that publishes advice, such as a skills repository or a style guide, is a source, so propose it with `vet-source`.

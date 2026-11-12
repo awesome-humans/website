@@ -57,7 +57,7 @@ A house opinion belongs to a house profile in [`houses.toml`](houses.toml), and 
 ///
 ```
 
-The site titles the block with the profile's name, and leaves it out of search. Any other element that belongs to a profile, such as its chip in the metadata strip, carries `data-house="<profile>"` instead. For readers, see [House profiles](pages/house-profiles.md).
+The site titles the block with the profile's name, and leaves it out of search. Any other element that belongs to a profile, such as its chip in the metadata strip, has `data-house="<profile>"` instead. For readers, see [House profiles](pages/house-profiles.md).
 
 ### Opinion metadata
 

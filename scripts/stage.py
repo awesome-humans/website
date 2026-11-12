@@ -239,7 +239,7 @@ def write_houses(staged: dict[str, list[str]]) -> None:
 def write_cards(errors: list[str]) -> None:
     """Replace the home page's marker with a card per ecosystem, as the design system's
     EcosystemCard shows: a link for a live one, and a muted card for one coming soon. Only
-    a coming-soon card carries a chip, which says so in words, so the state doesn't rest on
+    a coming-soon card has a chip, which says so in words, so the state doesn't rest on
     colour alone."""
     path = DOCS / "index.md"
     text = path.read_text(encoding="utf-8")
@@ -302,7 +302,7 @@ def logo_html(id: str, prefix: str) -> str:
 
 def write_section_logos(ecosystems: list[Ecosystem]) -> None:
     """Put each ecosystem's logo under the title of its section index, which the ecosystem
-    stages from its README, so the ecosystem's own repository carries no logo."""
+    stages from its README, so the ecosystem's own repository has no logo."""
     for ecosystem in ecosystems:
         logo = logo_html(ecosystem.id, "../")
         if not logo:
@@ -392,7 +392,7 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
             "## House profiles",
             "",
             (
-                "The files above carry no house opinions. Follow a profile only when the user chooses one,"
+                "The files above have no house opinions. Follow a profile only when the user chooses one,"
                 " by reading its file instead of the ecosystem's llms.txt."
             ),
             "",

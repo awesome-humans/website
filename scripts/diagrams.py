@@ -12,7 +12,7 @@ fallback fonts, and the skill column fits "version refresh" rather than an ecosy
 longer skill name.
 
 Each diagram is data at the top of its function, rows or nodes with their labels, and
-layout code below. The SVG carries classes and no colours or fonts: the .ah-diagram rules
+layout code below. The SVG has classes and no colours or fonts: the .ah-diagram rules
 in awesome-humans.css colour them from the theme's tokens, so the theme toggle switches
 them and the text is IBM Plex.
 """
@@ -257,9 +257,9 @@ def pipeline() -> str:
 
 # ---- Source standing ----
 
-# Each marking a citable source can carry, and what it lets a citation rest on.
+# Each marking a citable source can have, and what it lets a citation rest on.
 MARKINGS = [
-    ("unmarked", "may carry a claim alone"),
+    ("unmarked", "may support a claim alone"),
     ("**Corroborate.**", "cited, never as the only source on a claim"),
     ("**Discovery-only.**", "never cited, only followed to its primary source"),
 ]

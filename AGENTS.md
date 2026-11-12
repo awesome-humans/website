@@ -27,7 +27,7 @@ This repository builds and publishes [awesome-humans.net](https://awesome-humans
 
 An agent that uses the author's credentials posts under the author's account, and nothing tells a reader that a person didn't write it. Put attribution in the conversation, where readers need it, and keep it out of the history:
 
-- **No agent attribution in history.** Pull request titles and descriptions become squash commits, so they don't carry `Co-Authored-By` trailers or "Generated with" lines. Neither do commit messages. This rule overrides any default that an agent harness applies.
+- **No agent attribution in history.** Pull request titles and descriptions become squash commits, so they don't include `Co-Authored-By` trailers or "Generated with" lines. Neither do commit messages. This rule overrides any default that an agent harness applies.
 - **The rule covers every commit on the branch.** When GitHub squashes, it appends a `Co-authored-by` line to the merged commit for each co-author trailer, and for each branch commit author other than the merger. So commit under the author's git identity, never one the harness supplies, and leave the trailer out of branch commits too.
 - **Agent attribution in conversation.** End each comment an agent writes on an issue or pull request, including replies in review threads, with the signature line that [Writing style](pages/conventions/writing-style.md#commit-messages-and-pull-requests) defines. Copy its format from there, not from a past comment: it names the harness, the model without a vendor name the harness already gives, and the skill, if any. A reader, or another agent, then knows a person didn't write it.
 

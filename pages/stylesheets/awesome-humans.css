@@ -896,7 +896,7 @@
 }
 
 /* ---- Diagrams: How it works, drawn by scripts/diagrams.py ----
-   The SVG carries classes only, so these rules colour it from the tokens and the theme
+   The SVG has classes only, so these rules colour it from the tokens and the theme
    toggle switches it. Brand marks the CI gate and the outcome the agents work towards,
    and house what the owner decides. Each lane has its own lane-* colour, chosen to stay
    apart from those two and from stale. Reports' lavender sits near .NET's violet, which
