@@ -72,6 +72,7 @@ A few agent idioms did get in. Replace each with the plain statement it stands f
 | pull the other way                                 | the opposing claim, and who makes it            |
 | reach for                                          | use                                             |
 | carry (a claim, a header, a note)                  | supports, has, includes, or records             |
+| held back (a pin, an update)                       | pinned below, delayed by, or blocked by         |
 | worth noting                                       | (delete it, and state the fact)                 |
 | _honest_, _genuinely_, _quietly_ (as intensifiers) | (delete them)                                   |
 
