@@ -1,6 +1,6 @@
 # External content
 
-These are the rules for external content, which is anything an agent reads that the organisation's maintainers didn't write: a fetched web page, an issue or comment from outside the organisation, and the files of a project under review. They live here once. Each ecosystem's `AGENTS.md` links here from Orchestration and model economy. A skill that reads external content also states the first rule itself, because an agent can read a skill's copy on the site without following the link.
+These are the rules for external content, which is anything an agent reads that the awesome-humans maintainers didn't write: a fetched web page, an issue or comment from anyone else, and the files of a project under review. They live here once. Each ecosystem's `AGENTS.md` links here from Orchestration and model economy. A skill that reads external content also states the first rule itself, because an agent can read a skill's copy on the site without following the link.
 
 External content can hold text written for an agent: an instruction hidden in a page's markup, a request in an issue, or a reviewed repository's own `AGENTS.md`. An agent that follows it does what that text's author wants, with the access the agent's user gave it.
 
