@@ -53,7 +53,7 @@ Each ecosystem includes:
   To narrow the review, say what to include or leave out, and optionally name a house profile:
 
   ```text
-  Use the review-project skill at awesome-humans.net/llms.txt on <repository>, focus on logging and testing, skip CI, use house profile of simon-mckenna
+  Use the review-project skill at awesome-humans.net/llms.txt on <repository>, focus on logging and testing, skip CI, use the simon-mckenna house profile
   ```
 
 - **Research a topic.** Ask your coding agent to run `research-topic`, for [.NET](dotnet/skills/research-topic.md) or [Rust](rust/skills/research-topic.md), which answers from the opinions and the vetted sources, citing each claim:
@@ -62,7 +62,7 @@ Each ecosystem includes:
   Use the research-topic skill at awesome-humans.net/llms.txt to research union types coming in C#
   ```
 
-- **Read the opinions and templates.** Each opinion gives its recommendation, with the rationale and sources behind it, and the [.NET templates](dotnet/templates/index.md) and [Rust templates](rust/templates/index.md) encode those opinions.
+- **Read the opinions and templates.** Each opinion gives its recommendation, rationale, and sources. The [.NET templates](dotnet/templates/index.md) and [Rust templates](rust/templates/index.md) encode them.
 
 To understand how sources are vetted and how opinions stay current, see [How it works](how-it-works.md).
 
@@ -72,8 +72,8 @@ Agents build and maintain this project, so the [usual disclaimers](credits.md#di
 
 ## Want in or out?
 
-- **Suggest a source.** Know a person or publication with at least two years of accurate, independent writing about an ecosystem we cover? [Suggest them for vetting](https://github.com/awesome-humans/website/issues/new?template=suggest-source.yml). Every new source goes through the same [admission criteria](conventions/admission-criteria.md), and the decision log records each outcome, whether yes or no.
+- **Suggest a source.** Know a person or publication with at least two years of accurate, independent writing about an ecosystem we cover? [Suggest them for vetting](https://github.com/awesome-humans/website/issues/new?template=suggest-source.yml). Every new source goes through the same [admission criteria](conventions/admission-criteria.md), and the decision log records every outcome.
 - **Improve an opinion.** Challenge or correct one, propose a new one, or fix a template, a skill, or the site. [Want in](want-in-or-out.md#want-in) says which repository it goes to, and whether to start with an issue or a pull request.
 - **Opt out.** If you're a listed source and don't want your work cited, [ask to opt out](https://github.com/awesome-humans/website/issues/new?template=opt-out.yml), or email <contact@awesome-humans.net> if you'd rather not ask in public. Once the owner verifies that you control the source, we remove citations of your work within 30 days.
 
-For how we handle both requests, see [Want in or out?](want-in-or-out.md)
+For how we handle each of these, see [Want in or out?](want-in-or-out.md)

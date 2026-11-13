@@ -17,7 +17,7 @@ Suggestions from the site's issue forms move to the ecosystem they name. Two sha
 
 ## Every change is a pull request
 
-Skills work on their own branch, and all changes arrive through a pull request. CI checks that:
+Each skill works on its own branch, and every change arrives as a pull request. CI checks that:
 
 - Every opinion and template has valid metadata
 - Every cited source is on the roster and citable
@@ -47,7 +47,7 @@ A source joins the roster on its track record: at least two years of sustained w
 A source goes on the watch list if it:
 
 - Has less than two years of sustained writing
-- Has been dormant for over a year, unless their writing clearly continues elsewhere
+- Has been dormant for over a year, unless its writing clearly continues elsewhere
 
 The watch list supplies leads, but its sources are never cited. A source is vetted again when it goes quiet, its writing weakens, or a blocker clears.
 

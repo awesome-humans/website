@@ -6,7 +6,7 @@
   "config": {
     "default": true,
 
-    // Prose is one sentence per line, unwrapped. Prettier preserves it, and the
+    // Prose is one paragraph per line, unwrapped. Prettier preserves it, and the
     // diffs stay readable. A hard column limit would conflict with that on every edit.
     "MD013": false,
 

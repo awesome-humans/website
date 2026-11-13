@@ -12,7 +12,7 @@ fallback fonts, and the skill column fits "version refresh" rather than an ecosy
 longer skill name.
 
 Each diagram is data at the top of its function, rows or nodes with their labels, and
-layout code below. The SVG carries classes and no colours or fonts: the .ah-diagram rules
+layout code below. The SVG has classes and no colours or fonts: the .ah-diagram rules
 in awesome-humans.css colour them from the theme's tokens, so the theme toggle switches
 them and the text is IBM Plex.
 """
@@ -251,15 +251,16 @@ def pipeline() -> str:
         "Swimlane diagram of how an ecosystem's repository maintains itself: vet-source, research-topic, resolve-research,"
         " harvest-sources, the version refresh, and weave-house-opinion each work on their own branch, pass the CI"
         " checks, get an agent review, pass the owner's review, and land in the roster, research, or the opinions and"
-        " templates; audit-freshness, review-opinions, and review-project only report. Their findings, the release watch, and the harvest reminder start the next run.",
+        " templates; audit-freshness, review-opinions, and review-project only report. Their findings, the release"
+        " watch, the harvest reminder, and the owner start the next run.",
     )
 
 
 # ---- Source standing ----
 
-# Each marking a citable source can carry, and what it lets a citation rest on.
+# Each marking a citable source can have, and what it lets a citation rest on.
 MARKINGS = [
-    ("unmarked", "may carry a claim alone"),
+    ("unmarked", "may support a claim alone"),
     ("**Corroborate.**", "cited, never as the only source on a claim"),
     ("**Discovery-only.**", "never cited, only followed to its primary source"),
 ]
@@ -461,7 +462,7 @@ def repositories() -> str:
                 "stages every ecosystem,",
                 "then builds the site:",
                 "theme, shared pages,",
-                "source images, intake",
+                "issue intake",
                 "",
                 "rebuilds weekly too",
             ],
@@ -502,7 +503,7 @@ def repositories() -> str:
             github_width,
             64,
             "awesome-humans/.github",
-            "attribution check, profile, PR template",
+            "attribution check, profile, PR templates",
             title_cls="tm",
         ),
         node(
@@ -527,8 +528,8 @@ def repositories() -> str:
         shared_y + 84,
         "Repositories",
         "Block diagram of the awesome-humans repositories. Each ecosystem, such as dotnet and rust, holds its own opinions,"
-        " skills and roster. When its main changes, it dispatches to website, which checks out every ecosystem at main,"
-        " runs its stage command, builds the site and deploys awesome-humans.net. An ecosystem's pull request builds a"
+        " skills, and roster. When its main changes, it dispatches to website, which checks out every ecosystem at main,"
+        " runs its stage command, builds the site, and deploys awesome-humans.net. An ecosystem's pull request builds a"
         " preview through website's build. Readers' suggestions arrive through website's issue forms and move to the"
         " ecosystem as vet-source issues. The .github repository supplies the attribution check and coderabbit the review"
         " configuration for every repository's pull requests.",

@@ -8,9 +8,8 @@
 
 Run it after stage.py. Each ecosystem's export must match the schema and hold its
 ids sorted and unique. A source in more than one ecosystem must have the same kind
-in each, because a person can have a portrait and a publication a logo. The combined
-file lists each source once, with what each ecosystem's roster says about it. The
-image scripts read it to draw the source images and the montage.
+in each. The combined file lists each source once, with what each ecosystem's roster
+says about it.
 
 Exit codes: 0 written, 1 an export is missing, invalid, unsorted, or disagrees with
 another ecosystem on a source's kind, 2 not run from the repository root.

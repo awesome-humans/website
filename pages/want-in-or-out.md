@@ -19,9 +19,9 @@ Find your change in the table, then follow its section. Each ecosystem's pages l
 
 [Suggest a source for vetting](https://github.com/awesome-humans/website/issues/new?template=suggest-source.yml) with the issue form. It asks for the ecosystem, the source's main URL, three sample posts, and why the source qualifies. You can suggest yourself.
 
-1. **Intake checks the suggestion.** A source already on a roster gets a reply with its current standing, and the issue closes as a duplicate.
+1. **Intake checks the suggestion.** A source that's already on that ecosystem's roster, or opted out of any, gets a reply with its standing, and the issue closes as a duplicate.
 2. **The issue moves to the ecosystem's repository,** where the `vet-source` skill checks the source against the [admission criteria](conventions/admission-criteria.md).
-3. **The decision log records the outcome,** whether yes or no, in a pull request that closes the issue. The issue gets a comment with the decision.
+3. **The decision log records the outcome** in a pull request that closes the issue. The issue gets a comment with the decision.
 
 Only published writing counts: blog posts, documentation, books, and newsletters. Videos, conference talks, and podcasts are out of scope, as material to cite and as evidence of a track record.
 
@@ -56,7 +56,7 @@ To use a pull request template, add `template=<file>` to the new pull request's 
 - **CI checks every pull request:** formatting, linting, spelling, links, each file's metadata, and that every cited source is on the roster and citable. Each repository's `AGENTS.md` says how to run the same checks locally.
 - **The agent reviewer (currently CodeRabbit) reviews it.** Its findings are advisory, but answer each one: fix it, or reply with the reason you didn't.
 - **The owner reviews and merges it.** CI and the agent reviewer never merge a pull request on their own.
-- **The title follows [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/),** such as `docs: correct the EF Core version in data-access`. Every repository squash-merges a pull request, so its title becomes the commit subject and its description the commit message.
+- **The title follows [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/),** such as `docs: correct the EF Core version in data-access`. Every repository squash-merges a pull request, so its title becomes the commit subject and its description the commit body.
 - **The prose follows the [writing style](conventions/writing-style.md),** which every repository shares.
 
 ## Opt out
@@ -71,7 +71,7 @@ Use one of these:
 - **Your domain:** Publish a page or post on the source's domain that names the issue.
 - **Email:** Send the request from an address on the source's domain.
 
-The owner checks the proof and decides. If the proof doesn't check out, you get one reply that explains these options, and the issue stays open for 30 days.
+The owner checks the proof and decides. If the proof fails, you get one reply that explains these options, and the issue stays open for 30 days.
 
 ### Opt out by email
 

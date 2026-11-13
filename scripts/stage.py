@@ -12,23 +12,28 @@ or at the ref --ref names. A pull request's preview passes its head commit this 
 In GitHub Actions, it also writes the toolchains the ecosystems need to the step's
 outputs, so build.yml sets up only those.
 
-stage copies pages/ into build/docs/, runs each ecosystem's stage command with {out}
-set to build/docs/, and writes the root llms.txt, which links to each ecosystem's
-own, to the shared conventions, and to each house profile's llms-<profile>.txt in it. It checks that every profile
-an ecosystem staged is in houses.toml for that ecosystem, warns about a listed profile an
-ecosystem staged nothing for, and writes
-javascripts/houses.js, which lists them for the header's profile picker. It also fills the home page's ecosystem cards and the hero's Browse buttons from ecosystems.toml, adds each ecosystem's logo to its card and its section index, draws the
-diagrams on How it works from diagrams.py, and writes javascripts/repositories.js, which
-points the header's repository link at each live ecosystem's repository under its /<id>/
-pages. --local stages from a checkout on disk instead of build/repos/<id>/, to preview
-an ecosystem change before pushing it.
+stage copies pages/ into build/docs/, and runs each ecosystem's stage command with {out}
+set to build/docs/. --local stages from a checkout on disk instead of build/repos/<id>/,
+to preview an ecosystem change before pushing it. Then it:
+
+- Checks that every house profile an ecosystem staged is in houses.toml for that
+  ecosystem, and warns about a listed profile an ecosystem staged nothing for.
+- Writes the root llms.txt, which links to each ecosystem's own, to the shared
+  conventions, and to each staged llms-<profile>.txt.
+- Fills the home page's ecosystem cards and the hero's Browse buttons from
+  ecosystems.toml, and adds each ecosystem's logo to its card and its section index.
+- Draws the diagrams on How it works from diagrams.py.
+- Writes javascripts/repositories.js, which points the header's repository link at each
+  ecosystem's repository under its /<id>/ pages.
+- Writes javascripts/houses.js, which lists the staged profiles for the header's picker.
 
 fetch and stage cover every live ecosystem, and the one the PREVIEW_ECOSYSTEM
 environment variable names, even while it's soon. build.yml sets it to the ecosystem a
 pull request previews.
 
 Exit codes: 0 done, 1 an ecosystem failed to fetch or stage, staged outside its own
-directory, or staged a house profile houses.toml doesn't list for it, 2 not run from the repository root or bad arguments.
+directory, or staged a house profile houses.toml doesn't list for it, 2 not run from the
+repository root or bad arguments.
 """
 
 import argparse
@@ -201,7 +206,8 @@ def stage(ecosystems: list[Ecosystem], local: dict[str, str]) -> int:
 def check_houses(ecosystems: list[Ecosystem], profiles: list[House], errors: list[str]) -> dict[str, list[str]]:
     """Check the llms-<profile>.txt files each ecosystem staged against houses.toml, and
     return the live ecosystems of each profile, in registry order, for the profiles that have
-    any. An ecosystem stages one for each profile its house blocks and regions belong to."""
+    any. An ecosystem stages an llms-<profile>.txt for each profile its house blocks and
+    regions belong to."""
     listed = {(house.id, ecosystem) for house in profiles for ecosystem in house.ecosystems}
     staged: dict[str, list[str]] = {house.id: [] for house in profiles}
     for ecosystem in ecosystems:
@@ -239,7 +245,7 @@ def write_houses(staged: dict[str, list[str]]) -> None:
 def write_cards(errors: list[str]) -> None:
     """Replace the home page's marker with a card per ecosystem, as the design system's
     EcosystemCard shows: a link for a live one, and a muted card for one coming soon. Only
-    a coming-soon card carries a chip, which says so in words, so the state doesn't rest on
+    a coming-soon card has a chip, which says so in words, so the state doesn't rest on
     colour alone."""
     path = DOCS / "index.md"
     text = path.read_text(encoding="utf-8")
@@ -302,7 +308,7 @@ def logo_html(id: str, prefix: str) -> str:
 
 def write_section_logos(ecosystems: list[Ecosystem]) -> None:
     """Put each ecosystem's logo under the title of its section index, which the ecosystem
-    stages from its README, so the ecosystem's own repository carries no logo."""
+    stages from its README, so the ecosystem's own repository has no logo."""
     for ecosystem in ecosystems:
         logo = logo_html(ecosystem.id, "../")
         if not logo:
@@ -392,7 +398,7 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
             "## House profiles",
             "",
             (
-                "The files above carry no house opinions. Follow a profile only when the user chooses one,"
+                "The files above have no house opinions. Follow a profile only when the user chooses one,"
                 " by reading its file instead of the ecosystem's llms.txt."
             ),
             "",

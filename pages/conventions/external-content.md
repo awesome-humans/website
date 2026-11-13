@@ -22,7 +22,7 @@ A worker that reads fetched pages returns a fixed shape, never a free-form summa
 | `excerpt`  | At most two sentences, copied word for word from the page                                                        |
 | `date`     | The date the page gives for the text, published or last reviewed. If it gives none, the date read, marked `read` |
 
-A summary is the worker's own wording, so it carries the page's framing, and any instruction the worker followed, to the editor with nothing to show where it came from. An excerpt reaches the editor quoted and labelled, and the editor can match it against the page.
+A summary is the worker's own wording, so the page's framing, and any instruction the worker followed, reach the editor with nothing to show where they came from. An excerpt reaches the editor quoted and labelled, and the editor can match it against the page.
 
 A skill can add fields with fixed values, as `review-opinions` does with `verdict` and `facts`. It never adds a field for the worker's own account of the page.
 

@@ -10,11 +10,16 @@
 intake.yml runs it with GH_TOKEN set to the app's token. It reads the issue with gh,
 and each live ecosystem's roster from its published sources.json.
 
-suggest checks a new or edited suggestion. A source already on the chosen ecosystem's
-roster, or opted out of any live roster, gets its standing, and the issue closes. Otherwise a field that isn't a URL gets
-one comment, which the script updates on each edit. Otherwise the issue moves to the
-ecosystem's repository, labelled vet-source. An ecosystem that isn't live yet keeps the
-suggestion here, with a comment.
+suggest checks a new or edited suggestion, and stops at the first of these that applies:
+
+- A source already on the chosen ecosystem's roster, or opted out of any live roster,
+  gets a comment with its standing, and the issue closes.
+- A Main URL or sample post that isn't a URL, or fewer than three samples, gets a
+  comment that says what to fix.
+- An ecosystem that isn't live yet keeps the suggestion here, with a comment.
+
+Otherwise the issue moves to the ecosystem's repository, labelled vet-source. The script
+keeps one comment per issue, and updates it on each edit.
 
 opt-out runs when the owner labels an opt-out verified. It opens an issue in each live
 ecosystem whose roster lists one of the sources, unless one is already open there, and

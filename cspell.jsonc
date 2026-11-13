@@ -4,7 +4,7 @@
   // read this file too, so the editor and CI flag the same words.
   "version": "0.2",
 
-  // British spelling, per AGENTS.md: Spelling. The flagWords below catch the
+  // British spelling, per Writing style: Spelling. The flagWords below catch the
   // American forms en-GB misses.
   "language": "en-GB",
   "dictionaries": [
@@ -34,7 +34,7 @@
 
   "overrides": [
     {
-      // Skip what AGENTS.md: Scope of these rules keeps as written: link text
+      // Skip what Writing style: Scope of these rules keeps as written: link text
       // (usually a third-party title), inline code (an identifier someone else
       // named), and a quotation.
       "filename": "**/*.md",

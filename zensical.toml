@@ -49,7 +49,7 @@ features = [
 ]
 
 # Light and dark mode, defaulting to the reader's system preference, with a toggle that
-# cycles through system, light and dark. The colours are custom, set in
+# cycles through system, light, and dark. The colours are custom, set in
 # stylesheets/awesome-humans.css.
 [[project.theme.palette]]
 media = "(prefers-color-scheme)"
@@ -73,7 +73,7 @@ toggle.icon = "lucide/moon"
 toggle.name = "Switch to system preference"
 
 # Markdown extensions. Listing any replaces Zensical's defaults, so this restates them
-# (zensical/config.py, DEFAULT_MARKDOWN_EXTENSIONS, as of 0.0.70) after the site's own
+# (zensical/config.py, DEFAULT_MARKDOWN_EXTENSIONS, as of 0.0.74) after the site's own
 # awesome_humans_markdown, which nests list content under its marker, as Prettier
 # writes it and GitHub renders it. Recheck the defaults when Renovate bumps zensical.
 [project.markdown_extensions.awesome_humans_markdown]

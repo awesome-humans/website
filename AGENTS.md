@@ -5,14 +5,14 @@ This repository builds and publishes [awesome-humans.net](https://awesome-humans
 ## What this repository is
 
 - **The site, not the content.** Opinions, templates, skills, and source rosters live in each ecosystem's repository, listed in [`ecosystems.toml`](ecosystems.toml). Change them there, never in a staged copy here.
-- **The site owns publishing.** The Zensical configuration, the theme, the home and shared pages under `pages/`, the source images, issue intake, and the Cloudflare deployment all live here.
+- **The site owns publishing.** The Zensical configuration, the theme, the home and shared pages under `pages/`, issue intake, and the Cloudflare deployment all live here.
 - **House profiles are registered here.** [`houses.toml`](houses.toml) lists each house profile and the ecosystems that hold its opinions, and the site shows none by default. Add a profile only with the owner's approval. Its opinions live in the ecosystems, as house blocks beside the sourced text.
-- **The design system is canonical for the look.** Colours, type, the logo, and the components come from the [Awesome Humans design system](https://claude.ai/artifact/QfYm5d57sbJxs3W3jMyGiy). Take a token from it instead of inventing a value. An ecosystem's accent fills the header bar and tints the page by 3%. Otherwise it appears only in the active tab's underline, the heading tick, the active navigation item, and the ecosystem chip, and never recolours the logo.
+- **The design system is canonical for the look.** Colours, type, the logo, and the components come from the [Awesome Humans design system](https://claude.ai/artifact/QfYm5d57sbJxs3W3jMyGiy). Take a token from it instead of inventing a value. An ecosystem's accent fills the header bar and tints the page by 3%, or 2% in dark mode. Otherwise it appears only in the active tab's underline, the heading tick, the active navigation item, and the ecosystem chip, and never recolours the logo.
 - **The theme is one stylesheet.** `pages/stylesheets/awesome-humans.css` holds the tokens as `--ah-*` properties, maps them onto Zensical's `--md-*` variables, and ports the design system's `ah-` component classes. Change a value in the design system first, then copy it here. `pages/javascripts/ecosystem.js` sets the accent from the URL.
 
 ## Maintaining this repository
 
-- **Never commit a portrait.** A face appears on the site only with the person's recorded permission, and the build downloads it. Git history is permanent, so a committed face outlives an opt-out.
+- **Never commit a portrait.** The site shows none, and git history is permanent, so a committed face outlives an opt-out.
 - **Follow [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages and pull request titles.** A pull request squash-merges under its title, so the title becomes the commit subject in `git log`. Use the form `<type>[(scope)]: <description>`, in lowercase and the imperative.
 
   | Type    | Use for                                           |
@@ -27,7 +27,7 @@ This repository builds and publishes [awesome-humans.net](https://awesome-humans
 
 An agent that uses the author's credentials posts under the author's account, and nothing tells a reader that a person didn't write it. Put attribution in the conversation, where readers need it, and keep it out of the history:
 
-- **No agent attribution in history.** Pull request titles and descriptions become squash commits, so they don't carry `Co-Authored-By` trailers or "Generated with" lines. Neither do commit messages. This rule overrides any default that an agent harness applies.
+- **No agent attribution in history.** Pull request titles and descriptions become squash commits, so they don't include `Co-Authored-By` trailers or "Generated with" lines. Neither do commit messages. This rule overrides any default that an agent harness applies.
 - **The rule covers every commit on the branch.** When GitHub squashes, it appends a `Co-authored-by` line to the merged commit for each co-author trailer, and for each branch commit author other than the merger. So commit under the author's git identity, never one the harness supplies, and leave the trailer out of branch commits too.
 - **Agent attribution in conversation.** End each comment an agent writes on an issue or pull request, including replies in review threads, with the signature line that [Writing style](pages/conventions/writing-style.md#commit-messages-and-pull-requests) defines. Copy its format from there, not from a past comment: it names the harness, the model without a vendor name the harness already gives, and the skill, if any. A reader, or another agent, then knows a person didn't write it.
 
@@ -62,9 +62,9 @@ Work in a git worktree, with one branch per directory. The local clone is bare, 
 
 - Markdown follows GFM and markdownlint, configured in `.markdownlint-cli2.jsonc`. Spelling follows cspell, configured in `cspell.jsonc` with the `en-GB` dictionary and the repository's word list in `cspell.words.txt`.
 - Run `just format` to format every file, and `just check` to run every check that CI runs on a pull request: formatting, linting, types, and spelling. The link check runs only in CI. The site build runs in CI and in `just build`. Each tool is pinned, the Node ones in `package.json` and the Python ones in the dev group in `pyproject.toml`. Don't run a tool through `npx` or `uvx`, because they resolve the latest version.
-- `just format` runs Prettier on Markdown, JSON, YAML, CSS, and JavaScript, taplo on TOML (configured in `.taplo.toml`), and Ruff on Python. Prettier skips the Jinja template in `overrides/`, which it would break.
+- `just format` runs Prettier on Markdown, JSON, YAML, CSS, and JavaScript, taplo on TOML (configured in `.taplo.toml`), and Ruff on Python. Prettier skips the Jinja templates in `overrides/`, which it would break.
 - `just lint` runs markdownlint on Markdown, stylelint on CSS (configured in `.stylelintrc.json`), ESLint on JavaScript (configured in `eslint.config.mjs`), and Ruff on Python. The CSS and JavaScript rules catch mistakes, not style: formatting is the formatters' job.
-- It also checks the workflows. actionlint finds mistakes, including shellcheck on their `run:` scripts, and zizmor audits them for security problems. Without a GitHub token, zizmor skips its online audits and says so. CI passes `github.token` as `GH_TOKEN`.
+- `just lint` also checks the workflows. actionlint finds mistakes, including shellcheck on their `run:` scripts, and zizmor audits them for security problems. Without a GitHub token, zizmor skips its online audits and says so. CI passes `github.token` as `GH_TOKEN`.
 - `just typecheck` runs pyright on the Python, configured in `pyproject.toml`.
 
 ### Scripts
