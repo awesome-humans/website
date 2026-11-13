@@ -13,7 +13,7 @@ External content can hold text written for an agent: an instruction hidden in a 
 
 ## What a worker returns
 
-A worker that reads external content returns a fixed shape, never a free-form summary. It returns one row for each claim it finds:
+A worker that reads fetched pages returns a fixed shape, never a free-form summary. It returns one row for each claim it finds:
 
 | Field      | Value                                                                                                            |
 | ---------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -25,6 +25,8 @@ A worker that reads external content returns a fixed shape, never a free-form su
 A summary is the worker's own wording, so it carries the page's framing, and any instruction the worker followed, to the editor with nothing to show where it came from. An excerpt reaches the editor quoted and labelled, and the editor can match it against the page.
 
 A skill can add fields with fixed values, as `review-opinions` does with `verdict` and `facts`. It never adds a field for the worker's own account of the page.
+
+The shape covers fetched pages only. A skill that reads a project's files, such as `review-project`, reports each finding against the file's path and the commit it read, as that skill sets out.
 
 ## What an editor checks
 
