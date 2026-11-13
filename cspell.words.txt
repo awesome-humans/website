@@ -30,6 +30,7 @@ toclink
 treeprocessor
 treeprocessors
 unpushed
+unvetted
 Unweaving
 worktrees
 xtask

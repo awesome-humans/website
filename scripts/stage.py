@@ -75,6 +75,10 @@ CONVENTIONS = {
         "the track record a source needs, and the IDs and markings that limit citing it",
     ),
     "house-opinions": ("House opinions", "how a house opinion is woven into an ecosystem, and how it's marked"),
+    "external-content": (
+        "External content",
+        "how an agent treats fetched pages, outside issues, and a reviewed project's files, and what a worker returns",
+    ),
     "new-ecosystems": (
         "New ecosystems",
         "the stages from an empty repository to an established set of opinions, and what to expect between",
