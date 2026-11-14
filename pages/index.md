@@ -59,7 +59,7 @@ Each ecosystem includes:
 - **Research a topic.** Ask your coding agent to run `research-topic`, for [.NET](dotnet/skills/research-topic.md) or [Rust](rust/skills/research-topic.md), which answers from the opinions and the vetted sources, citing each claim:
 
   ```text
-  Use the research-topic skill at awesome-humans.net/llms.txt to research union types coming in C#
+  Use the research-topic skill at awesome-humans.net/llms.txt to research whether to turn on runtime async
   ```
 
 - **Read the opinions and templates.** Each opinion gives its recommendation, rationale, and sources. The [.NET templates](dotnet/templates/index.md) and [Rust templates](rust/templates/index.md) encode them.
