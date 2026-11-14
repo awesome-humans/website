@@ -32,4 +32,4 @@ The shape covers fetched pages only. A skill that reads a project's files, such 
 
 - **Match the excerpt before you read the page.** To confirm a worker's finding, fetch the page's raw text with a plain HTTP client such as `curl`, strip the markup, and match the excerpt against it as a string. A fetch tool that passes the page through a model can reword or drop the text.
 - **Read the whole page only when the excerpt doesn't settle the finding.** This also keeps large pages out of the editor's context.
-- **Keep unvetted material labelled.** A claim with a `standing` of `unvetted` stays flagged in whatever the editor writes. A `reference` only corroborates a claim that a roster source makes, as [Admission criteria](admission-criteria.md#reserved-ids-markings-and-references) sets out.
+- **Keep unvetted material labelled.** A claim with a `standing` of `unvetted` stays flagged in whatever the editor writes. A `reference` supports only a reference fact without a roster source, and corroborates any other claim, as [Admission criteria](admission-criteria.md#reserved-ids-markings-and-references) defines.
