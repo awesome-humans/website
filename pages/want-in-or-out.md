@@ -4,7 +4,7 @@ Citation is opt-out. Anyone can suggest a source or improve the opinions, and an
 
 ## Want in
 
-Find your change in the table, then follow its section. Each ecosystem's pages link its repository in the header.
+Each kind of change has its own repository and starting point. Find yours in the table, then follow its section for the steps.
 
 | Change                                                              | Repository      | Start with                                              |
 | ------------------------------------------------------------------- | --------------- | ------------------------------------------------------- |
@@ -14,6 +14,8 @@ Find your change in the table, then follow its section. Each ecosystem's pages l
 | [Propose a house opinion](#propose-a-house-opinion)                 | The ecosystem's | A pull request with the opinion template                |
 | [Fix a template or a skill](#fix-a-template-a-skill-or-the-site)    | The ecosystem's | A pull request                                          |
 | [Fix the site](#fix-a-template-a-skill-or-the-site)                 | `website`       | A pull request for a small fix, otherwise a blank issue |
+
+The ecosystem repositories are [awesome-humans/dotnet](https://github.com/awesome-humans/dotnet) and [awesome-humans/rust](https://github.com/awesome-humans/rust).
 
 ### Suggest a source
 
