@@ -47,7 +47,9 @@ Each roster's Watch list tracks candidates that don't qualify yet, and `vet-sour
 
 The standard behind a named format or protocol qualifies on the same terms, such as an RFC or the IANA time zone database. An ecosystem's `AWESOME-HUMANS.md` can name more repositories that qualify, such as a language's proposals, under a Named references section.
 
-- A reference corroborates a claim and never supports it alone. It can confirm how something is set up, what it supports, and where it falls short, but the claim still rests on a roster source. A package's own material never decides whether to adopt that package.
+- A reference can support, without a roster source, a statement of fact about its own package's behaviour: what the package does, what it reports, what it supports, and from which version. That covers a rule that only applies such a fact, such as the setting that stops a diagnostic the package reports. The package's code and documentation are the primary evidence for its behaviour, and no roster source describes most of it.
+- A recommendation still rests on a roster source, and there a reference only corroborates it. A package's own material never decides whether to adopt that package.
+- For example, the .NET Blog supports versioning an API with `Asp.Versioning`. The package's own diagnostic pages support what the package reports as AV0015 and AV0025, and the settings that satisfy them.
 - A reference needs no `vet-source` pass and never appears in `sources:`, so `just validate-sources` doesn't see it.
 - Cite it in the same `Source: Title` form as anything else, as in `[xUnit.net: Testing with Native AOT]`.
 - Guidance isn't a reference. A repository that publishes advice, such as a skills repository or a style guide, is a source, so propose it with `vet-source`.
