@@ -25,18 +25,11 @@ Each skill works on its own branch, and every change arrives as a pull request. 
 
 The agent reviewer (currently CodeRabbit) also checks the change, with the owner's agent answering each finding. Its review is advisory: the owner reviews and merges the pull request.
 
-Three skills report without modifying anything:
+Three skills only report, so they open no pull request:
 
 - `audit-freshness` finds stale review dates and lagging version pins
 - `review-opinions` checks that the opinions and templates still agree with the pages they cite, and with each other
 - `review-project` grades an external codebase against the opinions
-
-Any of these starts the next run:
-
-- Findings from any of them
-- A scheduled release watch
-- A monthly harvest reminder
-- A request from the owner
 
 <!-- diagram: maintenance-pipeline -->
 
