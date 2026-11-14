@@ -45,12 +45,27 @@ Each roster's Watch list tracks candidates that don't qualify yet, and `vet-sour
 - Its tests and source code
 - Its page on the package registry
 
-The standard behind a named format or protocol qualifies on the same terms, such as an RFC or the IANA time zone database. An ecosystem's `AWESOME-HUMANS.md` can name more repositories that qualify, such as a language's proposals, under a Named references section.
+The standard behind a named format or protocol qualifies on the same terms, such as an RFC or the IANA time zone database. An ecosystem's `AWESOME-HUMANS.md` can name more repositories that qualify, such as a language's proposals, under a Named references section. It says there what each one is the record of, such as how a feature behaves or which versions an advisory affects.
 
-- A reference can support, without a roster source, a statement of fact about its own package's behaviour: what the package does, what it reports, what it supports, and from which version. That covers a rule that only applies such a fact, such as the setting that stops a diagnostic the package reports. The package's code and documentation are the primary evidence for its behaviour, and no roster source describes most of it.
-- A standard, or a repository that an ecosystem names, supports on the same terms a statement of fact about the format, protocol, or feature it specifies.
-- A recommendation still rests on a roster source, and there a reference only corroborates it. A package's own material never decides whether to adopt that package.
-- For example, the .NET Blog supports versioning an API with `Asp.Versioning`. The package's own diagnostic pages support what the package reports as AV0015 and AV0025, and the settings that satisfy them.
+A reference is the record of its subject: the package, the standard, or what an ecosystem names a repository for. What it supports depends on the kind of claim:
+
+- **A reference fact rests on the reference alone.** A reference fact is a statement about the reference's subject that a reader can check against it: what the subject does, what it reports, how it's configured, what it supports, and from which version. It needs no roster source. The subject's own code and documentation are the primary evidence for it, and no roster source describes most of it.
+- **Mechanics are reference facts.** Mechanics are what a subject requires of a project that already uses it. An opinion can write one as an instruction, such as the setting that stops a diagnostic the package reports, and it's still a reference fact.
+- **A choice rests on a roster source.** A choice picks between alternatives a developer could reasonably weigh, such as adopting a package, turning on an optional rule, or preferring one API to another. There a reference only corroborates the roster source. A package's own material never decides whether to adopt that package.
+- **A judgement is never a reference fact.** How fast, how safe, or how simple a subject is, and how it compares with another, needs a roster source even when the reference says it.
+- **A reference states what the claim says.** Read it before you link it. A reference fact that its reference doesn't state is a misquoted source.
+
+Two examples:
+
+| Claim                                                                               | Kind           | Rests on                                    |
+| ----------------------------------------------------------------------------------- | -------------- | ------------------------------------------- |
+| Version an API with `Asp.Versioning`                                                | Choice         | A roster source, here the .NET Blog         |
+| The package reports AV0025 for a project with no `<Description>`, so set one        | Reference fact | The package's AV0025 diagnostic page        |
+| Prefer `#[expect]` to `#[allow]`                                                    | Choice         | A roster source                             |
+| `#[expect]` warns when the lint it names doesn't fire, and is stable from Rust 1.81 | Reference fact | RFC 2383 and its stabilization pull request |
+
+These rules cover how you cite a reference:
+
 - A reference needs no `vet-source` pass and never appears in `sources:`, so `just validate-sources` doesn't see it.
 - Cite it in the same `Source: Title` form as anything else, as in `[xUnit.net: Testing with Native AOT]`.
 - Guidance isn't a reference. A repository that publishes advice, such as a skills repository or a style guide, is a source, so propose it with `vet-source`.
