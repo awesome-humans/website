@@ -1,4 +1,4 @@
-# The "Opt out" form, linked from the home page and Want in or out? The owner checks
+# The "Opt out" form, linked from the home page and Want in or out? The maintainer checks
 # the proof and labels the issue verified, and the intake workflow then asks each
 # ecosystem that lists the source to remove it.
 name: Opt out

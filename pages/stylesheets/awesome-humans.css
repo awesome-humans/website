@@ -333,7 +333,7 @@
 }
 
 /* The page title, underlined with the ecosystem tick. The design system draws the tick
-   above the title; the owner moved it underneath on 2026-10-16, where it reads as an
+   above the title; the maintainer moved it underneath on 2026-10-16, where it reads as an
    underline rather than a rule cutting the page. */
 .md-typeset h1 {
   display: inline-block;
@@ -899,7 +899,7 @@
 /* ---- Diagrams: How it works, drawn by scripts/diagrams.py ----
    The SVG has classes only, so these rules colour it from the tokens and the theme
    toggle switches it. Brand marks the CI gate and the outcome the agents work towards,
-   and house what the owner decides. Each lane has its own lane-* colour, chosen to stay
+   and house what the maintainer decides. Each lane has its own lane-* colour, chosen to stay
    apart from those two and from stale. Reports' lavender sits near .NET's violet, which
    is safe because no ecosystem accent appears: a diagram isn't one of its four places.
    The figure takes the content's full width, which How it works widens by hiding its

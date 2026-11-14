@@ -109,7 +109,7 @@ def node(
 
 # ---- Maintenance pipeline ----
 
-# One skill: its lane, what starts it, the skill, the branch it works on, what the owner does
+# One skill: its lane, what starts it, the skill, the branch it works on, what the maintainer does
 # at the human gate, and where its result lands. A report-only skill has no branch and
 # opens no pull request, so it passes neither gate.
 PIPELINE_LANES = [("sources", "Sources"), ("research", "Research"), ("opinions", "Opinions"), ("reports", "Reports")]
@@ -226,7 +226,7 @@ def pipeline() -> str:
             d.add(text(x_lands_in + 14, ty + i * 22, line, "tb" if key == "report" else "tm"))
         d.add(text(x_lands_in + 14, ty + len(title_lines) * 22, subtitle, "ts"))
 
-    # The loop: a report's findings, with the scheduled workflows and the owner, start the
+    # The loop: a report's findings, with the scheduled workflows and the maintainer, start the
     # next run in whichever row it belongs to.
     loop_y = rows_bottom + 56
     start_x, start_width = 440, 372
@@ -250,9 +250,9 @@ def pipeline() -> str:
         "Maintenance pipeline",
         "Swimlane diagram of how an ecosystem's repository maintains itself: vet-source, research-topic, resolve-research,"
         " harvest-sources, the version refresh, and weave-house-opinion each work on their own branch, pass the CI"
-        " checks, get an agent review, pass the owner's review, and land in the roster, research, or the opinions and"
+        " checks, get an agent review, pass the maintainer's review, and land in the roster, research, or the opinions and"
         " templates; audit-freshness, review-opinions, and review-project only report. Their findings, the release"
-        " watch, the harvest reminder, and the owner start the next run.",
+        " watch, the harvest reminder, and the maintainer start the next run.",
     )
 
 

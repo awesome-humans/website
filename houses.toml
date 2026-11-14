@@ -15,7 +15,7 @@
 # name        The display name, in the header picker and on each house block.
 # kind        person or organisation.
 # ecosystems  The ecosystem ids, from ecosystems.toml, that hold its opinions.
-# approved    The date the repository owner approved it. A hosted profile is
+# approved    The date the maintainer approved it. A hosted profile is
 #             published under the site's name, so it needs that approval, as
 #             adopting a contributor's opinion does.
 
