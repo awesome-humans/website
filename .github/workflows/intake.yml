@@ -2,7 +2,7 @@ name: Intake
 
 # Routes the issues the Suggest a source and Opt out forms open. A suggestion is checked
 # when it's opened or edited, and moves to its ecosystem's repository. An opt-out waits
-# for the owner to label it verified, then opens an issue in each ecosystem that lists
+# for the maintainer to label it verified, then opens an issue in each ecosystem that lists
 # the source. For the rules, see scripts/route_issue.py.
 on:
   issues:

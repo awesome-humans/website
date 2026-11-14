@@ -39,6 +39,13 @@ Apart from spelling, which [Spelling](#spelling) covers, awesome-humans departs 
 - **Use the serial comma.** Write "opinions, templates, and skills".
 - **Write a range with _to_, not an en dash.** Write "22.2% to 22.3%" and "versions 8 to 10". Use a hyphen only where a compound modifier needs one, as in "a long-running service".
 
+## Terms
+
+- **Call the person who reviews and merges the maintainer.** Write "the maintainer's review" and "the maintainer decides what merges", not _owner_ or _repository owner_.
+- **Call the person or organisation behind a cited source its author.** An opt-out comes from the source's author, even when that's an organisation, such as the .NET Team.
+- **Keep _owner_ for a house profile.** A profile's owner writes its opinions in directly, and adopts other contributors' opinions into it. [House opinions](house-opinions.md) defines it.
+- **Leave _owner_ where someone else defines it,** such as a licence's "copyright owner", the GitHub API's `owner` field, or SQL Server's `db_owner` role.
+
 ## Order
 
 - **Group an opinion's sections by topic.** Put related sections next to each other, with the foundations first: hosting before hardening, for example. Don't sort the sections alphabetically. That would put "Open redirects" between "OpenAPI" and "Rate limiting", away from the rest of security.

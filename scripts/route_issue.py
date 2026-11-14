@@ -21,7 +21,7 @@ suggest checks a new or edited suggestion, and stops at the first of these that 
 Otherwise the issue moves to the ecosystem's repository, labelled vet-source. The script
 keeps one comment per issue, and updates it on each edit.
 
-opt-out runs when the owner labels an opt-out verified. It opens an issue in each live
+opt-out runs when the maintainer labels an opt-out verified. It opens an issue in each live
 ecosystem whose roster lists one of the sources, unless one is already open there, and
 comments on the opt-out with what it opened and what it couldn't match.
 
@@ -149,7 +149,9 @@ def suggest(number: int, issue: dict, dry_run: bool) -> int:
                 "so the rosters keep them out unless they ask to opt back in."
             )
         else:
-            next_step = "If you think their standing should change, say so here, and the owner can reopen this issue."
+            next_step = (
+                "If you think their standing should change, say so here, and the maintainer can reopen this issue."
+            )
         upsert_comment(
             number,
             f"{source['name']} is already on the {listed.name} roster as `{source['id']}`, "
@@ -219,7 +221,7 @@ def opt_out(number: int, issue: dict, dry_run: bool) -> int:
             continue
         listed = ", ".join(f"`{id}`" for id in ids)
         body = (
-            f"{url} asks to stop citing {listed}, and the owner verified it.\n\n"
+            f"{url} asks to stop citing {listed}, and the maintainer verified it.\n\n"
             "Within 30 days of the verification, in one pull request:\n\n"
             "- Move each source to the roster's `## Opted out` section, and log the date and this issue in the decision log.\n"
             "- Re-source each opinion or template that cites it with `research-topic`, "
@@ -234,7 +236,9 @@ def opt_out(number: int, issue: dict, dry_run: bool) -> int:
     unmatched = [entry for entry in wanted if entry not in matched]
     lines = opened or ["- No live ecosystem's roster lists these sources."]
     if unmatched:
-        lines.append("\nNot on any live roster, so the owner needs to check: " + ", ".join(f"`{e}`" for e in unmatched))
+        lines.append(
+            "\nNot on any live roster, so the maintainer needs to check: " + ", ".join(f"`{e}`" for e in unmatched)
+        )
     comment(number, "Opened the opt-out in each ecosystem:\n\n" + "\n".join(lines), dry_run=dry_run)
     return 0
 

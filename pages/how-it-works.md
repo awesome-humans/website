@@ -5,7 +5,7 @@ hide:
 
 # How it works
 
-Agent skills maintain each ecosystem's repository, and nothing becomes an opinion until it passes CI and the repository owner's review, with another agent reviewing it first.
+Agent skills maintain each ecosystem's repository, and nothing becomes an opinion until it passes CI and the maintainer's review, with another agent reviewing it first.
 
 ## Each ecosystem has its own repository
 
@@ -23,7 +23,7 @@ Each skill works on its own branch, and every change arrives as a pull request. 
 - Every cited source is on the roster and citable
 - Every link resolves
 
-The agent reviewer (currently CodeRabbit) also checks the change, with the owner's agent answering each finding. Its review is advisory: the owner reviews and merges the pull request.
+The agent reviewer (currently CodeRabbit) also checks the change, with the maintainer's agent answering each finding. Its review is advisory: the maintainer reviews and merges the pull request.
 
 Three skills only report, so they open no pull request:
 

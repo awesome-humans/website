@@ -6,7 +6,7 @@ This repository builds and publishes [awesome-humans.net](https://awesome-humans
 
 - **The site, not the content.** Opinions, templates, skills, and source rosters live in each ecosystem's repository, listed in [`ecosystems.toml`](ecosystems.toml). Change them there, never in a staged copy here.
 - **The site owns publishing.** The Zensical configuration, the theme, the home and shared pages under `pages/`, issue intake, and the Cloudflare deployment all live here.
-- **House profiles are registered here.** [`houses.toml`](houses.toml) lists each house profile and the ecosystems that hold its opinions, and the site shows none by default. Add a profile only with the owner's approval. Its opinions live in the ecosystems, as house blocks beside the sourced text.
+- **House profiles are registered here.** [`houses.toml`](houses.toml) lists each house profile and the ecosystems that hold its opinions, and the site shows none by default. Add a profile only with the maintainer's approval. Its opinions live in the ecosystems, as house blocks beside the sourced text.
 - **The design system is canonical for the look.** Colours, type, the logo, and the components come from the [Awesome Humans design system](https://claude.ai/artifact/QfYm5d57sbJxs3W3jMyGiy). Take a token from it instead of inventing a value. An ecosystem's accent fills the header bar and tints the page by 3%, or 2% in dark mode. Otherwise it appears only in the active tab's underline, the heading tick, the active navigation item, and the ecosystem chip, and never recolours the logo.
 - **The theme is one stylesheet.** `pages/stylesheets/awesome-humans.css` holds the tokens as `--ah-*` properties, maps them onto Zensical's `--md-*` variables, and ports the design system's `ah-` component classes. Change a value in the design system first, then copy it here. `pages/javascripts/ecosystem.js` sets the accent from the URL.
 
@@ -36,8 +36,8 @@ An agent that uses the author's credentials posts under the author's account, an
 The agent reviewer (currently CodeRabbit) reviews every pull request here except Renovate's, guided by [REVIEW.md](REVIEW.md), which sets what each finding's severity means. CodeRabbit uses the organisation's central configuration in [awesome-humans/coderabbit](https://github.com/awesome-humans/coderabbit/blob/main/.coderabbit.yaml).
 
 - **Check that the review started.** The agent reviewer reviews a new pull request on its own, and each push after that. If CodeRabbit's status comment says it skipped or paused the review of a person's pull request, comment `@coderabbitai review`.
-- **Renovate's pull requests aren't reviewed.** The central configuration skips them, and a requested review fails too because CodeRabbit gives a bot no review seat on the open-source plan. Don't ask for one. Once every other check passes, the owner merges a Renovate pull request, or asks an agent to.
-- **Its findings are advisory.** The agent reviewer never blocks a merge: the owner decides what merges. Still, answer every finding: fix it, or reply with the reason you didn't. End the reply with the agent attribution line, and don't resolve a thread without doing one or the other.
+- **Renovate's pull requests aren't reviewed.** The central configuration skips them, and a requested review fails too because CodeRabbit gives a bot no review seat on the open-source plan. Don't ask for one. Once every other check passes, the maintainer merges a Renovate pull request, or asks an agent to.
+- **Its findings are advisory.** The agent reviewer never blocks a merge: the maintainer decides what merges. Still, answer every finding: fix it, or reply with the reason you didn't. End the reply with the agent attribution line, and don't resolve a thread without doing one or the other.
 
 ## Writing style
 
