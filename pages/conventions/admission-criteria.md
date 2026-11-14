@@ -59,7 +59,7 @@ Two examples:
 
 | Claim                                                                               | Kind           | Rests on                                    |
 | ----------------------------------------------------------------------------------- | -------------- | ------------------------------------------- |
-| Version an API with `Asp.Versioning`                                                | Choice         | A roster source, here the .NET Blog         |
+| Version an API with `Asp.Versioning`                                                | Choice         | The .NET Blog, a roster source              |
 | The package reports AV0025 for a project with no `<Description>`, so set one        | Reference fact | The package's AV0025 diagnostic page        |
 | Prefer `#[expect]` to `#[allow]`                                                    | Choice         | A roster source                             |
 | `#[expect]` warns when the lint it names doesn't fire, and is stable from Rust 1.81 | Reference fact | RFC 2383 and its stabilization pull request |
