@@ -20,7 +20,7 @@ repository = "awesome-humans/dotnet"
 toolchain = "dotnet"
 stage = "dotnet run scripts/build-site.cs -- --out {out}"
 status = "live"
-scope = "C#, F#, ASP.NET Core, EF Core, the runtime, and the libraries around them."
+scope = "C#, F#, ASP.NET Core, EF Core, the runtime, NuGet, and the libraries around them."
 
 [[ecosystem]]
 id = "rust"

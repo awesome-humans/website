@@ -363,6 +363,8 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
         "",
         "Read the llms.txt for the project's ecosystem. Each links its opinions, templates, and skills as raw Markdown.",
         "",
+        "With no project and no ecosystem named, read every llms.txt whose opinions cover the request, and say which.",
+        "",
     ]
     for ecosystem in ecosystems:
         path = DOCS / ecosystem.id / "llms.txt"
