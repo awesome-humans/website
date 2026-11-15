@@ -30,7 +30,7 @@ Apart from spelling, which [Spelling](#spelling) covers, awesome-humans departs 
 - **Lead with what matters.** Put the recommendation or the action first in a section, a paragraph, and a sentence. Put the reason after it.
 - **Put a condition before the instruction it limits.** Write "For details, see `testing.md`", not "See `testing.md` for details", and "To publish a crate, run `cargo publish`", not the reverse. A reader the condition excludes can then skip the instruction. The condition is the only thing that goes ahead of the action. The reason still follows it.
 - **Make link text say where the link goes.** Use the target's title, as [Citations and labels](#citations-and-labels) describes. Never use _here_, _this page_, or a bare URL. A pull request description has two exceptions, which [Commit messages and pull requests](#commit-messages-and-pull-requests) describes.
-- **Give every sentence a fact the reader can act on or check.** Name the exact type, member, lint, key, diagnostic ID, and version (`CA1307`, `clippy::large_futures`, `[workspace.lints]`, .NET 10, Rust 1.99) instead of describing it. A measured number beats an adjective: "5.5 ms to 0.826 ms", not "much faster".
+- **Give every sentence a fact the reader can act on or check.** Name the exact type, member, lint, key, diagnostic ID, and version (`CA1307`, `clippy::large_futures`, `[workspace.lints]`, .NET 10, Rust 1.99) instead of describing it. Write a measured number, not an adjective: "5.5 ms to 0.826 ms", not "much faster".
 - **Cut what doesn't add a fact.** Delete a sentence that restates the one before it. Delete one that comments on the text instead of the subject, such as "which is worth noticing" or "the part that matters".
 - **Keep sentences short.** Aim for about 20 words. Split any sentence over 35 words at the clause that does separate work.
 - **Keep paragraphs short.** Three or four sentences is plenty. Break up a longer one, or turn it into a list.
@@ -80,11 +80,11 @@ A few agent idioms did get in. Replace each with the plain statement it stands f
 | reach for                                          | use                                                                    |
 | carry (a claim, a header, a note)                  | supports, has, includes, or records                                    |
 | held back (a pin, an update)                       | pinned below, delayed by, or blocked by                                |
-| it lost, it won (of an option)                     | the cost that rules the option out, or the benefit that decides for it |
+| it lost, it won, beats (of an option)              | the cost that rules the option out, or the benefit that decides for it |
 | worth noting                                       | (delete it, and state the fact)                                        |
 | _honest_, _genuinely_, _quietly_ (as intensifiers) | (delete them)                                                          |
 
-A literal use isn't an idiom. _Silently_ for a failure that raises no error stays, and so do _drift_ for two copies that diverge, and _lost_ for data that's gone.
+A literal use isn't an idiom. _Silently_ for a failure that raises no error stays, and so do _drift_ for two copies that diverge, _lost_ for data that's gone, and _beat_ for a measured result.
 
 ## Citations and labels
 
