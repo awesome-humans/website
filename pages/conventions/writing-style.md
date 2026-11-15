@@ -68,22 +68,23 @@ Agents write most of the prose here, and it goes wrong in rhythm more than vocab
 
 A few agent idioms did get in. Replace each with the plain statement it stands for: the failure a check catches, the claim an opinion rests on, or the cost a feature repays.
 
-| Avoid                                              | Write instead                                   |
-| -------------------------------------------------- | ----------------------------------------------- |
-| load-bearing                                       | what depends on it                              |
-| belt and braces                                    | the second check, and what it catches           |
-| earns its keep, earns its place                    | the benefit, measured                           |
-| escape hatch                                       | the setting or API that opts out                |
-| bites                                              | the failure, and when it happens                |
-| for free                                           | without extra code, or what's actually included |
-| pull the other way                                 | the opposing claim, and who makes it            |
-| reach for                                          | use                                             |
-| carry (a claim, a header, a note)                  | supports, has, includes, or records             |
-| held back (a pin, an update)                       | pinned below, delayed by, or blocked by         |
-| worth noting                                       | (delete it, and state the fact)                 |
-| _honest_, _genuinely_, _quietly_ (as intensifiers) | (delete them)                                   |
+| Avoid                                              | Write instead                                                          |
+| -------------------------------------------------- | ---------------------------------------------------------------------- |
+| load-bearing                                       | what depends on it                                                     |
+| belt and braces                                    | the second check, and what it catches                                  |
+| earns its keep, earns its place                    | the benefit, measured                                                  |
+| escape hatch                                       | the setting or API that opts out                                       |
+| bites                                              | the failure, and when it happens                                       |
+| for free                                           | without extra code, or what's actually included                        |
+| pull the other way                                 | the opposing claim, and who makes it                                   |
+| reach for                                          | use                                                                    |
+| carry (a claim, a header, a note)                  | supports, has, includes, or records                                    |
+| held back (a pin, an update)                       | pinned below, delayed by, or blocked by                                |
+| it lost, it won (of an option)                     | the cost that rules the option out, or the benefit that decides for it |
+| worth noting                                       | (delete it, and state the fact)                                        |
+| _honest_, _genuinely_, _quietly_ (as intensifiers) | (delete them)                                                          |
 
-A literal use isn't an idiom. _Silently_ for a failure that raises no error stays, and so does _drift_ for two copies that diverge.
+A literal use isn't an idiom. _Silently_ for a failure that raises no error stays, and so do _drift_ for two copies that diverge, and _lost_ for data that's gone.
 
 ## Citations and labels
 
