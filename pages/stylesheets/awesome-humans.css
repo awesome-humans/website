@@ -297,9 +297,10 @@
   font-size: 0.8rem;
   line-height: 1.625;
 }
-/* Zensical sets tables, admonitions, and details at 0.64rem (12.8px), which reads small
-   beside 16px body text. Raise them to 14px, the size of the house and preview
-   admonitions and the metadata strip. */
+/* Zensical sets tables, admonitions, and details at 0.64rem, which reads small beside
+   0.8rem body text. Raise them to 0.7rem: 14px at Zensical's default root size, the size
+   of the house and preview admonitions and the metadata strip. In rem, they still grow
+   with the body text on a wide screen. */
 .md-typeset table:not([class]),
 .md-typeset .admonition,
 .md-typeset details {
