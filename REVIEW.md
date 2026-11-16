@@ -34,6 +34,7 @@ Report at most five Nits per review, the ones a reader would notice first. Writi
 - A new script has a `justfile` recipe, and the workflow calls the recipe instead of `npm`, `uv`, or inline logic.
 - A new or renamed page under `pages/` is in the navigation in `scripts/merge_nav.py`. A page under `pages/conventions/` is also in `CONVENTIONS` in `scripts/stage.py`, so the root `llms.txt` links it.
 - A change to `ecosystems.toml` keeps an ecosystem that has no opinions yet at `soon`.
+- A transition note says what ends it and closes with `**Review by YYYY-MM-DD.**`, and the date is in the future.
 
 ## Evidence
 
