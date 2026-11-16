@@ -35,7 +35,15 @@ Apart from spelling, which [Spelling](#spelling) covers, awesome-humans departs 
 - **Keep sentences short.** Aim for about 20 words. Split any sentence over 35 words at the clause that does separate work.
 - **Keep paragraphs short.** Three or four sentences is plenty. Break up a longer one, or turn it into a list.
 - **Make it scannable.** Use a numbered list for steps that happen in order, a bulleted list for items that don't, and a table when the same attributes repeat across items. Use sentence-style capitalisation for headings, and keep headings short and specific.
-- **Give a note that expires a review date.** A note that matters only for a while, such as a migration off a retired tool, opens with `**Review by YYYY-MM-DD.**` and says what ends it. It can go in any file. A comment in a configuration file uses the same words without the bold. Once the date passes, drop the note, or check that it still applies and re-date it. Never delete the marking alone. Each ecosystem's `audit-freshness` skill reports a passed date. Don't fail CI on one, because that blocks unrelated pull requests on the day it passes.
+- **Give a note that expires a review date.** A note that matters only for a while, such as a migration off a retired tool, says what ends it and closes with a `**Review by YYYY-MM-DD.**` marking. The marking is maintenance metadata, so it goes last and the reader gets the message first. Give the note a paragraph, list item, or callout of its own, so the marking dates nothing else. It can go in any file. Put the marking after the note's last full stop, separated by a space:
+  - **A one-line note:** at the end of the line, as in `Pin the action to v4 until v5 supports Windows. **Review by YYYY-MM-DD.**`
+  - **A note of several paragraphs:** at the end of the last paragraph, not in a paragraph of its own. If the note ends with a list, table, or code block, the marking gets a paragraph of its own after it, still inside the note.
+  - **A list item:** at the end of the item. If the item ends with a nested list, the marking gets a paragraph of its own after it, indented to stay in the item.
+  - **A note in a callout or blockquote:** inside it, at the end of its last paragraph. That's the last `>` line of a blockquote or GitHub alert, the last indented line of a `!!!` admonition, or the line before a block's closing `///`.
+  - **A comment in a configuration file:** at the end of the comment's last line, in the same words without the bold, as in `# … Review by YYYY-MM-DD.`
+
+- **Re-date or drop a note once its review date passes.** Check that the note still applies and re-date it, or drop the note. Never delete the marking alone. Each ecosystem's `audit-freshness` skill reports a passed date. Don't fail CI on one, because that blocks unrelated pull requests on the day it passes.
+
 - **Use the serial comma.** Write "opinions, templates, and skills".
 - **Write a range with _to_, not an en dash.** Write "22.2% to 22.3%" and "versions 8 to 10". Use a hyphen only where a compound modifier needs one, as in "a long-running service".
 
