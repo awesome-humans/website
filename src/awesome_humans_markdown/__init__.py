@@ -205,6 +205,10 @@ class AlertTreeprocessor(Treeprocessor):
             alert = ALERTS.get(marker.group(1).upper()) if marker else None
             if marker is None or alert is None:
                 continue
+            # Text after the marker on its line can start with an inline element, which
+            # leaves the paragraph's text ending at the marker.
+            if not marker.group().endswith("\n") and len(first):
+                continue
 
             kind, name = alert
             first.text = (first.text or "")[marker.end() :]
