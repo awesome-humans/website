@@ -62,6 +62,17 @@ A house opinion belongs to a house profile in [`houses.toml`](houses.toml), and 
 
 The site titles the block with the profile's name, and leaves it out of search. Any other element that belongs to a profile, such as its chip in the metadata strip, has `data-house="<profile>"` instead. For readers, see [House profiles](pages/house-profiles.md).
 
+### Alerts
+
+A [GitHub alert](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts) in a page, staged or shared, renders as a callout on the site as it does on GitHub:
+
+```markdown
+> [!NOTE]
+> The Rust ecosystem is currently being bootstrapped.
+```
+
+The site reads the five types GitHub does: `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, and `CAUTION`. The marker goes alone on the blockquote's first line. Stage an alert as written, not as a `!!!` admonition, which GitHub shows as text.
+
 ### Opinion metadata
 
 Each opinion page opens with the design system's OpinionMeta strip, directly under its `h1`. Write it as one paragraph marked `{ .ah-meta }`, with a `.ah-meta__item` span for each of the opinion's targets, its last-reviewed date, and its sources:

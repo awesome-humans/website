@@ -25,6 +25,11 @@ Every element with data-house, such as a profile's chip in an opinion's metadata
 also gets data-search-exclude, so a search never lands on a house opinion the reader
 can't see.
 
+github_alerts renders a GitHub alert, a blockquote whose first line is only "[!NOTE]",
+"[!TIP]", "[!IMPORTANT]", "[!WARNING]", or "[!CAUTION]", as an admonition. A page then
+shows the same callout on the site as its Markdown does on GitHub. Without it, the
+site shows a plain blockquote that starts with the marker.
+
 title_text unwraps the link that the toc extension's anchorlink puts around each page
 title. A section heading links to itself, as in "On this page", but the title isn't in
 that list, and a link to the top of the page adds nothing. The h1 keeps its id, which
@@ -48,6 +53,17 @@ FENCE = re.compile(r" *(`{3,}|~{3,})")
 DATE = re.compile(r"\d{4}-\d{2}-\d{2}")
 ID = re.compile(r"[\w.-]+")
 PATH = re.compile(r"\S+/\S+")
+ALERT = re.compile(r"\[!(\w+)\][ \t]*(?:\n|$)")
+
+# Each GitHub alert's admonition type and title. The theme has no type for Important or
+# Caution, so they take the nearest one and keep their own title.
+ALERTS = {
+    "NOTE": ("note", "Note"),
+    "TIP": ("tip", "Tip"),
+    "IMPORTANT": ("info", "Important"),
+    "WARNING": ("warning", "Warning"),
+    "CAUTION": ("danger", "Caution"),
+}
 
 # The house profile registry. The site builds from the repository root.
 HOUSES = Path("houses.toml")
@@ -177,6 +193,34 @@ class HouseTreeprocessor(Treeprocessor):
                 element.set("data-search-exclude", "")
 
 
+class AlertTreeprocessor(Treeprocessor):
+    """Turn each blockquote that opens with a GitHub alert marker into an admonition."""
+
+    def run(self, root: etree.Element) -> None:
+        for quote in root.iter("blockquote"):
+            first = quote[0] if len(quote) else None
+            if first is None or first.tag != "p":
+                continue
+            marker = ALERT.match(first.text or "")
+            alert = ALERTS.get(marker.group(1).upper()) if marker else None
+            if marker is None or alert is None:
+                continue
+            # Text after the marker on its line can start with an inline element, which
+            # leaves the paragraph's text ending at the marker.
+            if not marker.group().endswith("\n") and len(first):
+                continue
+
+            kind, name = alert
+            first.text = (first.text or "")[marker.end() :]
+            if not first.text and len(first) == 0:
+                quote.remove(first)
+            title = etree.Element("p", {"class": "admonition-title"})
+            title.text = name
+            quote.insert(0, title)
+            quote.tag = "div"
+            quote.set("class", f"admonition {kind}")
+
+
 def house_names() -> dict[str, str]:
     """Each house profile's display name, by id. A build without houses.toml titles a block by its id."""
     try:
@@ -208,6 +252,8 @@ class ListIndentExtension(Extension):
         md.treeprocessors.register(PathBreakTreeprocessor(md), "path_breaks", 5)
         # After attr_list (8), which sets data-house on a chip.
         md.treeprocessors.register(HouseTreeprocessor(md, house_names()), "house_blocks", 6)
+        # After inline (20), which leaves the marker as the paragraph's opening text.
+        md.treeprocessors.register(AlertTreeprocessor(md), "github_alerts", 6)
         # After toc (5), which wraps each heading's contents in its anchorlink.
         md.treeprocessors.register(TitleTextTreeprocessor(md), "title_text", 4)
 
