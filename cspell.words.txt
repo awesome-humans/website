@@ -7,6 +7,7 @@ Clippy
 codelineno
 coderabbit
 extrahead
+fontawesome
 inlinehilite
 javascripts
 katex
