@@ -23,11 +23,12 @@ import sys
 import tomllib
 from pathlib import Path
 
-from ecosystems import BUILD, DOCS, built, load_json, report, require_root, validate
+from ecosystems import BUILD, CONVENTIONS, DOCS, built, load_json, report, require_root, validate
 
 SITE_CONFIG = Path("zensical.toml")
 
-# The site's own pages, ahead of the ecosystems.
+# The site's own pages, ahead of the ecosystems. The conventions come from CONVENTIONS,
+# so the navigation and the root llms.txt list them in the same order.
 SITE_NAV: list[dict] = [
     {"Home": "index.md"},
     {
@@ -35,15 +36,7 @@ SITE_NAV: list[dict] = [
             {"Overview": "how-it-works.md"},
             {"House profiles": "house-profiles.md"},
             {"Want in or out?": "want-in-or-out.md"},
-            {
-                "Conventions": [
-                    {"Writing style": "conventions/writing-style.md"},
-                    {"Admission criteria": "conventions/admission-criteria.md"},
-                    {"House opinions": "conventions/house-opinions.md"},
-                    {"External content": "conventions/external-content.md"},
-                    {"New ecosystems": "conventions/new-ecosystems.md"},
-                ]
-            },
+            {"Conventions": [{title: f"conventions/{page}.md"} for page, (title, _) in CONVENTIONS.items()]},
         ]
     },
 ]
