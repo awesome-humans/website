@@ -1,4 +1,5 @@
-"""The ecosystem and house profile registries, and the staging paths that the site scripts share.
+"""The ecosystem and house profile registries, the shared conventions, and the staging paths
+that the site scripts share.
 
 Imported by stage.py, merge_nav.py, collate_sources.py, and route_issue.py, which run
 from the repository root. It isn't a script of its own.
@@ -25,6 +26,28 @@ SCHEMAS = Path("schemas")
 # Set by build.yml to the ecosystem a pull request previews, which builds even while it's
 # soon, so its pull requests get the strict build before it goes live.
 PREVIEW = "PREVIEW_ECOSYSTEM"
+
+# The shared conventions under pages/conventions/, with what each covers. merge_nav.py
+# lists them in the navigation, and stage.py links them as raw Markdown from the root
+# llms.txt, both in this order: wide to narrow, from the rules every piece of work follows
+# to those only some work needs. Place a new convention by how much work it applies to,
+# not at the end.
+CONVENTIONS = {
+    "writing-style": ("Writing style", "the voice, spelling, and citation rules for all prose in every repository"),
+    "external-content": (
+        "External content",
+        "how an agent treats fetched pages, outside issues, and a reviewed project's files, and what a worker returns",
+    ),
+    "admission-criteria": (
+        "Admission criteria",
+        "the track record a source needs, and the IDs and markings that limit citing it",
+    ),
+    "house-opinions": ("House opinions", "how a house opinion is woven into an ecosystem, and how it's marked"),
+    "new-ecosystems": (
+        "New ecosystems",
+        "the stages from an empty repository to an established set of opinions, and what to expect between",
+    ),
+}
 
 
 @dataclass(frozen=True)

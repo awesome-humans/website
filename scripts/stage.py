@@ -50,7 +50,19 @@ from itertools import takewhile
 from pathlib import Path
 
 import diagrams
-from ecosystems import DOCS, PREVIEW, REPOS, Ecosystem, House, built, houses, registry, report, require_root
+from ecosystems import (
+    CONVENTIONS,
+    DOCS,
+    PREVIEW,
+    REPOS,
+    Ecosystem,
+    House,
+    built,
+    houses,
+    registry,
+    report,
+    require_root,
+)
 
 PAGES = Path("pages")
 SITE_CONFIG = Path("zensical.toml")
@@ -71,24 +83,6 @@ TITLE = re.compile(r"^# .*\n", re.MULTILINE)
 DIAGRAM_PAGE = "how-it-works.md"
 DIAGRAM_MARKER = re.compile(r"^<!-- diagram: ([a-z-]+) -->$", re.MULTILINE)
 
-# The shared conventions under pages/conventions/, which the root llms.txt links to as
-# raw Markdown, with what each covers.
-CONVENTIONS = {
-    "writing-style": ("Writing style", "the voice, spelling, and citation rules for all prose in every repository"),
-    "admission-criteria": (
-        "Admission criteria",
-        "the track record a source needs, and the IDs and markings that limit citing it",
-    ),
-    "house-opinions": ("House opinions", "how a house opinion is woven into an ecosystem, and how it's marked"),
-    "external-content": (
-        "External content",
-        "how an agent treats fetched pages, outside issues, and a reviewed project's files, and what a worker returns",
-    ),
-    "new-ecosystems": (
-        "New ecosystems",
-        "the stages from an empty repository to an established set of opinions, and what to expect between",
-    ),
-}
 RAW_PAGES = "https://raw.githubusercontent.com/awesome-humans/website/main/pages/"
 
 # The toolchains build.yml has a setup step for. A new one needs a step there too.
