@@ -141,6 +141,7 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 ├── .github/ISSUE_TEMPLATE/ ← the Suggest a source and Opt out issue forms
 ├── .github/workflows/      ← build.yml and deploy.yml, which ecosystems call too, site.yml, intake.yml, markdown.yml, and attribution.yml
 ├── AGENTS.md               ← how agents work in this repository
+├── DESIGN.md               ← the design rules for the site, and the tokens they use
 ├── REVIEW.md               ← how agents review a pull request here
 ├── ecosystems.toml         ← the ecosystem registry
 ├── houses.toml             ← the house profile registry
