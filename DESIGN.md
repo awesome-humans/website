@@ -36,7 +36,7 @@ The brand is crisp and technical: a reference you trust because every claim is c
 
 - **The logo is the cited human:** a person inside square brackets, which reads as both a citation and code. Use [`pages/assets/brand/mark-cited-human.svg`](pages/assets/brand/mark-cited-human.svg) in `--ah-brand-mark`, beside the name in IBM Plex Sans 600.
 - **On the header bar, reverse the mark out in white,** in both themes. Its green would disappear on the green bar of a page outside an ecosystem.
-- **Use Zensical's bundled Lucide icons** (`lucide/...`) at 16px to 20px in `--ah-ink-2`, stroke style only. The mark's brackets can appear as the literal text `[ ]` in the hero kicker. Don't build other icons from them.
+- **Use Zensical's bundled Lucide icons** (`lucide/...`) at 16px to 20px in `--ah-ink-2`, stroke style only. The header's repository link is the one exception: it shows Git's own logo, `fontawesome/brands/git-alt`, which `zensical.toml` sets as `icon.repo`. The mark's brackets can appear as the literal text `[ ]` in the hero kicker. Don't build other icons from them.
 
 ## Imagery
 

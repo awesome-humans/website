@@ -37,9 +37,9 @@ variant = "modern"
 font = false
 logo = "assets/brand/mark-cited-human.svg"
 favicon = "assets/brand/favicon.svg"
-# The repository link's icon. DESIGN.md allows only Lucide icons, and the default is a
-# Font Awesome brand icon.
-icon.repo = "lucide/git-branch"
+# The repository link's icon: Git's own logo, the one icon DESIGN.md allows from outside
+# Lucide.
+icon.repo = "fontawesome/brands/git-alt"
 language = "en"
 features = [
   "content.code.copy",
