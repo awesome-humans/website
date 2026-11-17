@@ -15,7 +15,7 @@ Reserve Important for these. Everything else is Nit at most.
 - **An unsafe workflow.** A `pull_request_target` job that checks out or runs the pull request's code, a secret passed to a step or a reusable workflow that doesn't need it, a Cloudflare deployment reachable from an untrusted ref, or an action pinned to a tag instead of a commit SHA. Issue intake in `intake.yml` treats issue text as untrusted input.
 - **A wrong script.** In `scripts/`, logic that passes input it should reject, a change to the exit codes (0 success, 1 findings, 2 wrong directory), or an inline dependency whose pin differs from the dev group in `pyproject.toml`.
 - **A design system departure.** A colour, font, or spacing value in `pages/stylesheets/awesome-humans.css` that isn't an `--ah-*` token from the design system, or an ecosystem accent used outside the header bar, the page tint, the active tab's underline, the heading tick, the active navigation item, and the ecosystem chip.
-- **Weaker review rules.** A change to `REVIEW.md`, `AGENTS.md`, or `agents/` that drops an Important item, raises the nit cap, or skips a path or a class of finding, without saying why. The agent reviewer reads these files from the pull request's own branch, so such a change softens its own review.
+- **Weaker review rules.** A change to `REVIEW.md`, `AGENTS.md`, or `agents/` that drops an Important item, raises the nit cap, or skips a path or a class of finding, without saying why. The agent reviewer reads `REVIEW.md` and `AGENTS.md` from the pull request's own branch, so such a change softens its own review.
 
 ## Cap the nits
 

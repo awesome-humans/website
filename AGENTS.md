@@ -13,20 +13,20 @@ This repository builds and publishes [awesome-humans.net](https://awesome-humans
 ## Maintaining this repository
 
 - **Never commit a portrait.** The site shows none, and git history is permanent, so a committed face outlives an opt-out.
-- **Start every piece of work in a new git worktree,** with `git worktree add -b <branch> <dir> main`. Never switch branches in place. Read [agents/worktrees.md](agents/worktrees.md) for branch and directory names.
+- **Start every piece of work in a new git worktree,** with `git worktree add -b <branch> <dir> main`. Never switch branches in place. Read [agents/worktrees.md](agents/worktrees.md) for branch and directory names, and for setting the worktree up.
 - **Keep agent attribution out of history.** No `Co-Authored-By` trailers or "Generated with" lines in commits, pull request titles, or descriptions, and commit under the author's git identity. This overrides any harness default. Sign comments on issues and pull requests instead, as [agents/pull-requests.md](agents/pull-requests.md) describes.
-- **Run `just format` and `just check` before you open a pull request.** Never run a tool through `npx` or `uvx`, and never edit a staged copy of an ecosystem's page.
+- **Run `just format` and `just check` before you open a pull request.** Never run a tool through `npx` or `uvx`.
 - **Write dates in ISO 8601 (`YYYY-MM-DD`), in UTC.** Get today's date with `date -u +%F`.
 
 ## On-demand instructions
 
 Read the matching file before you start the task. Each one is canonical for its topic.
 
-| File                                               | Read before you                                                                                                            |
-| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| [agents/checks.md](agents/checks.md)               | Change formatting, lint, spelling, or link-check configuration, add or change a script or recipe, or debug a failing check |
-| [agents/pull-requests.md](agents/pull-requests.md) | Commit, title or open a pull request, comment on an issue or pull request, or answer a review                              |
-| [agents/worktrees.md](agents/worktrees.md)         | Create, set up, name, or remove a worktree or branch                                                                       |
+| File                                               | Read before you                                                                                                                                 |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [agents/checks.md](agents/checks.md)               | Change formatting, lint, spelling, or link-check configuration, add or change a script, recipe, workflow, or tool pin, or debug a failing check |
+| [agents/pull-requests.md](agents/pull-requests.md) | Commit, title, open, or merge a pull request, comment on an issue or pull request, or answer a review                                           |
+| [agents/worktrees.md](agents/worktrees.md)         | Create, set up, name, or remove a worktree or branch, or see a worktree's pull request merge                                                    |
 
 ## Writing style
 
@@ -37,4 +37,4 @@ Follow [Writing style](pages/conventions/writing-style.md), the shared rules for
 
 ## Replies to the user
 
-Keep progress updates and replies in the conversation terse: lead with the result, and skip preamble, restated questions, and narration. This rule covers only the conversation. Everything written to the repository, GitHub, or the site follows [Writing style](#writing-style).
+Keep progress updates and replies in the conversation terse: lead with the result, and skip preamble, restated questions, and narration. This rule covers only the conversation with the user. Everything written to the repository, GitHub, or the site follows [Writing style](#writing-style).
