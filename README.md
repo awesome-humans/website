@@ -143,6 +143,7 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 ├── AGENTS.md               ← how agents work in this repository
 ├── DESIGN.md               ← the design rules for the site, and the tokens they use
 ├── REVIEW.md               ← how agents review a pull request here
+├── agents/                 ← on-demand agent instructions that AGENTS.md indexes
 ├── ecosystems.toml         ← the ecosystem registry
 ├── houses.toml             ← the house profile registry
 ├── justfile                ← every local and CI entry point: run `just` to list them

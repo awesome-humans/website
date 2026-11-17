@@ -1,0 +1,22 @@
+# Checks: formatting, linting, scripts, links
+
+## Formatting and linting
+
+- Markdown follows GFM and markdownlint, configured in `.markdownlint-cli2.jsonc`. Spelling follows cspell, configured in `cspell.jsonc` with the `en-GB` dictionary and the repository's word list in `cspell.words.txt`.
+- Run `just format` to format every file, and `just check` to run every check that CI runs on a pull request: formatting, linting, types, and spelling. The link check runs only in CI. The site build runs in CI and in `just build`. Each tool is pinned, the Node ones in `package.json` and the Python ones in the dev group in `pyproject.toml`. Don't run a tool through `npx` or `uvx`, because they resolve the latest version.
+- `just format` runs Prettier on Markdown, JSON, YAML, CSS, and JavaScript, taplo on TOML (configured in `.taplo.toml`), and Ruff on Python. Prettier skips the Jinja templates in `overrides/`, which it would break.
+- `just lint` runs markdownlint on Markdown, stylelint on CSS (configured in `.stylelintrc.json`), ESLint on JavaScript (configured in `eslint.config.mjs`), and Ruff on Python. The CSS and JavaScript rules catch mistakes, not style: formatting is the formatters' job.
+- `just lint` also checks the workflows. actionlint finds mistakes, including shellcheck on their `run:` scripts, and zizmor audits them for security problems. Without a GitHub token, zizmor skips its online audits and says so. CI passes `github.token` as `GH_TOKEN`.
+- `just typecheck` runs pyright on the Python, configured in `pyproject.toml`.
+
+## Scripts
+
+- **The [`justfile`](../justfile) is every local and CI entry point.** Run `just` to list its recipes. Workflows call recipes, never `npm`, `uv`, or inline logic, so a step runs the same way on your machine as in CI. A new script or check gets a recipe, and the workflow calls that. `just` is a task runner, not a toolchain: it only calls npm and uv.
+- Site scripts live in `scripts/` as Python, and each has a recipe. To run one directly, use `uv run scripts/<name>.py` from the repository root. Each declares its dependencies inline ([PEP 723](https://peps.python.org/pep-0723/)), with exact pins.
+- A script's inline dependencies also go in the dev group in `pyproject.toml`, at the same pin, so pyright can resolve its imports.
+- Python is Zensical's own language, so the site needs one toolchain. Don't add a script in an ecosystem's language here: the ecosystems dogfood their own languages in their own repositories.
+- Exit codes: 0 for success, 1 for findings, and 2 when not run from the repository root, as in the ecosystems' scripts.
+
+## Links
+
+The `Markdown` workflow checks links with `lychee.toml`, and a broken link blocks the pull request. If a third-party host is down, re-run the job after it recovers. Links in `pages/` are relative to the built site, so only the strict site build checks them.
