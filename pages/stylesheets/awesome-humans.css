@@ -1,7 +1,6 @@
-/* The Awesome Humans theme for Zensical, from the design system at
-   https://claude.ai/artifact/QfYm5d57sbJxs3W3jMyGiy. Its tokens.json gives every value
-   here, and its components/bundle.css the ah- component rules, with the tokens renamed
-   --ah-*. Change a value there first, then copy it here.
+/* The Awesome Humans theme for Zensical. DESIGN.md at the repository root sets the rules
+   for the look, and this file holds every value, as an --ah-* custom property. Change a
+   value here, and change a rule there in the same pull request.
 
    Light follows Zensical's default scheme and dark its slate scheme, on the modern
    variant. */
@@ -341,9 +340,9 @@
   color: var(--ah-brand);
 }
 
-/* The page title, underlined with the ecosystem tick. The design system draws the tick
-   above the title; the maintainer moved it underneath on 2026-10-16, where it reads as an
-   underline rather than a rule cutting the page. */
+/* The page title, underlined with the ecosystem tick. The maintainer moved the tick from
+   above the title on 2026-10-16: underneath, it reads as an underline rather than a rule
+   cutting the page. */
 .md-typeset h1 {
   display: inline-block;
   margin: 0 0 var(--ah-space-6);
@@ -500,7 +499,7 @@
   }
 }
 
-/* ---- Components: the design system's ah- classes ---- */
+/* ---- Components: the ah- classes ---- */
 .ah-label {
   font: 500 11px/16px var(--ah-font-mono);
   letter-spacing: 0.08em;
@@ -514,41 +513,13 @@
   align-items: center;
 }
 
-/* Hero: the home banner. The montage rules are the design system's, and no page uses
-   them yet. */
+/* Hero: the home banner. */
 .md-typeset .ah-hero {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   margin: 0 0 var(--ah-space-8);
   padding: var(--ah-space-12) var(--ah-space-6) 40px;
   background: var(--ah-surface);
   border: var(--ah-hairline) solid var(--ah-line);
   border-radius: var(--ah-radius-md);
-}
-.ah-hero__montage {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: right center;
-  opacity: 0.22;
-  mix-blend-mode: multiply;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
-  mask-image: linear-gradient(90deg, transparent 0%, #000 55%);
-}
-.ah-hero__montage--dark {
-  display: none;
-}
-[data-md-color-scheme="slate"] .ah-hero__montage--light {
-  display: none;
-}
-[data-md-color-scheme="slate"] .ah-hero__montage--dark {
-  display: block;
-  opacity: 0.14;
-  mix-blend-mode: screen;
 }
 .md-typeset .ah-hero .ah-hero__kicker {
   font: 500 11px/16px var(--ah-font-mono);
@@ -578,13 +549,6 @@
 }
 .md-typeset .ah-hero .ah-row {
   margin: 0;
-}
-.ah-hero__credit {
-  position: absolute;
-  right: var(--ah-space-3);
-  bottom: var(--ah-space-2);
-  font: 11px/16px var(--ah-font-mono);
-  color: var(--ah-muted);
 }
 @media screen and (max-width: 44.9375em) {
   .md-typeset .ah-hero {
@@ -836,8 +800,10 @@
   font: 500 12px/16px var(--ah-font-mono);
   cursor: pointer;
 }
+/* javascripts/house.js puts the picker on the header bar, so its focus ring takes the
+   bar's ink, as the bar's other controls do. */
 .ah-house-picker:focus-visible {
-  outline: var(--ah-stripe) solid var(--ah-brand-mark);
+  outline: var(--ah-stripe) solid var(--ah-header-ink);
   outline-offset: 2px;
 }
 [data-house] .ah-house-picker {

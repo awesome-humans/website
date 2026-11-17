@@ -29,8 +29,7 @@ extra_javascript = [
 [project.theme]
 # Template overrides, relative to the staged copy in build/.
 custom_dir = "../overrides"
-# The look comes from the Awesome Humans design system, through
-# stylesheets/awesome-humans.css, which fills the modern variant's header with each
+# The look follows DESIGN.md, through stylesheets/awesome-humans.css, which fills the modern variant's header with each
 # section's accent and keeps the tabs on the page background.
 variant = "modern"
 # IBM Plex, self-hosted by awesome-humans.css. The default loads Roboto from Google
@@ -38,6 +37,9 @@ variant = "modern"
 font = false
 logo = "assets/brand/mark-cited-human.svg"
 favicon = "assets/brand/favicon.svg"
+# The repository link's icon: Git's own logo, the one icon DESIGN.md allows from outside
+# Lucide.
+icon.repo = "fontawesome/brands/git-alt"
 language = "en"
 features = [
   "content.code.copy",

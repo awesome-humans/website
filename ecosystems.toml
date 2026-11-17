@@ -2,7 +2,7 @@
 # build/docs/<id>/ (see README.md: Staging contract), and the site does the rest.
 #
 # id          The URL segment (/<id>/), and the name of the ecosystem's accent
-#             token in the design system.
+#             token in pages/stylesheets/awesome-humans.css.
 # name        The display name.
 # repository  The GitHub repository that holds the ecosystem's content.
 # toolchain   What CI sets up before it runs `stage`. Each toolchain is one

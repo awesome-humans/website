@@ -4,13 +4,13 @@
 
 - **Follow [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages and pull request titles.** A pull request squash-merges under its title, so the title becomes the commit subject in `git log`. Use the form `<type>[(scope)]: <description>`, in lowercase and the imperative.
 
-  | Type    | Use for                                           |
-  | ------- | ------------------------------------------------- |
-  | `docs`  | Pages, the README, `AGENTS.md`, and `agents/`     |
-  | `fix`   | Bug fixes in the theme, scripts, and workflows    |
-  | `feat`  | New features in the theme, scripts, and workflows |
-  | `ci`    | Workflow plumbing                                 |
-  | `chore` | Dependencies and housekeeping                     |
+  | Type    | Use for                                                  |
+  | ------- | -------------------------------------------------------- |
+  | `docs`  | Pages, the README, DESIGN.md, `AGENTS.md`, and `agents/` |
+  | `fix`   | Bug fixes in the theme, scripts, and workflows           |
+  | `feat`  | New features in the theme, scripts, and workflows        |
+  | `ci`    | Workflow plumbing                                        |
+  | `chore` | Dependencies and housekeeping                            |
 
 ## Agent attribution
 
