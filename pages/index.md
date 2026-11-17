@@ -1,4 +1,4 @@
-<!-- The hero and the ecosystem cards are the design system's Hero and EcosystemCard,
+<!-- The hero and the ecosystem cards are the stylesheet's ah-hero and ah-card components,
      written as HTML. The hero's h1 is the page title and ends with a full stop.
      scripts/stage.py replaces each marker from ecosystems.toml. -->
 <!-- markdownlint-disable MD026 MD033 MD041 -->

@@ -10,7 +10,7 @@ Each ecosystem's content lives in its own repository. This repository owns every
 
 1. Add its entry to [`ecosystems.toml`](ecosystems.toml), which also gives it a card on the home page.
 2. If it needs a toolchain the site doesn't set up yet, add a setup step to [`build.yml`](.github/workflows/build.yml), and the toolchain to `TOOLCHAINS` in [`scripts/stage.py`](scripts/stage.py).
-3. Copy its accent colours from the design system into [`pages/stylesheets/awesome-humans.css`](pages/stylesheets/awesome-humans.css).
+3. Add its accent to [`pages/stylesheets/awesome-humans.css`](pages/stylesheets/awesome-humans.css) as an `--ah-<id>` token, with a light and a dark value, and map it to `--ah-eco` as the other ecosystems do. [DESIGN.md](DESIGN.md) says where an accent appears.
 4. Add it to the Ecosystem dropdown of [`suggest-source.yml`](.github/ISSUE_TEMPLATE/suggest-source.yml).
 5. Once it's live, add its repository to the app token in [`intake.yml`](.github/workflows/intake.yml).
 6. If the site shows its logo, add it to [`pages/assets/ecosystems/`](pages/assets/ecosystems) as `<id>.svg`, with `<id>-dark.svg` when it doesn't read on a dark ground, and credit it in [`pages/credits.md`](pages/credits.md).
@@ -75,7 +75,7 @@ The site reads the five types GitHub does: `NOTE`, `TIP`, `IMPORTANT`, `WARNING`
 
 ### Opinion metadata
 
-Each opinion page opens with the design system's OpinionMeta strip, directly under its `h1`. Write it as one paragraph marked `{ .ah-meta }`, with a `.ah-meta__item` span for each of the opinion's targets, its last-reviewed date, and its sources:
+Each opinion page opens with a metadata strip, directly under its `h1`. Write it as one paragraph marked `{ .ah-meta }`, with a `.ah-meta__item` span for each of the opinion's targets, its last-reviewed date, and its sources:
 
 ```markdown
 <span class="ah-meta__item"><span class="ah-label">Targets</span> `net10.0` `csharp-14`</span><span class="ah-meta__item"><span class="ah-label">Last reviewed</span> 2026-08-18 <span class="ah-chip ah-chip--fresh ah-chip--dot">fresh</span></span><span class="ah-meta__item"><span class="ah-label">Sources</span> [andrew-lock](../awesome-humans/citable.md#andrew-lock-citable){ .ah-chip } [ms-learn](../awesome-humans/citable.md#ms-learn-citable){ .ah-chip }</span>

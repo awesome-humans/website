@@ -243,8 +243,8 @@ def write_houses(staged: dict[str, list[str]]) -> None:
 
 
 def write_cards(errors: list[str]) -> None:
-    """Replace the home page's marker with a card per ecosystem, as the design system's
-    EcosystemCard shows: a link for a live one, and a muted card for one coming soon. Only
+    """Replace the home page's marker with a card per ecosystem, as an ah-card:
+    a link for a live one, and a muted card for one coming soon. Only
     a coming-soon card has a chip, which says so in words, so the state doesn't rest on
     colour alone."""
     path = DOCS / "index.md"
