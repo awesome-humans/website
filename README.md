@@ -142,6 +142,7 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 ├── .github/workflows/      ← build.yml and deploy.yml, which ecosystems call too, site.yml, intake.yml, markdown.yml, and attribution.yml
 ├── AGENTS.md               ← how agents work in this repository
 ├── REVIEW.md               ← how agents review a pull request here
+├── agents/                 ← on-demand agent instructions that AGENTS.md indexes
 ├── ecosystems.toml         ← the ecosystem registry
 ├── houses.toml             ← the house profile registry
 ├── justfile                ← every local and CI entry point: run `just` to list them
