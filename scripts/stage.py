@@ -491,10 +491,13 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
                 )
 
     text = "\n".join(lines) + "\n"
-    # Every file the root llms.txt links is on the site, for an agent that can fetch nothing else.
-    if "raw.githubusercontent.com" in text:
-        errors.append("llms.txt: links raw.githubusercontent.com instead of a copy on the site")
     (DOCS / "llms.txt").write_text(text, encoding="utf-8")
+
+    # Every file an llms.txt links is on the site, for an agent that can fetch nothing else.
+    # That covers the root one, each ecosystem's, and each house profile's.
+    for path in [DOCS / "llms.txt", *sorted(DOCS.glob("*/llms*.txt"))]:
+        if "raw.githubusercontent.com" in path.read_text(encoding="utf-8"):
+            errors.append(f"{path.relative_to(DOCS)}: links raw.githubusercontent.com instead of a copy on the site")
 
 
 def main() -> int:
