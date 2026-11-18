@@ -17,7 +17,7 @@ Suggestions from the site's issue forms move to the ecosystem they name. Two sha
 
 ## Every change goes through a pull request
 
-Each skill works on its own branch and opens a pull request. CI checks that:
+Each skill that changes a repository works on its own branch and opens a pull request. CI checks that:
 
 - Every opinion and template has valid metadata
 - Every cited source is on the roster and citable
