@@ -32,7 +32,7 @@ dev = [
   "jsonschema==4.26.0",
   "ruff==0.17.5",
   "taplo==0.9.3",
-  "zizmor==1.31.1",
+  "zizmor==1.32.0",
 ]
 
 # Ruff formats and lints the Python in scripts/ and src/. `just format` and
