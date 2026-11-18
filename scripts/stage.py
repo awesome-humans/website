@@ -19,7 +19,8 @@ to preview an ecosystem change before pushing it. Then it:
 - Checks that every house profile an ecosystem staged is in houses.toml for that
   ecosystem, and warns about a listed profile an ecosystem staged nothing for.
 - Writes the root llms.txt, which links to each ecosystem's own, to the shared
-  conventions, and to each staged llms-<profile>.txt.
+  conventions, and to each staged llms-<profile>.txt. It copies each convention to
+  raw/none/conventions/ for it to link, so an agent that can fetch only the site reads them.
 - Fills the home page's ecosystem cards and the hero's Browse buttons from
   ecosystems.toml, and adds each ecosystem's logo to its card and its section index.
 - Draws the diagrams on How it works from diagrams.py.
@@ -39,6 +40,7 @@ repository root or bad arguments.
 import argparse
 import json
 import os
+import posixpath
 import re
 import shlex
 import shutil
@@ -83,7 +85,18 @@ TITLE = re.compile(r"^# .*\n", re.MULTILINE)
 DIAGRAM_PAGE = "how-it-works.md"
 DIAGRAM_MARKER = re.compile(r"^<!-- diagram: ([a-z-]+) -->$", re.MULTILINE)
 
-RAW_PAGES = "https://raw.githubusercontent.com/awesome-humans/website/main/pages/"
+# Where the root llms.txt links each convention: a copy on the site, as each ecosystem
+# stages its own files, so an agent that can fetch only awesome-humans.net reads every
+# one. A convention has no house opinions, so it has only the default copy, under
+# raw/none/. A copy ends in .md.txt, because the site renders every .md file as a page.
+RAW_CONVENTIONS = "raw/none/conventions/"
+# A file in this repository that the site doesn't serve, and a directory of them.
+RAW_REPOSITORY = "https://raw.githubusercontent.com/awesome-humans/website/main/"
+TREE_REPOSITORY = "https://github.com/awesome-humans/website/tree/main/"
+# A Markdown link's target.
+MARKDOWN_LINK = re.compile(r"\]\((?P<target>[^)\s]+)\)")
+# A line that opens or closes a fenced code block.
+FENCE = re.compile(r"^\s*(?P<marker>`{3,}|~{3,})(?P<rest>.*)$")
 
 # The toolchains build.yml has a setup step for. A new one needs a step there too.
 TOOLCHAINS = {"dotnet", "rust"}
@@ -342,6 +355,71 @@ def write_repositories(ecosystems: list[Ecosystem]) -> None:
     )
 
 
+def absolute_links(page: str, text: str, site_url: str) -> str:
+    """Make each relative link in a convention's raw copy absolute, because it leads nowhere
+    from raw/none/conventions/. A link to another convention goes to its copy, and a link
+    to anything else the site serves goes there: a page, a file, or a directory with an
+    index. That includes each staged ecosystem, so call this after staging them. A link
+    out of pages/ goes to GitHub. A link shown as an example, to no file, stays as
+    written, and so do fenced code blocks."""
+
+    def served(resolved: str) -> str | None:
+        stem = resolved.removesuffix(".md")
+        if stem.startswith("conventions/") and stem.removeprefix("conventions/") in CONVENTIONS:
+            return f"{site_url}{RAW_CONVENTIONS}{stem.removeprefix('conventions/')}.md.txt"
+        staged = DOCS / resolved
+        if staged.is_dir():
+            if (staged / "index.md").is_file():
+                return site_url if resolved == "." else f"{site_url}{resolved}/"
+            return f"{TREE_REPOSITORY}pages/{resolved}" if (PAGES / resolved).is_dir() else None
+        if not staged.is_file():
+            return None
+        if not resolved.endswith(".md"):
+            return f"{site_url}{resolved}"
+        if stem == "index" or stem.endswith("/index"):
+            return f"{site_url}{stem.removesuffix('index')}"
+        return f"{site_url}{stem}/"
+
+    def repository(resolved: str) -> str | None:
+        path = posixpath.normpath(posixpath.join(PAGES.as_posix(), resolved))
+        if path == ".." or path.startswith("../"):
+            return None
+        if Path(path).is_dir():
+            return f"{TREE_REPOSITORY}{'' if path == '.' else path}"
+        return f"{RAW_REPOSITORY}{path}" if Path(path).is_file() else None
+
+    def target(match: re.Match[str]) -> str:
+        link = match["target"]
+        if "://" in link or link.startswith(("mailto:", "#")):
+            return match[0]
+        path, hash, anchor = link.partition("#")
+        resolved = posixpath.normpath(posixpath.join(posixpath.dirname(page), path))
+        outside = resolved == ".." or resolved.startswith("../")
+        url = repository(resolved) if outside else served(resolved)
+        return match[0] if url is None else f"]({url}{hash}{anchor})"
+
+    # The marker that opened the current fenced code block. Only the same character, at
+    # least as long and with nothing after it, closes the block.
+    fence = ""
+    lines = []
+    for line in text.split("\n"):
+        marker = FENCE.match(line)
+        if not fence:
+            if marker:
+                fence = marker["marker"]
+            else:
+                line = MARKDOWN_LINK.sub(target, line)
+        elif (
+            marker
+            and marker["marker"][0] == fence[0]
+            and len(marker["marker"]) >= len(fence)
+            and not marker["rest"].strip()
+        ):
+            fence = ""
+        lines.append(line)
+    return "\n".join(lines)
+
+
 def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors: list[str]) -> None:
     """Write the root llms.txt, which links to each ecosystem's own, per llmstxt.org, to the
     shared conventions, and to each house profile's."""
@@ -382,9 +460,15 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
         "",
     ]
     for page, (title, covers) in CONVENTIONS.items():
-        if not (PAGES / "conventions" / f"{page}.md").is_file():
-            errors.append(f"{PAGES / 'conventions' / page}.md: missing, but CONVENTIONS lists it")
-        lines.append(f"- [{title}]({RAW_PAGES}conventions/{page}.md): {covers}")
+        source = PAGES / "conventions" / f"{page}.md"
+        if not source.is_file():
+            errors.append(f"{source}: missing, but CONVENTIONS lists it")
+            continue
+        copy = DOCS / RAW_CONVENTIONS / f"{page}.md.txt"
+        copy.parent.mkdir(parents=True, exist_ok=True)
+        text = absolute_links(f"conventions/{page}.md", source.read_text(encoding="utf-8"), site_url)
+        copy.write_text(text, encoding="utf-8")
+        lines.append(f"- [{title}]({site_url}{RAW_CONVENTIONS}{page}.md.txt): {covers}")
 
     if staged:
         names = {house.id: house.name for house in houses([])}
@@ -406,7 +490,14 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
                     f" the {ecosystem_names[ecosystem]} opinions and templates, with {names[profile]}'s house opinions"
                 )
 
-    (DOCS / "llms.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    text = "\n".join(lines) + "\n"
+    (DOCS / "llms.txt").write_text(text, encoding="utf-8")
+
+    # Every file an llms.txt links is on the site, for an agent that can fetch nothing else.
+    # That covers the root one, each ecosystem's, and each house profile's.
+    for path in [DOCS / "llms.txt", *sorted(DOCS.glob("*/llms*.txt"))]:
+        if "raw.githubusercontent.com" in path.read_text(encoding="utf-8"):
+            errors.append(f"{path.relative_to(DOCS)}: links raw.githubusercontent.com instead of a copy on the site")
 
 
 def main() -> int:
