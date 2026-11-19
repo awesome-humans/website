@@ -8,8 +8,10 @@
 
 A consumer skill is one a project runs on its own code, such as review-project. Each
 ecosystem names its own in the `skills` key of ecosystems.toml. For each one, this writes
-an archive that holds the skill and every opinion and template the ecosystem's llms.txt
-links, so an agent reads them from disk and fetches nothing. It publishes the skill as
+an archive of the skill. The archive of the first skill an ecosystem lists also holds every
+opinion and template the ecosystem's llms.txt links, so an agent reads them from disk and
+fetches nothing. Each other skill reads that copy, from the directory beside its own, so a
+project holds each opinion once. It publishes the skill as
 <verb>-<id>-<rest>, such as review-dotnet-project, because two ecosystems' skills are
 installed side by side, and one named review-project would overwrite the other.
 
@@ -84,14 +86,31 @@ RAW = re.compile(r"/raw/[^/]+/(?P<path>.+)$")
 # staged copy says to read each file from the site, so this section says which copy wins.
 BUNDLE = """## Where the opinions and templates are
 
-This copy of the skill carries every {name} opinion and template, as [{repository}](https://github.com/{repository}) published them, {profile}. The opinions are in [references/opinions/](references/opinions/), and the templates in [references/templates/](references/templates/), beside this file. In this skill, `opinions/` and `templates/` mean those two directories, and "this repository" means {repository}.
+{where}
 
-- **Read them from this skill's directory,** with a file-reading tool. Where another paragraph says to read an opinion or a template from the site or the repository, read this copy's. Don't use a copy the target holds.
+- **Read them from {directory},** with a file-reading tool. Where another paragraph says to read an opinion or a template from the site or the repository, read this copy's. Don't use a copy the target holds.
 - **Read every opinion that covers something the project uses,** and every template the project has a file for, not only the ones the task names.
+- **Read each one from its first line to its last.** A search for its headings, or a read of one section, isn't reading it: a rule's exception is often in another section.
 - **Say which opinions and templates you read in full,** and which you skipped.
 - **Check that the copy is current** with `npx skills check`, and update it with `npx skills update`. Each opinion gives its `last-reviewed` date.
 - {other}
 """
+# Where the files are, for the skill that carries them, and for one that reads another's.
+CARRIES = (
+    "This copy of the skill carries every {name} opinion and template, as [{repository}](https://github.com/{repository})"
+    " published them, {profile}. The opinions are in [references/opinions/](references/opinions/), and the templates in"
+    " [references/templates/](references/templates/), beside this file. In this skill, `opinions/` and `templates/` mean"
+    ' those two directories, and "this repository" means {repository}.'
+)
+SHARES = (
+    "This skill reads the {name} opinions and templates that the `{holder}` skill carries, as"
+    " [{repository}](https://github.com/{repository}) published them, {profile}. That skill installs beside this one, so"
+    " the opinions are in [../{holder}/references/opinions/](../{holder}/references/opinions/), and the templates in"
+    " [../{holder}/references/templates/](../{holder}/references/templates/), relative to this file's directory. In"
+    ' this skill, `opinions/` and `templates/` mean those two directories, and "this repository" means {repository}.'
+    "\n\n**If `../{holder}/` is missing, stop.** Tell the user to run `npx skills add {address} --skill {holder}`, and"
+    " never work from what you remember of an opinion."
+)
 
 
 @dataclass(frozen=True)
@@ -145,7 +164,12 @@ def linked(llms: Path, site_url: str, errors: list[str]) -> dict[str, tuple[str,
 
 
 def skill_text(
-    ecosystem: Ecosystem, skill: str, profile: str, files: dict[str, tuple[str, Path]], site_url: str, errors: list[str]
+    ecosystem: Ecosystem,
+    skill: str,
+    profile: str,
+    files: dict[str, tuple[str, Path]],
+    site_url: str,
+    errors: list[str],
 ) -> tuple[str, str, str] | None:
     """A skill's published name, description, and text: renamed, with the section on the
     files it carries, and with each link to one of them pointing at the copy beside it."""
@@ -172,7 +196,11 @@ def skill_text(
     body = text[frontmatter.end() :]
     # A skill is staged once, linking the default copy of each file, so match a link to the
     # file this archive carries by its path under raw/<profile>/, not by its whole address.
-    local = {raw["path"]: path for path, (url, _) in files.items() if (raw := RAW.search(url))}
+    # An ecosystem's first skill carries the files, and each other skill reads that one's copy,
+    # so a project holds every opinion once however many skills it installs.
+    holder = consumer_name(ecosystem.skills[0], ecosystem.id)
+    prefix = "" if name == holder else f"../{holder}/"
+    local = {raw["path"]: f"{prefix}{path}" for path, (url, _) in files.items() if (raw := RAW.search(url))}
 
     def carried(link: re.Match[str]) -> str:
         target = link["target"]
@@ -184,8 +212,10 @@ def skill_text(
     if profile == NO_PROFILE:
         carries = "with no house opinions"
         other = (
-            "**To follow a house profile, install its copy of this skill,** from"
-            f" `{site_url}{ecosystem.id}/{HOUSE}/<profile>`. This copy has no house blocks or regions to keep."
+            "**This copy has no house opinions, so it can't follow a house profile.** If the user or the project names"
+            " one, say so before you do anything else, and give the command that installs that profile's copy:"
+            f" `npx skills add {site_url}{ecosystem.id}/{HOUSE}/<profile>`. Then carry on with the sourced text alone,"
+            " unless the user stops you."
         )
     else:
         carries = f"with the `{profile}` house profile's opinions"
@@ -193,7 +223,16 @@ def skill_text(
             f"**This copy holds the `{profile}` profile's house blocks and regions, and no other profile's.** If the"
             " user names no profile, skip every house block, and compare each template with its house regions removed."
         )
-    section = BUNDLE.format(name=ecosystem.name, repository=ecosystem.repository, profile=carries, other=other)
+    scope = ecosystem.id if profile == NO_PROFILE else f"{ecosystem.id}/{HOUSE}/{profile}"
+    where = (CARRIES if name == holder else SHARES).format(
+        name=ecosystem.name,
+        repository=ecosystem.repository,
+        profile=carries,
+        holder=holder,
+        address=f"{site_url}{scope}",
+    )
+    directory = "this skill's directory" if name == holder else f"the `{holder}` skill's directory"
+    section = BUNDLE.format(where=where, repository=ecosystem.repository, directory=directory, other=other)
     heading = re.search(r"^## ", body, re.MULTILINE)
     at = heading.start() if heading else len(body)
     body = body[:at].rstrip("\n") + "\n\n" + section + "\n" + body[at:]
@@ -230,7 +269,8 @@ def publish(ecosystem: Ecosystem, profile: str, site_url: str, errors: list[str]
             continue
         name, description, text = written
         contents = {"SKILL.md": text.encode("utf-8")}
-        contents |= {path: staged.read_bytes() for path, (_, staged) in files.items()}
+        if skill == ecosystem.skills[0]:
+            contents |= {path: staged.read_bytes() for path, (_, staged) in files.items()}
         data = archive(contents)
         path = scope / WELL_KNOWN / f"{name}.tar.gz"
         (PUBLIC / path).parent.mkdir(parents=True, exist_ok=True)

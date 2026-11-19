@@ -102,7 +102,8 @@ The address needs its `https://`. Without it, the skills CLI reads a GitHub repo
 
 `just skills` runs [`scripts/publish_skills.py`](scripts/publish_skills.py) after the site build, because Zensical drops every path that starts with a dot. It reads what `just stage` left in `build/docs/`, and writes into `build/public/`:
 
-- **An archive for each skill an ecosystem lists** in the `skills` key of [`ecosystems.toml`](ecosystems.toml). It holds the staged `raw/none/skills/<skill>/SKILL.md.txt`, and every opinion and template the ecosystem's `llms.txt` links, under `references/`. An ecosystem stages nothing more for it.
+- **An archive for each skill an ecosystem lists** in the `skills` key of [`ecosystems.toml`](ecosystems.toml), from the staged `raw/none/skills/<skill>/SKILL.md.txt`. An ecosystem stages nothing more for it.
+- **One copy of the opinions and templates for each ecosystem.** The archive of the first skill listed also holds every opinion and template the ecosystem's `llms.txt` links, under `references/`. Each other skill reads that copy from `../<first skill>/references/`, because skills install side by side. If the first skill isn't installed, the other stops and gives the command that installs it.
 - **An archive for each house profile** the ecosystem staged an `llms-<profile>.txt` for, with that profile's copies.
 - **An index at `.well-known/agent-skills/index.json`** under `/`, `/<id>/`, `/house/<profile>/`, and `/<id>/house/<profile>/`. A profile's root index gives the default copy for an ecosystem that holds none of its opinions.
 
@@ -110,7 +111,7 @@ The site changes three things in a published skill:
 
 - **Its name:** `<verb>-<id>-<rest>`, such as `review-dotnet-project`. A project installs every ecosystem's skills side by side, and two named `review-project` would overwrite each other.
 - **Its links:** A link to an opinion or a template points at the copy in the archive.
-- **One added section,** before the skill's first, which says where the opinions and templates are, to read them from there, and how to update them. It's `BUNDLE` in the script, and it repeats two of the reading rules from `READING` in `scripts/stage.py`, so change them together.
+- **One added section,** before the skill's first, which says where the opinions and templates are, to read each one from its first line to its last, and how to update them. In a copy with no house opinions, it also says to tell the user when the project names a house profile. It's `BUNDLE` in the script, and it repeats two of the reading rules from `READING` in `scripts/stage.py`, so change them together.
 
 The site artifact includes hidden files, so that the indexes deploy. `just skills` fails on any other path in `build/public/` that starts with a dot, so nothing else hidden deploys with them.
 
