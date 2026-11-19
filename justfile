@@ -94,8 +94,9 @@ serve *locals:
     just sources
     uv run zensical serve -f build/zensical.toml
 
-# Run an agent from the home page's review-project prompt against each ecosystem, or those
-# named, and report what it read and the tokens it used. --local tests build/public/. Run fetch first
+# Ask an agent to read and list each opinion and template of each ecosystem, or those named,
+# and fail unless it read every one in full. --local tests build/public/. --as-written runs the home
+# page's review-project prompt on the ecosystem's checkout instead, after fetch
 test-llms *args:
     uv run scripts/test_llms.py "$@"
 

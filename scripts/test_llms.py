@@ -2,23 +2,33 @@
 # requires-python = ">=3.14"
 # dependencies = []
 # ///
-"""Run an agent from the home page's review-project prompt, and report what it read.
+"""Run an agent from the home page's prompt, and check that it read every opinion and template.
 
-    uv run scripts/test_llms.py [--local] [--budget <usd>] [<id>]...
+    uv run scripts/test_llms.py [--local] [--as-written] [--budget <usd>] [<id>]...
 
-For each live ecosystem, or each one named, it starts an agent in an empty directory with
-the review-project prompt from pages/index.md, aimed at the ecosystem's own checkout in
-build/repos/<id>/. Run `just fetch` first. Then it reads the agent's transcript and reports:
+For each live ecosystem, or each one named, it starts an agent in an empty directory and
+asks it to read each of the ecosystem's opinions and templates in full, and to list each
+with its last-reviewed date and one sentence on what it recommends.
+The prompt opens as the home page's prompts do, with the fetch instruction from
+pages/index.md. The task has one right answer, so the run can fail. It reads the agent's
+transcript and its answer, and reports:
 
 - Whether the agent got the root llms.txt and the ecosystem's in full, or as a summary.
 - Which opinions and templates it fetched from the site, and whether each came in full.
   A file counts as in full when 95% of its longer lines appear in what the agent's tools
   returned.
-- Which of them it read from the checkout instead, which holds house opinions.
-- The turns, the largest context, the tokens across every turn, and the cost.
+- Which of them its answer lists with the date the served file gives.
+- The turns, the largest context, the tokens across every turn, and the cost, which is
+  what it costs an agent to read the whole ecosystem.
 
-The checkout holds the opinions and templates the site links, so an agent that reads the
-project's copy shows up here, and one that follows the reading rules doesn't.
+An opinion or template that the agent didn't read in full, or didn't list with the right
+date, is a finding.
+
+--as-written asks a different question: which files does an agent pick for itself? It
+runs the home page's review-project prompt unchanged, aimed at the ecosystem's own
+checkout in build/repos/<id>/, so run `just fetch` first. No project uses every opinion,
+so it only reports the ones left unread. The checkout holds the opinions and templates the
+site links, so it also reports each one the agent read from there, house opinions included.
 
 --local tests a change before it deploys. It serves build/public/, which `just build`
 writes, on a local port, with the site's address in each llms.txt changed to that port.
@@ -29,9 +39,10 @@ run to run, so this isn't in `just check` or CI. Run it after a change to the re
 in stage.py, to the prompts in pages/index.md, or to a review-project skill. Each
 transcript and answer stays in build/llms-test/.
 
-Exit codes: 0 every agent read each llms.txt and at least one opinion in full, from the
-site, 1 one didn't, or the agent failed, 2 not run from the repository root, bad arguments,
-or nothing to test against.
+Exit codes: 0 every agent read each llms.txt and every opinion and template in full, from
+the site, and listed each with its date, or with --as-written each llms.txt and at least
+one opinion, 1 one didn't, or the agent failed, 2 not run from the repository root, bad
+arguments, or nothing to test against.
 """
 
 import argparse
@@ -58,8 +69,22 @@ PUBLIC = BUILD / "public"
 RESULTS = BUILD / "llms-test"
 SITE_CONFIG = Path("zensical.toml")
 
-# The prompt this tests is the home page's own, so the test follows a change to it.
-PROMPT = re.compile(r"^\s*(?P<prompt>Fetch \S+/llms\.txt .* review-project skill on <repository>)$", re.MULTILINE)
+# The home page's review-project prompt, and the fetch instruction that opens each of its
+# prompts, so the test follows a change to either.
+PROMPT = re.compile(
+    r"^\s*(?P<prompt>(?P<opening>Fetch \S+/llms\.txt .*?, then )use its review-project skill on <repository>)$",
+    re.MULTILINE,
+)
+# The task the test gives after that opening. Every linked opinion and template is in the
+# right answer, and each date is in the file, so the answer shows the agent opened it. It
+# says to read in full because an agent does the least a task needs: asked for the date
+# alone it searches each file for it, and asked for a sentence it reads the headings.
+LIST = (
+    "read each {name} opinion and template in full, and list each with its last-reviewed date and one sentence"
+    " on what it recommends"
+)
+# The date in an opinion's frontmatter or a template's header comment.
+REVIEWED = re.compile(r"last-reviewed:\s*(?P<date>\d{4}-\d{2}-\d{2})")
 # A link in an llms.txt, and the heading of the section it's under.
 LINK = re.compile(r"^- \[(?P<title>.+?)\]\((?P<url>[^)\s]+)\)")
 SECTION = re.compile(r"^## (?P<title>.+)$")
@@ -97,6 +122,7 @@ class Linked:
     url: str
     kind: str
     lines: list[str]
+    reviewed: str
 
 
 @dataclass
@@ -164,7 +190,8 @@ def linked(url: str, title: str, kind: str, errors: list[str]) -> Linked | None:
     if text is None:
         errors.append(f"{url}: couldn't fetch it")
         return None
-    return Linked(title, url, kind, long_lines(text))
+    reviewed = REVIEWED.search(text)
+    return Linked(title, url, kind, long_lines(text), reviewed["date"] if reviewed else "")
 
 
 def links(llms: str, errors: list[str]) -> list[Linked]:
@@ -188,7 +215,7 @@ def result_text(content: Any) -> str:
     return ""
 
 
-def read_transcript(path: Path, target: Path) -> Transcript:
+def read_transcript(path: Path, target: Path | None) -> Transcript:
     """Sort an agent's stream-json transcript into what it asked the site for, what its
     tools returned, and which of the target's files it read."""
     transcript = Transcript()
@@ -213,7 +240,7 @@ def read_transcript(path: Path, target: Path) -> Transcript:
                     continue
                 call = block.get("input", {})
                 read = Path(call.get("file_path", ""))
-                if block.get("name") == "Read" and read.is_relative_to(target):
+                if block.get("name") == "Read" and target and read.is_relative_to(target):
                     local.add(block["id"])
                     transcript.local_reads.add(read.relative_to(target).as_posix())
                 elif block.get("name") == "WebFetch" or FETCHES.search(call.get("command", "")):
@@ -256,16 +283,23 @@ def repository_path(file: Linked) -> str:
     return raw["path"].removesuffix(".txt") if raw and raw["path"].endswith(".md.txt") else raw["path"] if raw else ""
 
 
-def run(ecosystem: Ecosystem, prompt: str, budget: str) -> Path:
-    """Run the agent from an empty directory, so the checkout is only its target, and
+def listed(file: Linked, answer: str) -> bool:
+    """Whether a line of the agent's answer names the file and gives its date. A file with
+    no date only has to be named."""
+    address = file.url.rsplit("/", 1)[-1].removesuffix(".txt").removesuffix(".md")
+    names = {name.lower() for name in (file.title, file.title.rsplit("/", 1)[-1], address)}
+    return any(file.reviewed in line and any(name in line.lower() for name in names) for line in answer.splitlines())
+
+
+def run(ecosystem: Ecosystem, prompt: str, budget: str, target: Path | None) -> Path:
+    """Run the agent from an empty directory, so a checkout is only ever its target, and
     return its transcript."""
-    target = (REPOS / ecosystem.id).resolve()
     RESULTS.mkdir(parents=True, exist_ok=True)
     transcript = RESULTS / f"{ecosystem.id}.jsonl"
     command = [
         "claude",
         "--print",
-        prompt.replace("<repository>", str(target)),
+        prompt,
         "--output-format",
         "stream-json",
         "--verbose",
@@ -276,19 +310,20 @@ def run(ecosystem: Ecosystem, prompt: str, budget: str) -> Path:
         "--no-session-persistence",
         "--max-budget-usd",
         budget,
-        "--add-dir",
-        str(target),
+        *(["--add-dir", str(target)] if target else []),
         "--allowedTools",
         *TOOLS,
     ]
-    print(f"{ecosystem.id}: running the agent on {target}/", flush=True)
+    print(f"{ecosystem.id}: running the agent with: {prompt}", flush=True)
     with tempfile.TemporaryDirectory() as empty, transcript.open("w", encoding="utf-8") as output:
         subprocess.run(command, cwd=empty, stdin=subprocess.DEVNULL, stdout=output, check=False)
     return transcript
 
 
-def report(ecosystem: Ecosystem, origin: str, transcript: Transcript, errors: list[str]) -> None:
-    """Print what the agent read, and record each way it read less than the site serves."""
+def report(ecosystem: Ecosystem, origin: str, transcript: Transcript, every: bool, errors: list[str]) -> None:
+    """Print what the agent read, and record each way it read less than the site serves.
+    When the prompt asked for every opinion and template, each one left unread, or missing
+    from the answer, is one."""
     id = ecosystem.id
     print(
         f"{id}: {transcript.turns} turns, largest context {transcript.peak:,} tokens,"
@@ -320,7 +355,13 @@ def report(ecosystem: Ecosystem, origin: str, transcript: Transcript, errors: li
             errors.append(f"{id}: the agent got {len(summarised)} of the {kind} as a summary")
         if local:
             errors.append(f"{id}: the agent read {len(local)} of the {kind} from the checkout, not the site")
-        if kind == "opinions" and of_kind and not full:
+        unlisted = [file for file in of_kind if every and not listed(file, transcript.answer)]
+        if unlisted:
+            print(f"    Not in the answer with its date: {', '.join(file.title for file in unlisted)}")
+            errors.append(f"{id}: the answer doesn't list {len(unlisted)} of the {kind} with the right date")
+        if every and unread:
+            errors.append(f"{id}: the agent didn't read {len(unread)} of the {kind}")
+        elif kind == "opinions" and of_kind and not full:
             errors.append(f"{id}: the agent read no opinion in full from the site")
 
     answer = RESULTS / f"{id}.md"
@@ -330,8 +371,9 @@ def report(ecosystem: Ecosystem, origin: str, transcript: Transcript, errors: li
 
 def main() -> int:
     require_root()
-    parser = argparse.ArgumentParser(description="Run an agent from the review-project prompt, and report its reading.")
+    parser = argparse.ArgumentParser(description="Run an agent from the home page's prompt, and check its reading.")
     parser.add_argument("--local", action="store_true", help="test build/public/ instead of the deployed site")
+    parser.add_argument("--as-written", action="store_true", help="run the review-project prompt unchanged")
     parser.add_argument("--budget", default="5", metavar="USD", help="the most one agent run can cost")
     parser.add_argument("ids", nargs="*", metavar="ID", help="an ecosystem to test. The default is every live one")
     args = parser.parse_args()
@@ -341,7 +383,8 @@ def main() -> int:
         print(f"{', '.join(sorted(unknown))}: not live in ecosystems.toml", file=sys.stderr)
         return 2
     ecosystems = [ecosystem for ecosystem in ecosystems if not args.ids or ecosystem.id in args.ids]
-    if missing := [ecosystem.id for ecosystem in ecosystems if not (REPOS / ecosystem.id).is_dir()]:
+    checkouts = [ecosystem.id for ecosystem in ecosystems if not (REPOS / ecosystem.id).is_dir()]
+    if args.as_written and (missing := checkouts):
         print(f"No checkout of {', '.join(missing)} in {REPOS}/. Run `just fetch` first", file=sys.stderr)
         return 2
     if shutil.which("claude") is None:
@@ -369,8 +412,13 @@ def main() -> int:
 
     errors: list[str] = []
     for ecosystem in ecosystems:
-        transcript = run(ecosystem, prompt["prompt"].replace(host, address), args.budget)
-        report(ecosystem, origin, read_transcript(transcript, (REPOS / ecosystem.id).resolve()), errors)
+        target = (REPOS / ecosystem.id).resolve() if args.as_written else None
+        if target:
+            asked = prompt["prompt"].replace("<repository>", str(target))
+        else:
+            asked = prompt["opening"] + LIST.format(name=ecosystem.name)
+        transcript = run(ecosystem, asked.replace(host, address), args.budget, target)
+        report(ecosystem, origin, read_transcript(transcript, target), target is None, errors)
     for error in errors:
         print(error, file=sys.stderr)
     return 1 if errors else 0

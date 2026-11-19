@@ -21,7 +21,7 @@ This project documents current best practice in code and updates it as ecosystem
 
 Every opinion states its recommendation first, cites its sources, and targets the latest released versions.
 
-**Agents:** Start at [`/llms.txt`](llms.txt). It links every ecosystem's opinions, templates, and skills as raw Markdown.
+**Agents:** Fetch [`/llms.txt`](llms.txt) and every file it links as raw text. It links every ecosystem's opinions, templates, and skills.
 
 ## Ecosystems
 
