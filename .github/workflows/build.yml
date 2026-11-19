@@ -100,6 +100,7 @@ jobs:
           name: site
           path: build/public
           # The skills indexes are under .well-known/, which the action otherwise leaves out.
+          # `just skills` fails on any other hidden path here, so nothing else is included.
           include-hidden-files: true
           retention-days: 1
           if-no-files-found: error

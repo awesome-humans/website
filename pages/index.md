@@ -62,7 +62,20 @@ Each ecosystem includes:
   npx skills add https://awesome-humans.net
   ```
 
-  This installs one skill for each ecosystem, such as `review-dotnet-project`. To install one ecosystem's, add its path, such as `/dotnet`. For a house profile, add `/house/<profile>`, such as `/house/simon-mckenna`. `npx skills check` tells you when an opinion has changed, and `npx skills update` fetches it.
+  This installs one skill for each ecosystem, such as `review-dotnet-project` and `review-rust-project`. To install one ecosystem's, add its path:
+
+  ```sh
+  npx skills add https://awesome-humans.net/dotnet
+  ```
+
+  To follow a [house profile](house-profiles.md), install its copy, which holds that profile's house opinions. Add `/house/<profile>` for every ecosystem, or put it after an ecosystem's path:
+
+  ```sh
+  npx skills add https://awesome-humans.net/house/simon-mckenna
+  npx skills add https://awesome-humans.net/dotnet/house/simon-mckenna
+  ```
+
+  `npx skills check` tells you when an opinion has changed, and `npx skills update` fetches it.
 
 - **Research a topic.** Ask your coding agent to run `research-topic`, for [.NET](dotnet/skills/research-topic.md) or [Rust](rust/skills/research-topic.md), which answers from the opinions and the vetted sources, citing each claim:
 

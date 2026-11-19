@@ -112,6 +112,8 @@ The site changes three things in a published skill:
 - **Its links:** A link to an opinion or a template points at the copy in the archive.
 - **One added section,** before the skill's first, which says where the opinions and templates are, to read them from there, and how to update them. It's `BUNDLE` in the script, and it repeats two of the reading rules from `READING` in `scripts/stage.py`, so change them together.
 
+The site artifact includes hidden files, so that the indexes deploy. `just skills` fails on any other path in `build/public/` that starts with a dot, so nothing else hidden deploys with them.
+
 An archive's bytes depend only on its files, so a project's `npx skills check` reports an update only when a skill, an opinion, or a template changed.
 
 To publish another skill, add it to the ecosystem's `skills` key, and check that it reads correctly outside its repository: it can't rely on a checkout's other files, such as `agents/` or `research/`.

@@ -27,8 +27,13 @@ what `just stage` left in build/docs/. An archive's bytes depend only on the fil
 so its digest changes only when a skill, an opinion, or a template does, and `skills
 check` in a project reports an update only then.
 
-Exit codes: 0 done, 1 a skill, an llms.txt, or a file one links is missing or malformed,
-2 not run from the repository root, or nothing is staged or built.
+build.yml uploads build/public/ with its hidden files, so that the indexes deploy. So this
+also fails on any path there that starts with a dot and isn't one it wrote: nothing else
+hidden reaches the site.
+
+Exit codes: 0 done, 1 a skill, an llms.txt, or a file one links is missing or malformed, or
+build/public/ holds a hidden path this didn't write, 2 not run from the repository root, or
+nothing is staged or built.
 """
 
 import gzip
@@ -36,6 +41,7 @@ import hashlib
 import io
 import json
 import re
+import shutil
 import sys
 import tarfile
 import tomllib
@@ -233,9 +239,9 @@ def publish(ecosystem: Ecosystem, profile: str, site_url: str, errors: list[str]
     return published
 
 
-def write_index(scope: PurePosixPath, skills: list[Published]) -> None:
-    """Write the index at an address. Each archive's address starts at the site's root, so
-    the index also works on a preview, which has another host."""
+def write_index(scope: PurePosixPath, skills: list[Published]) -> Path:
+    """Write the index at an address, and return its file. Each archive's address starts at
+    the site's root, so the index also works on a preview, which has another host."""
     entries = [
         {
             "name": skill.name,
@@ -250,6 +256,21 @@ def write_index(scope: PurePosixPath, skills: list[Published]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({"$schema": SCHEMA, "skills": entries}, indent=2) + "\n", encoding="utf-8")
     print(f"/{path.relative_to(PUBLIC)}: {', '.join(skill.name for skill in skills)}")
+    return path
+
+
+def unexpected(written: set[Path]) -> list[str]:
+    """Every hidden path in build/public/ that this run didn't write. The site artifact
+    includes hidden files for the indexes' sake, so anything else hidden would deploy too."""
+    found: list[str] = []
+    for path in sorted(PUBLIC.rglob("*")):
+        relative = path.relative_to(PUBLIC)
+        if not any(part.startswith(".") for part in relative.parts):
+            continue
+        inside = path.is_dir() and any(file.is_relative_to(path) for file in written)
+        if path not in written and not inside:
+            found.append(f"{path}: a hidden path that isn't part of a skills index, which the site would deploy")
+    return found
 
 
 def main() -> int:
@@ -259,6 +280,10 @@ def main() -> int:
         return 2
     with SITE_CONFIG.open("rb") as file:
         site_url = tomllib.load(file)["project"]["site_url"]
+
+    # An index from an earlier run, for a skill or a profile that has since gone.
+    for stale in sorted(PUBLIC.rglob(WELL_KNOWN)):
+        shutil.rmtree(stale)
 
     errors: list[str] = []
     ecosystems = [ecosystem for ecosystem in built() if ecosystem.skills]
@@ -274,17 +299,21 @@ def main() -> int:
     if errors:
         return report(errors)
 
+    written = {
+        PUBLIC / skill.path for found in (default, *house.values()) for skills in found.values() for skill in skills
+    }
     for id, skills in default.items():
-        write_index(PurePosixPath(id), skills)
+        written.add(write_index(PurePosixPath(id), skills))
     for profile, found in house.items():
         for id, skills in found.items():
-            write_index(PurePosixPath(id, HOUSE, profile), skills)
+            written.add(write_index(PurePosixPath(id, HOUSE, profile), skills))
         # A project with several ecosystems installs from one address. An ecosystem with
         # no opinions for the profile gives its default copy, which is all the profile has there.
-        write_index(PurePosixPath(HOUSE, profile), [skill for id in default for skill in found.get(id, default[id])])
+        every = [skill for id in default for skill in found.get(id, default[id])]
+        written.add(write_index(PurePosixPath(HOUSE, profile), every))
     if default:
-        write_index(PurePosixPath(), [skill for skills in default.values() for skill in skills])
-    return 0
+        written.add(write_index(PurePosixPath(), [skill for skills in default.values() for skill in skills]))
+    return report(unexpected(written))
 
 
 if __name__ == "__main__":
