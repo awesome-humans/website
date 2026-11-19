@@ -56,24 +56,26 @@ Each ecosystem includes:
   Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its review-project skill on <repository>, focus on logging and testing, skip CI, use the simon-mckenna house profile
   ```
 
-- **Install the skills.** In a project that follows the opinions, install `review-project` with a copy of every opinion and template, so your agent reads them from disk, and each review reads the same copy:
+- **Install the skills.** In a project that follows the opinions, install `review-project` with a copy of every opinion and template. Your agent then reads them from disk, and each review reads the same copy. Choose one address:
 
-  ```sh
-  npx skills add https://awesome-humans.net
-  ```
+  - **Every ecosystem:** installs `review-dotnet-project` and `review-rust-project`.
 
-  This installs one skill for each ecosystem, such as `review-dotnet-project` and `review-rust-project`. To install one ecosystem's, add its path:
+    ```sh
+    npx skills add https://awesome-humans.net
+    ```
 
-  ```sh
-  npx skills add https://awesome-humans.net/dotnet
-  ```
+  - **One ecosystem:** add its path. This installs `review-dotnet-project` alone.
 
-  To follow a [house profile](house-profiles.md), install its copy, which holds that profile's house opinions. Add `/house/<profile>` for every ecosystem, or put it after an ecosystem's path:
+    ```sh
+    npx skills add https://awesome-humans.net/dotnet
+    ```
 
-  ```sh
-  npx skills add https://awesome-humans.net/house/simon-mckenna
-  npx skills add https://awesome-humans.net/dotnet/house/simon-mckenna
-  ```
+  - **A [house profile](house-profiles.md):** add the profile's name, after the site or after an ecosystem. The skills then hold that profile's house opinions.
+
+    ```sh
+    npx skills add https://awesome-humans.net/simon-mckenna
+    npx skills add https://awesome-humans.net/dotnet/simon-mckenna
+    ```
 
   `npx skills check` tells you when an opinion has changed, and `npx skills update` fetches it.
 

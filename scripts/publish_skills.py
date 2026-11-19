@@ -20,9 +20,13 @@ It writes a discovery index, which the skills CLI reads from
 
 - /                        Every ecosystem's skills, with no house opinions.
 - /<id>/                   One ecosystem's.
-- /house/<profile>/        Every ecosystem's, with that profile's house opinions where an
+- /<profile>/              Every ecosystem's, with that profile's house opinions where an
                            ecosystem holds any, and the default copy where it doesn't.
-- /<id>/house/<profile>/   One ecosystem's, for a profile it holds opinions for.
+- /<id>/<profile>/         One ecosystem's, for a profile it holds opinions for.
+
+A profile's address is its id alone, as raw/<profile>/ is. So this fails when a profile's
+id is also a page or a directory at either place, and ecosystems.py rejects a profile
+named after an ecosystem.
 
 Run it after `zensical build`, which drops every path that starts with a dot, and from
 what `just stage` left in build/docs/. An archive's bytes depend only on the files in it,
@@ -58,8 +62,6 @@ SITE_CONFIG = Path("zensical.toml")
 WELL_KNOWN = ".well-known/agent-skills"
 # The index format the skills CLI reads: https://github.com/vercel-labs/skills.
 SCHEMA = "https://schemas.agentskills.io/discovery/0.2.0/schema.json"
-# The path under an ecosystem, or under the root, that scopes an install to a house profile.
-HOUSE = "house"
 
 # A link in an llms.txt, and the heading of the section it's under, as in test_llms.py.
 LINK = re.compile(r"^- \[(?P<title>.+?)\]\((?P<url>[^)\s]+)\)")
@@ -214,7 +216,7 @@ def skill_text(
         other = (
             "**This copy has no house opinions, so it can't follow a house profile.** If the user or the project names"
             " one, say so before you do anything else, and give the command that installs that profile's copy:"
-            f" `npx skills add {site_url}{ecosystem.id}/{HOUSE}/<profile>`. Then carry on with the sourced text alone,"
+            f" `npx skills add {site_url}{ecosystem.id}/<profile>`. Then carry on with the sourced text alone,"
             " unless the user stops you."
         )
     else:
@@ -223,7 +225,7 @@ def skill_text(
             f"**This copy holds the `{profile}` profile's house blocks and regions, and no other profile's.** If the"
             " user names no profile, skip every house block, and compare each template with its house regions removed."
         )
-    scope = ecosystem.id if profile == NO_PROFILE else f"{ecosystem.id}/{HOUSE}/{profile}"
+    scope = ecosystem.id if profile == NO_PROFILE else f"{ecosystem.id}/{profile}"
     where = (CARRIES if name == holder else SHARES).format(
         name=ecosystem.name,
         repository=ecosystem.repository,
@@ -262,7 +264,7 @@ def publish(ecosystem: Ecosystem, profile: str, site_url: str, errors: list[str]
         errors.append(f"{ecosystem.id}: staged no {llms.name}")
         return []
     files = linked(llms, site_url, errors)
-    scope = PurePosixPath(ecosystem.id) if profile == NO_PROFILE else PurePosixPath(ecosystem.id, HOUSE, profile)
+    scope = PurePosixPath(ecosystem.id) if profile == NO_PROFILE else PurePosixPath(ecosystem.id, profile)
     published: list[Published] = []
     for skill in ecosystem.skills:
         if not (written := skill_text(ecosystem, skill, profile, files, site_url, errors)):
@@ -336,6 +338,13 @@ def main() -> int:
         for llms in sorted((DOCS / ecosystem.id).glob("llms-*.txt")):
             profile = llms.stem.removeprefix("llms-")
             house.setdefault(profile, {})[ecosystem.id] = publish(ecosystem, profile, site_url, errors)
+    # A profile's address is its id, under the root and under each ecosystem. A page or a
+    # directory of the same name there would share the address with the profile's skills.
+    for profile, found in house.items():
+        for scope in (PurePosixPath(profile), *(PurePosixPath(id, profile) for id in found)):
+            taken = PUBLIC / scope
+            if taken.is_file() or (taken.is_dir() and any(not path.name.startswith(".") for path in taken.iterdir())):
+                errors.append(f"{taken}: a page has the address of the house profile {profile}'s skills")
     if errors:
         return report(errors)
 
@@ -346,11 +355,11 @@ def main() -> int:
         written.add(write_index(PurePosixPath(id), skills))
     for profile, found in house.items():
         for id, skills in found.items():
-            written.add(write_index(PurePosixPath(id, HOUSE, profile), skills))
+            written.add(write_index(PurePosixPath(id, profile), skills))
         # A project with several ecosystems installs from one address. An ecosystem with
         # no opinions for the profile gives its default copy, which is all the profile has there.
         every = [skill for id in default for skill in found.get(id, default[id])]
-        written.add(write_index(PurePosixPath(HOUSE, profile), every))
+        written.add(write_index(PurePosixPath(profile), every))
     if default:
         written.add(write_index(PurePosixPath(), [skill for skills in default.values() for skill in skills]))
     return report(unexpected(written))
