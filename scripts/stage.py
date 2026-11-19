@@ -88,7 +88,7 @@ DIAGRAM_MARKER = re.compile(r"^<!-- diagram: ([a-z-]+) -->$", re.MULTILINE)
 # Fetch tools summarise a page unless asked not to, and a summary paraphrases the rules.
 # Each ecosystem's llms.txt says the same.
 READING = (
-    "Read each linked file in full, not a summary, because its exact wording is the rule."
+    "When you read a linked file, read it in full, not a summary, because its exact wording is the rule."
     " A file under `raw/none/` is the default copy, with no house opinions, and one under `raw/<profile>/` is that profile's copy."
 )
 # Where the root llms.txt links each convention: a copy on the site, as each ecosystem
