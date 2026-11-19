@@ -33,8 +33,9 @@ site links, so it also reports each one the agent read from there, house opinion
 --local tests a change before it deploys. It serves build/public/, which `just build`
 writes, on a local port, with the site's address in each llms.txt changed to that port.
 
-The agent is Claude Code in print mode, with read-only tools: no other harness writes a
-transcript this script reads. An agent run costs about a dollar and its reading varies from
+The agent is Claude Code in print mode: no other harness writes a transcript this script
+reads. Its tools read, and `curl` can also write a file, so --as-written aims it at a copy
+of the checkout, which the run deletes. An agent run costs about a dollar and its reading varies from
 run to run, so this isn't in `just check` or CI. Run it after a change to the reading rules
 in stage.py, to the prompts in pages/index.md, or to a review-project skill. Each
 transcript and answer stays in build/llms-test/.
@@ -98,7 +99,8 @@ RAW = re.compile(r"/raw/[^/]+/(?P<path>.+)$")
 FULL = 0.95
 LONG_LINE = 25
 
-# Tools that read and never write, so an agent can't change the checkout it reviews.
+# Tools that read. curl is the exception: it fetches the site, and its --output can write a
+# file anywhere. So the agent only ever gets a copy of a checkout as its target.
 TOOLS = [
     "Read",
     "Grep",
@@ -132,6 +134,7 @@ class Transcript:
     fetched: str = ""
     returned: str = ""
     local_reads: set[str] = field(default_factory=set[str])
+    local_calls: str = ""
     answer: str = ""
     failed: str = ""
     turns: int = 0
@@ -198,7 +201,12 @@ def links(llms: str, errors: list[str]) -> list[Linked]:
     """The opinions and templates an ecosystem's llms.txt links, each fetched."""
     found: list[Linked] = []
     kind = ""
-    for line in (get(llms) or "").splitlines():
+    text = get(llms)
+    if text is None:
+        # Without the list there's nothing to expect, and an agent that read nothing would pass.
+        errors.append(f"{llms}: couldn't fetch it, so there's no list of opinions and templates to check")
+        return found
+    for line in text.splitlines():
         if section := SECTION.match(line):
             kind = next((kind for kind in KINDS if section["title"].endswith(f" {kind}")), "")
         elif kind and (link := LINK.match(line)) and (file := linked(link["url"], link["title"], kind, errors)):
@@ -219,7 +227,7 @@ def read_transcript(path: Path, target: Path | None) -> Transcript:
     """Sort an agent's stream-json transcript into what it asked the site for, what its
     tools returned, and which of the target's files it read."""
     transcript = Transcript()
-    # A Read of the target's own file, by tool call, so its result doesn't count as the site's.
+    # A tool call that reads the target's own files, so its result doesn't count as the site's.
     local: set[str] = set()
     for line in path.read_text(encoding="utf-8").splitlines():
         try:
@@ -240,10 +248,15 @@ def read_transcript(path: Path, target: Path | None) -> Transcript:
                     continue
                 call = block.get("input", {})
                 read = Path(call.get("file_path", ""))
+                fetch = block.get("name") == "WebFetch" or FETCHES.search(call.get("command", ""))
                 if block.get("name") == "Read" and target and read.is_relative_to(target):
                     local.add(block["id"])
                     transcript.local_reads.add(read.relative_to(target).as_posix())
-                elif block.get("name") == "WebFetch" or FETCHES.search(call.get("command", "")):
+                elif target and not fetch and str(target) in json.dumps(call):
+                    # cat, grep, Grep, or Glob on the target. Which files it read is in the call.
+                    local.add(block["id"])
+                    transcript.local_calls += json.dumps(call) + "\n"
+                elif fetch:
                     transcript.fetched += json.dumps(call) + "\n"
         elif event.get("type") == "user" and isinstance(message.get("content"), list):
             for block in message["content"]:
@@ -276,6 +289,13 @@ def asked_for(file: Linked, transcript: Transcript) -> bool:
     which is what's left when the agent keeps the rest in a shell variable."""
     raw = RAW.search(file.url)
     return file.url in transcript.fetched or (raw is not None and raw["path"] in transcript.fetched)
+
+
+def from_checkout(file: Linked, transcript: Transcript) -> bool:
+    """Whether the agent read the target's copy of the file: with Read, or in a command or
+    search on the target that names the file's path."""
+    path = repository_path(file)
+    return bool(path) and (path in transcript.local_reads or path in transcript.local_calls)
 
 
 def repository_path(file: Linked) -> str:
@@ -345,14 +365,18 @@ def report(ecosystem: Ecosystem, origin: str, transcript: Transcript, every: boo
         of_kind = [file for file in files if file.kind == kind]
         full = [file for file in of_kind if in_full(file, transcript)]
         summarised = [file for file in of_kind if file not in full and asked_for(file, transcript)]
-        local = [file for file in of_kind if repository_path(file) in transcript.local_reads]
+        local = [file for file in of_kind if from_checkout(file, transcript)]
         unread = [file for file in of_kind if file not in full and file not in summarised and file not in local]
         print(f"  {kind}: {len(full)} of {len(of_kind)} read in full from the site")
-        for label, group in (("As a summary", summarised), ("From the checkout", local), ("Not read", unread)):
+        for label, group in (
+            ("Fetched, but not read in full", summarised),
+            ("From the checkout", local),
+            ("Not read", unread),
+        ):
             if group:
                 print(f"    {label}: {', '.join(file.title for file in group)}")
         if summarised:
-            errors.append(f"{id}: the agent got {len(summarised)} of the {kind} as a summary")
+            errors.append(f"{id}: the agent fetched {len(summarised)} of the {kind}, but didn't read them in full")
         if local:
             errors.append(f"{id}: the agent read {len(local)} of the {kind} from the checkout, not the site")
         unlisted = [file for file in of_kind if every and not listed(file, transcript.answer)]
@@ -412,13 +436,15 @@ def main() -> int:
 
     errors: list[str] = []
     for ecosystem in ecosystems:
-        target = (REPOS / ecosystem.id).resolve() if args.as_written else None
-        if target:
-            asked = prompt["prompt"].replace("<repository>", str(target))
-        else:
+        with tempfile.TemporaryDirectory() as scratch:
+            target = None
             asked = prompt["opening"] + LIST.format(name=ecosystem.name)
-        transcript = run(ecosystem, asked.replace(host, address), args.budget, target)
-        report(ecosystem, origin, read_transcript(transcript, target), target is None, errors)
+            if args.as_written:
+                target = Path(scratch).resolve() / ecosystem.id
+                shutil.copytree(REPOS / ecosystem.id, target, symlinks=True)
+                asked = prompt["prompt"].replace("<repository>", str(target))
+            transcript = run(ecosystem, asked.replace(host, address), args.budget, target)
+            report(ecosystem, origin, read_transcript(transcript, target), target is None, errors)
     for error in errors:
         print(error, file=sys.stderr)
     return 1 if errors else 0
