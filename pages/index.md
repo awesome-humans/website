@@ -56,6 +56,14 @@ Each ecosystem includes:
   Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its review-project skill on <repository>, focus on logging and testing, skip CI, use the simon-mckenna house profile
   ```
 
+- **Install the skills.** In a project that follows the opinions, install `review-project` with a copy of every opinion and template, so your agent reads them from disk, and each review reads the same copy:
+
+  ```sh
+  npx skills add https://awesome-humans.net
+  ```
+
+  This installs one skill for each ecosystem, such as `review-dotnet-project`. To install one ecosystem's, add its path, such as `/dotnet`. For a house profile, add `/house/<profile>`, such as `/house/simon-mckenna`. `npx skills check` tells you when an opinion has changed, and `npx skills update` fetches it.
+
 - **Research a topic.** Ask your coding agent to run `research-topic`, for [.NET](dotnet/skills/research-topic.md) or [Rust](rust/skills/research-topic.md), which answers from the opinions and the vetted sources, citing each claim:
 
   ```text

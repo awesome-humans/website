@@ -88,6 +88,34 @@ Each opinion page opens with a metadata strip, directly under its `h1`. Write it
 - **Link each source to its roster entry,** with a relative link the build can check. Give a house profile's chip `data-house="<profile>"`, as in `{ .ah-chip data-house="simon-mckenna" }`.
 - **Mark the review date `fresh` or `stale`** against the ecosystem's own review tolerance, with `ah-chip--fresh` or `ah-chip--stale`. The weekly build restages every ecosystem, so the chip changes within a week of the date passing.
 
+## Skills index
+
+A consumer skill is one a project runs on its own code, such as `review-project`. The site publishes each ecosystem's for [`npx skills`](https://github.com/vercel-labs/skills), so a project installs them once and its agent reads the opinions from disk:
+
+```sh
+npx skills add https://awesome-humans.net                     # every ecosystem
+npx skills add https://awesome-humans.net/dotnet              # one ecosystem
+npx skills add https://awesome-humans.net/house/simon-mckenna # every ecosystem, with a house profile
+```
+
+The address needs its `https://`. Without it, the skills CLI reads a GitHub repository.
+
+`just skills` runs [`scripts/publish_skills.py`](scripts/publish_skills.py) after the site build, because Zensical drops every path that starts with a dot. It reads what `just stage` left in `build/docs/`, and writes into `build/public/`:
+
+- **An archive for each skill an ecosystem lists** in the `skills` key of [`ecosystems.toml`](ecosystems.toml). It holds the staged `raw/none/skills/<skill>/SKILL.md.txt`, and every opinion and template the ecosystem's `llms.txt` links, under `references/`. An ecosystem stages nothing more for it.
+- **An archive for each house profile** the ecosystem staged an `llms-<profile>.txt` for, with that profile's copies.
+- **An index at `.well-known/agent-skills/index.json`** under `/`, `/<id>/`, `/house/<profile>/`, and `/<id>/house/<profile>/`. A profile's root index gives the default copy for an ecosystem that holds none of its opinions.
+
+The site changes three things in a published skill:
+
+- **Its name:** `<verb>-<id>-<rest>`, such as `review-dotnet-project`. A project installs every ecosystem's skills side by side, and two named `review-project` would overwrite each other.
+- **Its links:** A link to an opinion or a template points at the copy in the archive.
+- **One added section,** before the skill's first, which says where the opinions and templates are, to read them from there, and how to update them. It's `BUNDLE` in the script, and it repeats two of the reading rules from `READING` in `scripts/stage.py`, so change them together.
+
+An archive's bytes depend only on its files, so a project's `npx skills check` reports an update only when a skill, an opinion, or a template changed.
+
+To publish another skill, add it to the ecosystem's `skills` key, and check that it reads correctly outside its repository: it can't rely on a checkout's other files, such as `agents/` or `research/`.
+
 ## Local setup
 
 You need [just](https://just.systems/) to run the commands, [uv](https://docs.astral.sh/uv/) for the site and its scripts, and Node.js for the checks. Run `just` to list every recipe.
@@ -109,7 +137,7 @@ just fetch # clone each live ecosystem into build/repos/, at main
 just build # stage, check and merge each nav.json and sources.json, and build the site
 ```
 
-`just build` runs `stage`, `nav`, `sources`, and `build-site`, which you can also run one at a time. The site lands in `build/public/`. To preview it, run `just serve` instead of `just build`.
+`just build` runs `stage`, `nav`, `sources`, `build-site`, and `skills`, which you can also run one at a time. The site lands in `build/public/`. To preview it, run `just serve` instead of `just build`. `just serve` doesn't serve the [skills index](#skills-index): to test that, serve `build/public/` after `just build`.
 
 Zensical caches each rendered page in `build/.cache/`, keyed by its content. After you change `src/`, run `just clean-cache` before you build.
 

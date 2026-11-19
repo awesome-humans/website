@@ -10,7 +10,7 @@ import os
 import re
 import sys
 import tomllib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
@@ -59,6 +59,7 @@ class Ecosystem:
     stage: str
     status: str
     scope: str
+    skills: list[str] = field(default_factory=list[str])
 
 
 @dataclass(frozen=True)
