@@ -94,6 +94,12 @@ serve *locals:
     just sources
     uv run zensical serve -f build/zensical.toml
 
+# Ask an agent to read and list each opinion and template of each ecosystem, or those named,
+# and fail unless it read every one in full. --local tests build/public/. --as-written runs the home
+# page's review-project prompt on the ecosystem's checkout instead, after fetch
+test-llms *args:
+    uv run scripts/test_llms.py "$@"
+
 # Delete Zensical's page cache, which keeps stale pages after a change to src/
 clean-cache:
     rm -rf build/.cache

@@ -21,7 +21,7 @@ This project documents current best practice in code and updates it as ecosystem
 
 Every opinion states its recommendation first, cites its sources, and targets the latest released versions.
 
-**Agents:** Start at [`/llms.txt`](llms.txt). It links every ecosystem's opinions, templates, and skills as raw Markdown.
+**Agents:** Fetch [`/llms.txt`](llms.txt) and every file it links as raw text. It links every ecosystem's opinions, templates, and skills.
 
 ## Ecosystems
 
@@ -36,10 +36,10 @@ Each ecosystem includes:
 
 ## Usage
 
-- **Point your agent at it.** Tell your coding agent to follow the opinions when it writes code:
+- **Point your agent at it.** Tell your coding agent to follow the opinions when it writes code. Each prompt asks for raw text, because an agent's fetch tool otherwise gives it a summary of the rules:
 
   ```text
-  Follow the conventions at awesome-humans.net/llms.txt when writing code
+  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then follow its conventions when writing code
   ```
 
   The agent picks the ecosystem from your project's files, such as `Cargo.toml` or a `.csproj`. For an empty project, name the ecosystem in the prompt, such as `when writing Rust code`.
@@ -47,19 +47,19 @@ Each ecosystem includes:
 - **Check an existing project.** Ask your coding agent to run `review-project`, for [.NET](dotnet/skills/review-project.md) or [Rust](rust/skills/review-project.md):
 
   ```text
-  Use the review-project skill at awesome-humans.net/llms.txt on <repository>
+  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its review-project skill on <repository>
   ```
 
   To narrow the review, say what to include or leave out, and optionally name a house profile:
 
   ```text
-  Use the review-project skill at awesome-humans.net/llms.txt on <repository>, focus on logging and testing, skip CI, use the simon-mckenna house profile
+  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its review-project skill on <repository>, focus on logging and testing, skip CI, use the simon-mckenna house profile
   ```
 
 - **Research a topic.** Ask your coding agent to run `research-topic`, for [.NET](dotnet/skills/research-topic.md) or [Rust](rust/skills/research-topic.md), which answers from the opinions and the vetted sources, citing each claim:
 
   ```text
-  Use the research-topic skill at awesome-humans.net/llms.txt to research how to pin dependency versions
+  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its research-topic skill to research how to pin dependency versions
   ```
 
 - **Read the opinions and templates.** Each opinion gives its recommendation, rationale, and sources. The [.NET templates](dotnet/templates/index.md) and [Rust templates](rust/templates/index.md) encode them.
