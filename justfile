@@ -94,6 +94,11 @@ serve *locals:
     just sources
     uv run zensical serve -f build/zensical.toml
 
+# Run an agent from the home page's review-project prompt against each ecosystem, or those
+# named, and report what it read and the tokens it used. --local tests build/public/. Run fetch first
+test-llms *args:
+    uv run scripts/test_llms.py "$@"
+
 # Delete Zensical's page cache, which keeps stale pages after a change to src/
 clean-cache:
     rm -rf build/.cache

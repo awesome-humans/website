@@ -21,6 +21,8 @@ to preview an ecosystem change before pushing it. Then it:
 - Writes the root llms.txt, which links to each ecosystem's own, to the shared
   conventions, and to each staged llms-<profile>.txt. It copies each convention to
   raw/none/conventions/ for it to link, so an agent that can fetch only the site reads them.
+- Puts the site's reading rules after the summary of every staged llms.txt and
+  llms-<profile>.txt, so each ecosystem's agents get the same ones.
 - Fills the home page's ecosystem cards and the hero's Browse buttons from
   ecosystems.toml, and adds each ecosystem's logo to its card and its section index.
 - Draws the diagrams on How it works from diagrams.py.
@@ -85,12 +87,33 @@ TITLE = re.compile(r"^# .*\n", re.MULTILINE)
 DIAGRAM_PAGE = "how-it-works.md"
 DIAGRAM_MARKER = re.compile(r"^<!-- diagram: ([a-z-]+) -->$", re.MULTILINE)
 
-# Fetch tools summarise a page unless asked not to, and a summary paraphrases the rules.
-# Each ecosystem's llms.txt says the same.
-READING = (
-    "When you read a linked file, read it in full, not a summary, because its exact wording is the rule."
-    " A file under `raw/none/` is the default copy, with no house opinions, and one under `raw/<profile>/` is that profile's copy."
-)
+# The reading rules, which the root llms.txt and every staged one carry after the summary.
+# Each answers a way an agent read less than the opinions in a test run (website#220):
+# - A fetch tool gave it a summary. The first paragraph also speaks to the model that
+#   writes the summary, because that model reads this file before the agent does.
+# - It chose a few opinions and skipped the rest, and nothing in its answer said so.
+# - It read the reviewed project's own copy of an opinion, house opinions included.
+# just test-llms measures all three, so run it after changing a word here.
+READING = [
+    (
+        "Fetch this file, and each file it links, as raw text, such as with `curl`. The exact wording is the rule,"
+        " and a fetch tool's summary paraphrases it. If you're summarising this file for another agent, tell it"
+        " that first."
+    ),
+    "",
+    (
+        "- **Read every opinion that covers something the project uses,** and every template the project has a"
+        " file for, not only the ones the task names."
+    ),
+    "- **Say which opinions and templates you read in full,** and which you skipped.",
+    (
+        "- **Use the linked copy,** even when the project holds a copy of its own. A file under `raw/none/` is"
+        " the default copy, with no house opinions, and one under `raw/<profile>/` is that profile's copy."
+    ),
+]
+# How an ecosystem's own copy of the reading rules opened before the site added them. The
+# site drops that paragraph, so a file doesn't carry both until its ecosystem stops writing it.
+OLD_READING = "When you read a linked file,"
 # Where the root llms.txt links each convention: a copy on the site, as each ecosystem
 # stages its own files, so an agent that can fetch only awesome-humans.net reads every
 # one. A convention has no house opinions, so it has only the default copy, under
@@ -437,8 +460,6 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
         "",
         f"> {SUMMARY}",
         "",
-        READING,
-        "",
         "## Ecosystems",
         "",
         "Read the llms.txt for the project's ecosystem. Each links its opinions, templates, and skills as raw Markdown.",
@@ -501,11 +522,31 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
     text = "\n".join(lines) + "\n"
     (DOCS / "llms.txt").write_text(text, encoding="utf-8")
 
+    for path in [DOCS / "llms.txt", *sorted(DOCS.glob("*/llms*.txt"))]:
+        write_reading(path, errors)
+
     # Every file an llms.txt links is on the site, for an agent that can fetch nothing else.
     # That covers the root one, each ecosystem's, and each house profile's.
     for path in [DOCS / "llms.txt", *sorted(DOCS.glob("*/llms*.txt"))]:
         if "raw.githubusercontent.com" in path.read_text(encoding="utf-8"):
             errors.append(f"{path.relative_to(DOCS)}: links raw.githubusercontent.com instead of a copy on the site")
+
+
+def write_reading(path: Path, errors: list[str]) -> None:
+    """Put the reading rules after the file's summary blockquote, where llmstxt.org allows
+    paragraphs and lists, in place of any copy the ecosystem wrote."""
+    lines = [line for line in path.read_text(encoding="utf-8").splitlines() if not line.startswith(OLD_READING)]
+    opening = list(takewhile(lambda line: not line.startswith("## "), lines))
+    summary = [index for index, line in enumerate(opening) if line.startswith("> ")]
+    if not summary:
+        # write_llms already reported an ecosystem's llms.txt.
+        if (error := f"{path}: no summary blockquote") not in errors:
+            errors.append(error)
+        return
+    after = summary[-1] + 1
+    text = "\n".join([*lines[:after], "", *READING, "", *lines[after:]])
+    # Dropping the ecosystem's paragraph, or inserting before a blank line, leaves two.
+    path.write_text(re.sub(r"\n{3,}", "\n\n", text).rstrip("\n") + "\n", encoding="utf-8")
 
 
 def main() -> int:

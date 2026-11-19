@@ -35,6 +35,8 @@ The site never runs an ecosystem's tooling directly. It runs the ecosystem's `st
 | `llms-<profile>.txt`  | One for each house profile the ecosystem holds opinions for, linking files with only that profile's house opinions. The site checks each profile against [`houses.toml`](houses.toml)                                                |
 | `raw/`                | Optional. Copies of files that differ by house profile, for the `llms` files to link, such as `raw/none/` and `raw/<profile>/`. Name a Markdown copy `*.md.txt`, because the site renders every `.md` file as a page                 |
 
+The site puts its reading rules after the summary of each staged `llms.txt` and `llms-<profile>.txt`, so every ecosystem's agents get the same ones: fetch each file as raw text, read every opinion the project uses, say what was read, and use the linked copy. They're `READING` in [`scripts/stage.py`](scripts/stage.py). Don't stage a copy of them. To change one, change it there, and run `just test-llms` to see what agents then read.
+
 The `stage` command exits 0 when it staged everything, 1 when it found problems in the content, and 2 when it wasn't run from the repository root. On anything but 0, the site build stops.
 
 The site rejects a staged directory when:
