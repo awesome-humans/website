@@ -85,6 +85,12 @@ TITLE = re.compile(r"^# .*\n", re.MULTILINE)
 DIAGRAM_PAGE = "how-it-works.md"
 DIAGRAM_MARKER = re.compile(r"^<!-- diagram: ([a-z-]+) -->$", re.MULTILINE)
 
+# Fetch tools summarise a page unless asked not to, and a summary paraphrases the rules.
+# Each ecosystem's llms.txt says the same.
+READING = (
+    "When you read a linked file, read it in full, not a summary, because its exact wording is the rule."
+    " A file under `raw/none/` is the default copy, with no house opinions, and one under `raw/<profile>/` is that profile's copy."
+)
 # Where the root llms.txt links each convention: a copy on the site, as each ecosystem
 # stages its own files, so an agent that can fetch only awesome-humans.net reads every
 # one. A convention has no house opinions, so it has only the default copy, under
@@ -430,6 +436,8 @@ def write_llms(ecosystems: list[Ecosystem], staged: dict[str, list[str]], errors
         "# Awesome Humans",
         "",
         f"> {SUMMARY}",
+        "",
+        READING,
         "",
         "## Ecosystems",
         "",
