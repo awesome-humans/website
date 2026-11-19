@@ -216,8 +216,9 @@ def skill_text(
         other = (
             "**This copy has no house opinions, so it can't follow a house profile.** If the user or the project names"
             " one, say so before you do anything else, and give the command that installs that profile's copy:"
-            f" `npx skills add {site_url}{ecosystem.id}/<profile>`. Then carry on with the sourced text alone,"
-            " unless the user stops you."
+            f" `npx skills add {site_url}{ecosystem.id}/<profile>`. If the site has no skills at that address, the"
+            f" profile holds no {ecosystem.name} opinions, and this copy is the right one. Then carry on with the"
+            " sourced text alone, unless the user stops you."
         )
     else:
         carries = f"with the `{profile}` house profile's opinions"
@@ -324,8 +325,11 @@ def main() -> int:
         site_url = tomllib.load(file)["project"]["site_url"]
 
     # An index from an earlier run, for a skill or a profile that has since gone.
+    # Its .well-known/ goes too once it's empty, or the check below would call it a leak.
     for stale in sorted(PUBLIC.rglob(WELL_KNOWN)):
         shutil.rmtree(stale)
+        if not any(stale.parent.iterdir()):
+            stale.parent.rmdir()
 
     errors: list[str] = []
     ecosystems = [ecosystem for ecosystem in built() if ecosystem.skills]

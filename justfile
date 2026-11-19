@@ -84,6 +84,10 @@ build-site:
 skills:
     uv run scripts/publish_skills.py
 
+# Check that the pinned skills CLI lists every skill at each index in build/public/. Run build first
+test-skills:
+    uv run scripts/test_skills.py
+
 # Stage, merge, and build the site, each <id>=<path> from that checkout. Run fetch first
 build *locals:
     just stage "$@"

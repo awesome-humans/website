@@ -56,7 +56,7 @@ Each ecosystem includes:
   Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its review-project skill on <repository>, focus on logging and testing, skip CI, use the simon-mckenna house profile
   ```
 
-- **Install the skills.** In a project that follows the opinions, install `review-project` with a copy of every opinion and template. Your agent then reads them from disk, and each review reads the same copy. Choose one address:
+- **Install the skills.** Choose one address to suit your needs:
 
   - **Every ecosystem:** installs `review-dotnet-project` and `review-rust-project`.
 
@@ -70,7 +70,7 @@ Each ecosystem includes:
     npx skills add https://awesome-humans.net/dotnet
     ```
 
-  - **A [house profile](house-profiles.md):** add the profile's name, after the site or after an ecosystem. The skills then hold that profile's house opinions.
+  - **A [house profile](house-profiles.md):** add the profile's name, after the site or after an ecosystem. The skills then hold that profile's house opinions. An ecosystem has a profile's address only when the profile holds opinions there. After the site, the profile's name installs every ecosystem's skills, with the default copy for an ecosystem the profile doesn't cover.
 
     ```sh
     npx skills add https://awesome-humans.net/simon-mckenna

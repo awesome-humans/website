@@ -116,6 +116,8 @@ The site changes three things in a published skill:
 
 The site artifact includes hidden files, so that the indexes deploy. `just skills` fails on any other path in `build/public/` that starts with a dot, so nothing else hidden deploys with them.
 
+`just test-skills` runs the skills CLI, pinned in `package.json`, with `--list` against each index in `build/public/`, and fails when one doesn't list its skills.
+
 An archive's bytes depend only on its files, so a project's `npx skills check` reports an update only when a skill, an opinion, or a template changed.
 
 To publish another skill, add it to the ecosystem's `skills` key, and check that it reads correctly outside its repository: it can't rely on a checkout's other files, such as `agents/` or `research/`.
