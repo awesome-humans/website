@@ -90,7 +90,7 @@ Each opinion page opens with a metadata strip, directly under its `h1`. Write it
 
 ## Skills index
 
-A consumer skill is one a project runs on its own code, such as `review-project`. The site publishes each ecosystem's for [`npx skills`](https://github.com/vercel-labs/skills), so a project installs them once and its agent reads the opinions from disk:
+A consumer skill is one a project runs on its own code: `follow-opinions`, `research-topic`, and `review-project`. The site publishes each ecosystem's for [`npx skills`](https://github.com/vercel-labs/skills), so a project installs them once and its agent reads the opinions from disk:
 
 ```sh
 npx skills add https://awesome-humans.net                     # every ecosystem
@@ -104,7 +104,7 @@ The address needs its `https://`. Without it, the skills CLI reads a GitHub repo
 `just skills` runs [`scripts/publish_skills.py`](scripts/publish_skills.py) after the site build, because Zensical drops every path that starts with a dot. It reads what `just stage` left in `build/docs/`, and writes into `build/public/`:
 
 - **An archive for each skill an ecosystem lists** in the `skills` key of [`ecosystems.toml`](ecosystems.toml), from the staged `raw/none/skills/<skill>/SKILL.md.txt`. An ecosystem stages nothing more for it.
-- **One copy of the opinions and templates for each ecosystem.** The archive of the first skill listed also holds every opinion and template the ecosystem's `llms.txt` links, under `references/`. Each other skill reads that copy from `../<first skill>/references/`, because skills install side by side. If the first skill isn't installed, the other stops and gives the command that installs it.
+- **One copy of the opinions and templates for each ecosystem.** The archive of the first skill listed also holds every opinion and template the ecosystem's `llms.txt` links, and the roster and house opinions record from its Optional section, under `references/`. Each other skill reads that copy from `../<first skill>/references/`, because skills install side by side. If the first skill isn't installed, the other stops and gives the command that installs it.
 - **An archive for each house profile** the ecosystem staged an `llms-<profile>.txt` for, with that profile's copies.
 - **An index at `.well-known/agent-skills/index.json`** under `/`, `/<id>/`, `/<profile>/`, and `/<id>/<profile>/`. A profile's root index gives the default copy for an ecosystem that holds none of its opinions. A profile's address is its id alone, so the build fails when a page or an ecosystem has the same one.
 

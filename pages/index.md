@@ -58,13 +58,13 @@ Each ecosystem includes:
 
 - **Install the skills.** Choose one address to suit your needs:
 
-  - **Every ecosystem:** installs `review-dotnet-project` and `review-rust-project`.
+  - **Every ecosystem:** installs three skills for each, such as `follow-dotnet-opinions`, `research-dotnet-topic`, and `review-dotnet-project`. Your agent follows the opinions as it writes code, answers a question from them, and checks a project against them.
 
     ```sh
     npx skills add https://awesome-humans.net
     ```
 
-  - **One ecosystem:** add its path. This installs `review-dotnet-project` alone.
+  - **One ecosystem:** add its path. This installs the three .NET skills alone.
 
     ```sh
     npx skills add https://awesome-humans.net/dotnet

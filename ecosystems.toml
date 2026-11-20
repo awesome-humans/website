@@ -15,6 +15,7 @@
 # skills      Optional. The ecosystem's consumer skills, which a project runs on its own
 #             code. The site publishes each for `npx skills add`, as <verb>-<id>-<rest>,
 #             with the opinions and templates it reads (see README.md: Skills index).
+#             The first one listed carries those files, and the others read its copy.
 
 [[ecosystem]]
 id = "dotnet"
@@ -24,7 +25,7 @@ toolchain = "dotnet"
 stage = "dotnet run scripts/build-site.cs -- --out {out}"
 status = "live"
 scope = "C#, F#, ASP.NET Core, EF Core, the runtime, NuGet, and the libraries around them."
-skills = ["review-project"]
+skills = ["follow-opinions", "research-topic", "review-project"]
 
 [[ecosystem]]
 id = "rust"
@@ -34,4 +35,4 @@ toolchain = "rust"
 stage = "cargo xtask build-site --out {out}"
 status = "live"
 scope = "The language, Cargo, Clippy, and the crates around them."
-skills = ["review-project"]
+skills = ["follow-opinions", "research-topic", "review-project"]

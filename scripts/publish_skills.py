@@ -9,7 +9,7 @@
 A consumer skill is one a project runs on its own code, such as review-project. Each
 ecosystem names its own in the `skills` key of ecosystems.toml. For each one, this writes
 an archive of the skill. The archive of the first skill an ecosystem lists also holds every
-opinion and template the ecosystem's llms.txt links, so an agent reads them from disk and
+opinion and template the ecosystem's llms.txt links, and its roster, so an agent reads them from disk and
 fetches nothing. Each other skill reads that copy, from the directory beside its own, so a
 project holds each opinion once. It publishes the skill as
 <verb>-<id>-<rest>, such as review-dotnet-project, because two ecosystems' skills are
@@ -68,6 +68,9 @@ LINK = re.compile(r"^- \[(?P<title>.+?)\]\((?P<url>[^)\s]+)\)")
 SECTION = re.compile(r"^## (?P<title>.+)$")
 # The sections an ecosystem's llms.txt lists its opinions and templates under.
 KINDS = ("opinions", "templates")
+# The section an ecosystem's llms.txt lists its roster and its house opinions record under.
+# research-topic scans the roster, so each goes beside the opinions, in references/.
+OPTIONAL = "Optional"
 # A skill's frontmatter, and the two fields the index needs from it.
 FRONTMATTER = re.compile(r"\A---\n(?P<fields>.*?\n)---\n", re.DOTALL)
 NAME = re.compile(r"^name: *(?P<value>.+)$", re.MULTILINE)
@@ -101,15 +104,18 @@ BUNDLE = """## Where the opinions and templates are
 CARRIES = (
     "This copy of the skill carries every {name} opinion and template, as [{repository}](https://github.com/{repository})"
     " published them, {profile}. The opinions are in [references/opinions/](references/opinions/), and the templates in"
-    " [references/templates/](references/templates/), beside this file. In this skill, `opinions/` and `templates/` mean"
-    ' those two directories, and "this repository" means {repository}.'
+    " [references/templates/](references/templates/), beside this file, with the roster of vetted sources in"
+    " [references/AWESOME-HUMANS.md](references/AWESOME-HUMANS.md). In this skill, `opinions/`, `templates/`, and"
+    ' `AWESOME-HUMANS.md` mean those, and "this repository" means {repository}.'
 )
 SHARES = (
     "This skill reads the {name} opinions and templates that the `{holder}` skill carries, as"
     " [{repository}](https://github.com/{repository}) published them, {profile}. That skill installs beside this one, so"
     " the opinions are in [../{holder}/references/opinions/](../{holder}/references/opinions/), and the templates in"
-    " [../{holder}/references/templates/](../{holder}/references/templates/), relative to this file's directory. In"
-    ' this skill, `opinions/` and `templates/` mean those two directories, and "this repository" means {repository}.'
+    " [../{holder}/references/templates/](../{holder}/references/templates/), relative to this file's directory, with"
+    " the roster of vetted sources in [../{holder}/references/AWESOME-HUMANS.md](../{holder}/references/AWESOME-HUMANS.md)."
+    ' In this skill, `opinions/`, `templates/`, and `AWESOME-HUMANS.md` mean those, and "this repository" means'
+    " {repository}."
     "\n\n**If `../{holder}/` is missing, stop.** Tell the user to run `npx skills add {address} --skill {holder}`, and"
     " never work from what you remember of an opinion."
 )
@@ -139,7 +145,8 @@ def linked(llms: Path, site_url: str, errors: list[str]) -> dict[str, tuple[str,
     kind = ""
     for line in llms.read_text(encoding="utf-8").splitlines():
         if section := SECTION.match(line):
-            kind = next((kind for kind in KINDS if section["title"].endswith(f" {kind}")), "")
+            title = section["title"]
+            kind = OPTIONAL if title == OPTIONAL else next((kind for kind in KINDS if title.endswith(f" {kind}")), "")
             continue
         if not kind or not (link := LINK.match(line)):
             continue
@@ -150,8 +157,8 @@ def linked(llms: Path, site_url: str, errors: list[str]) -> dict[str, tuple[str,
         staged = DOCS / url.removeprefix(site_url)
         # An opinion keeps its file name, without the .txt its copy on the site adds. A
         # template's link text is its path in a project, such as projects/Domain.fs.
-        name = staged.name.removesuffix(".txt") if kind == "opinions" else link["title"]
-        path = PurePosixPath("references", kind, name)
+        name = link["title"] if kind == "templates" else staged.name.removesuffix(".txt")
+        path = PurePosixPath("references", name) if kind == OPTIONAL else PurePosixPath("references", kind, name)
         if ".." in path.parts or PurePosixPath(name).is_absolute():
             errors.append(f"{llms}: {name} isn't a path inside a skill")
         elif not staged.is_file():

@@ -37,7 +37,7 @@ For a small factual fix, such as a misquote, a broken citation, or a wrong versi
 
 A new sourced opinion starts as a research topic, which saves the evidence in one pull request, and the maintainer promotes it into the opinions in a second. For details, see [How it works: Research is staged, never merged in place](how-it-works.md#research-is-staged-never-merged-in-place). Take one of these routes:
 
-- **Research it yourself.** Run the ecosystem's `research-topic` skill with your coding agent, and open its pull request with the [research pull request template](https://github.com/awesome-humans/.github/blob/main/PULL_REQUEST_TEMPLATE/research.md). A topic can cite a source from outside the roster if the topic flags that source.
+- **Research it yourself.** Run the ecosystem's `stage-research` skill with your coding agent, and open its pull request with the [research pull request template](https://github.com/awesome-humans/.github/blob/main/PULL_REQUEST_TEMPLATE/research.md). A topic can cite a source from outside the roster if the topic flags that source.
 - **Ask the maintainer to research it.** Open an issue in the ecosystem's repository that names the topic and links what you've read.
 
 Either way, the maintainer promotes or discards the topic with the `resolve-research` skill.
