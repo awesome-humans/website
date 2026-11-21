@@ -122,7 +122,7 @@ PIPELINE_ROWS = [
         "check evidence",
         "roster",
     ),
-    ("research", ["a question", "about <topic>"], "research-topic", "research/<topic>", "review", "research"),
+    ("research", ["a question", "about <topic>"], "stage-research", "research/<topic>", "review", "research"),
     ("research", ["topic saved in", "research/"], "resolve-research", "resolve/<topic>", "approve weave", "opinions"),
     ("opinions", ["monthly harvest", "reminder issue"], "harvest-sources", "harvest/<date>", "review", "opinions"),
     ("opinions", ["release-watch PR,", "or a newer pin"], "version refresh", "refresh/<version>", "review", "opinions"),
@@ -248,7 +248,7 @@ def pipeline() -> str:
         width,
         loop_y + 50,
         "Maintenance pipeline",
-        "Swimlane diagram of how an ecosystem's repository maintains itself: vet-source, research-topic, resolve-research,"
+        "Swimlane diagram of how an ecosystem's repository maintains itself: vet-source, stage-research, resolve-research,"
         " harvest-sources, the version refresh, and weave-house-opinion each work on their own branch, pass the CI"
         " checks, get an agent review, pass the maintainer's review, and land in the roster, research, or the opinions and"
         " templates; audit-freshness, review-opinions, and review-project only report. Their findings, the release"
@@ -348,7 +348,7 @@ OUTCOMES = [
 
 def research() -> str:
     d = Drawing("research-lifecycle")
-    # research-topic sits above the topic it saves, so the diagram is narrow enough for its
+    # stage-research sits above the topic it saves, so the diagram is narrow enough for its
     # text to render at the pipeline's size.
     center_y = 182
     topic_x, topic_y, topic_width = 20, 20, 212
@@ -358,7 +358,7 @@ def research() -> str:
     loop_y = 328
 
     d.add(
-        node(topic_x, topic_y, topic_width, 64, "research-topic", "cited, on research/<topic>", title_cls="tm"),
+        node(topic_x, topic_y, topic_width, 64, "stage-research", "cited, on research/<topic>", title_cls="tm"),
         d.arrow(topic_x + topic_width / 2, topic_y + 64, topic_x + topic_width / 2, center_y - 34),
         text(topic_x + topic_width / 2 + 12, center_y - 60, "PR merges", "ts"),
         node(
@@ -399,7 +399,7 @@ def research() -> str:
         out_x + out_width + 20,
         loop_y + 28,
         "Research lifecycle",
-        "Flow diagram: research-topic opens a pull request that saves research/<topic>.md; resolve-research then promotes"
+        "Flow diagram: stage-research opens a pull request that saves research/<topic>.md; resolve-research then promotes"
         " it into the opinions and templates, discards it, or promotes part of it, deleting the topic in the same pull"
         " request. A blocked remainder stays staged and goes back through resolve-research once vet-source clears the"
         " source it waits on.",

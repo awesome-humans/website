@@ -90,10 +90,17 @@ jobs:
           just install-python
           just build-site
 
+      # After the build, because Zensical drops every path that starts with a dot.
+      - name: Publish the skills index
+        run: just skills
+
       - name: Keep the built site for the deploy job
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: site
           path: build/public
+          # The skills indexes are under .well-known/, which the action otherwise leaves out.
+          # `just skills` fails on any other hidden path here, so nothing else is included.
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
