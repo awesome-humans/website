@@ -99,12 +99,12 @@ npx skills add https://awesome-humans.net/simon-mckenna        # every ecosystem
 npx skills add https://awesome-humans.net/dotnet/simon-mckenna # one ecosystem, with a house profile
 ```
 
-The address needs its `https://`. Without it, the skills CLI reads a GitHub repository.
+The address needs `https://`. Without it, the skills CLI reads a GitHub repository.
 
 `just skills` runs [`scripts/publish_skills.py`](scripts/publish_skills.py) after the site build, because Zensical drops every path that starts with a dot. It reads what `just stage` left in `build/docs/`, and writes into `build/public/`:
 
 - **An archive for each skill an ecosystem lists** in the `skills` key of [`ecosystems.toml`](ecosystems.toml), from the staged `raw/none/skills/<skill>/SKILL.md.txt`. An ecosystem stages nothing more for it.
-- **One copy of the opinions and templates for each ecosystem.** The archive of the first skill listed also holds every opinion and template the ecosystem's `llms.txt` links, and the roster and house opinions record from its Optional section, under `references/`. Each other skill reads that copy from `../<first skill>/references/`, because skills install side by side. If the first skill isn't installed, the other stops and gives the command that installs it.
+- **One copy of the opinions and templates for each ecosystem.** The archive of the first skill listed also holds every opinion and template the ecosystem's `llms.txt` links, and the roster and house opinions record from its Optional section, under `references/`. Each other skill reads that copy from `../<first skill>/references/`, because skills install side by side. If the first skill isn't installed, or holds another profile's copy, the other stops and gives the command that installs it.
 - **An archive for each house profile** the ecosystem staged an `llms-<profile>.txt` for, with that profile's copies.
 - **An index at `.well-known/agent-skills/index.json`** under `/`, `/<id>/`, `/<profile>/`, and `/<id>/<profile>/`. A profile's root index gives the default copy for an ecosystem that holds none of its opinions. A profile's address is its id alone, so the build fails when a page or an ecosystem has the same one.
 

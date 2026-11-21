@@ -71,6 +71,7 @@ KINDS = ("opinions", "templates")
 # The section an ecosystem's llms.txt lists its roster and its house opinions record under.
 # research-topic scans the roster, so each goes beside the opinions, in references/.
 OPTIONAL = "Optional"
+ROSTER = "references/AWESOME-HUMANS.md"
 # A skill's frontmatter, and the two fields the index needs from it.
 FRONTMATTER = re.compile(r"\A---\n(?P<fields>.*?\n)---\n", re.DOTALL)
 NAME = re.compile(r"^name: *(?P<value>.+)$", re.MULTILINE)
@@ -118,6 +119,8 @@ SHARES = (
     " {repository}."
     "\n\n**If `../{holder}/` is missing, stop.** Tell the user to run `npx skills add {address} --skill {holder}`, and"
     " never work from what you remember of an opinion."
+    '\n\n**If `../{holder}/SKILL.md` doesn\'t describe its copy as "{profile}", stop as well.** That copy came from'
+    " another address, so its opinions aren't the ones this skill follows. Tell the user to run the same command."
 )
 
 
@@ -169,6 +172,9 @@ def linked(llms: Path, site_url: str, errors: list[str]) -> dict[str, tuple[str,
             found[str(path)] = (url, staged)
     if not any(path.startswith("references/opinions/") for path in found):
         errors.append(f"{llms}: links no opinions")
+    # Each published skill names the roster, so an archive without it names a missing file.
+    if ROSTER not in found:
+        errors.append(f"{llms}: links no {PurePosixPath(ROSTER).name} under {OPTIONAL}")
     return found
 
 
@@ -250,9 +256,12 @@ def skill_text(
 
 
 def archive(files: dict[str, bytes]) -> bytes:
-    """A .tar.gz whose bytes depend only on the files' names and contents."""
+    """A .tar.gz whose bytes depend only on the files' names and contents.
+
+    The skills CLI reads a header's name and prefix fields and skips a PAX record, so this
+    writes `tarfile.USTAR_FORMAT`, which raises ValueError on a name those fields can't hold."""
     tarball = io.BytesIO()
-    with tarfile.open(fileobj=tarball, mode="w", format=tarfile.PAX_FORMAT) as tar:
+    with tarfile.open(fileobj=tarball, mode="w", format=tarfile.USTAR_FORMAT) as tar:
         for name, data in sorted(files.items()):
             info = tarfile.TarInfo(name)
             info.size = len(data)
@@ -281,7 +290,11 @@ def publish(ecosystem: Ecosystem, profile: str, site_url: str, errors: list[str]
         contents = {"SKILL.md": text.encode("utf-8")}
         if skill == ecosystem.skills[0]:
             contents |= {path: staged.read_bytes() for path, (_, staged) in files.items()}
-        data = archive(contents)
+        try:
+            data = archive(contents)
+        except ValueError as error:
+            errors.append(f"{llms}: {name} holds a path the skills CLI can't restore: {error}")
+            continue
         path = scope / WELL_KNOWN / f"{name}.tar.gz"
         (PUBLIC / path).parent.mkdir(parents=True, exist_ok=True)
         (PUBLIC / path).write_bytes(data)
