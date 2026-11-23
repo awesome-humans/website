@@ -1,0 +1,14 @@
+--- awesome-humans/dotnet: skills/vet-source/SKILL.md
++++ awesome-humans/rust: skills/vet-source/SKILL.md
+@@
+-"This repository" in this skill means [<repository>](https://github.com/<repository>). Run the skill in a checkout, where each path in it, such as `opinions/` or `templates/Directory.Build.props`, is relative to the repository's root.
++"This repository" in this skill means [<repository>](https://github.com/<repository>). Run the skill in a checkout, where each path in it, such as `opinions/` or `templates/Cargo.toml`, is relative to the repository's root.
+@@
+-   - List the ecosystem repositories with `gh repo list awesome-humans`, and read each roster with `gh api repos/awesome-humans/<repository>/contents/AWESOME-HUMANS.md -H 'Accept: application/vnd.github.raw'`. Today that's `awesome-humans/rust`.
++   - List the ecosystem repositories with `gh repo list awesome-humans`, and read each roster with `gh api repos/awesome-humans/<repository>/contents/AWESOME-HUMANS.md -H 'Accept: application/vnd.github.raw'`. Today that's `awesome-humans/dotnet`.
+@@
+-- **Institutional sources,** such as Microsoft or JetBrains: Longevity belongs to the publication, not individual authors. When you cite one author, still check their depth.
++- **Institutional sources,** such as the <name> Project or Ferrous Systems: Longevity belongs to the publication, not individual authors. When you cite one author, still check their depth.
+@@
+-- **Conflicts of interest,** where the candidate sells a product the opinions might recommend: You can admit it, but record the conflict in its `## Source notes` section, so opinions that cite it flag it.
++- **Conflicts of interest,** where the candidate sells a product the opinions might recommend, such as a consultancy's training or a crate's paid tier: You can admit it, but record the conflict in its `## Source notes` section, so opinions that cite it flag it.

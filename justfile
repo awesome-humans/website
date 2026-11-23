@@ -88,6 +88,11 @@ skills:
 test-skills:
     uv run scripts/test_skills.py
 
+# Check that the skills the ecosystems copy differ only where skills-drift/ records. --local <id>=<path>
+# reads that checkout, and --update records the differences as they are. Run fetch first
+skills-drift *args:
+    uv run scripts/skills_drift.py "$@"
+
 # Stage, merge, and build the site, each <id>=<path> from that checkout. Run fetch first
 build *locals:
     just stage "$@"
