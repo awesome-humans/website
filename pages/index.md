@@ -37,10 +37,10 @@ Each ecosystem includes:
 
 ## Usage
 
-- **Try it once.** Tell your coding agent to follow the opinions when it writes code:
+- **Try it once.** Ask your coding agent to check a project against the opinions. It reports what it finds, and changes nothing unless you ask for fixes:
 
   ```text
-  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then follow its conventions when writing code
+  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its review-project skill on <repository>
   ```
 
 - **Use it in your project.** Install the skills, so your agent reads the opinions from the project's own copy:
@@ -49,7 +49,7 @@ Each ecosystem includes:
   npx skills add https://awesome-humans.net
   ```
 
-[Usage](usage.md) has the prompts for checking a project and researching a topic, and the addresses for one ecosystem or a house profile.
+[Usage](usage.md) has the prompts for following the opinions and researching a topic, and the addresses for one ecosystem or a house profile.
 
 To understand how sources are vetted and how opinions stay current, see [How it works](how-it-works.md).
 
