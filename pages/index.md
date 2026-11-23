@@ -37,13 +37,13 @@ Each ecosystem includes:
 
 ## Usage
 
-- **Try it once.** Ask your coding agent to check a project against the opinions. It reports what it finds, and changes nothing unless you ask for fixes:
+- **Try it without installing.** Ask your coding agent to check a project against the opinions. It reports what it finds, and changes nothing unless you ask for fixes:
 
   ```text
   Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its review-project skill on <repository>
   ```
 
-- **Use it in your project.** Install the skills, so your agent reads the opinions from the project's own copy:
+- **Install it in your project.** Install the skills, so your agent reads the opinions from the project's own copy:
 
   ```sh
   npx skills add https://awesome-humans.net

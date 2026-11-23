@@ -1,8 +1,8 @@
 # Usage
 
-Try the opinions and skills once from the site, or install the skills in your project.
+Try the opinions and skills from the site without installing anything, or install the skills in your project.
 
-## Try it once
+## Try it without installing
 
 Nothing to install. Your coding agent fetches the opinions and skills from the site each time. Each prompt asks for raw text, so your agent reads the rules in full and not a summary of them.
 
@@ -32,7 +32,7 @@ Nothing to install. Your coding agent fetches the opinions and skills from the s
   Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its research-topic skill to research how to pin dependency versions
   ```
 
-## Use it in your project
+## Install it in your project
 
 Install the skills in your project. Your agent then reads the opinions and templates from the project's own copy, with nothing to fetch.
 
@@ -58,5 +58,7 @@ Choose one address to suit your needs:
   npx skills add https://awesome-humans.net/simon-mckenna
   npx skills add https://awesome-humans.net/dotnet/simon-mckenna
   ```
+
+Each command installs into the project you run it in, and records what it installed in `skills-lock.json`. To install for every project on your machine, add `--global`.
 
 `npx skills check` tells you when an opinion has changed, and `npx skills update` fetches it.
