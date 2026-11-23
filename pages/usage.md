@@ -59,6 +59,8 @@ Choose one address to suit your needs:
   npx skills add https://awesome-humans.net/dotnet/simon-mckenna
   ```
 
+The CLI asks which skills to install. Keep the `follow-<ecosystem>-opinions` skill selected, because it carries the opinions and templates the other two read.
+
 Each command installs into the project you run it in, and records what it installed in `skills-lock.json`. To install for every project on your machine, add `--global`.
 
 `npx skills check` tells you when an opinion has changed, and `npx skills update` fetches it.
