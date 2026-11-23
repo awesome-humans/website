@@ -11,6 +11,7 @@ An agentic take on awesome lists (such as [awesome-dotnet](https://github.com/qu
 distilled, opinionated guidance, thanks to awesome humans.
 
 <div class="ah-row">
+<a class="ah-btn" href="usage/">Usage</a>
 <a class="ah-btn" href="how-it-works/">How it works</a>
 <!-- ecosystem-buttons -->
 </div>
@@ -36,33 +37,19 @@ Each ecosystem includes:
 
 ## Usage
 
-- **Point your agent at it.** Tell your coding agent to follow the opinions when it writes code. Each prompt asks for raw text, because an agent's fetch tool otherwise gives it a summary of the rules:
-
-  ```text
-  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then follow its conventions when writing code
-  ```
-
-  The agent picks the ecosystem from your project's files, such as `Cargo.toml` or a `.csproj`. For an empty project, name the ecosystem in the prompt, such as `when writing Rust code`.
-
-- **Check an existing project.** Ask your coding agent to run `review-project`, for [.NET](dotnet/skills/review-project.md) or [Rust](rust/skills/review-project.md):
+- **Try it without installing.** Ask your coding agent to check a project against the opinions. It reports what it finds, and changes nothing unless you ask for fixes:
 
   ```text
   Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its review-project skill on <repository>
   ```
 
-  To narrow the review, say what to include or leave out, and optionally name a house profile:
+- **Install it in your project.** Install the skills, so your agent reads the opinions from the project's own copy:
 
-  ```text
-  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its review-project skill on <repository>, focus on logging and testing, skip CI, use the simon-mckenna house profile
+  ```sh
+  npx skills add https://awesome-humans.net
   ```
 
-- **Research a topic.** Ask your coding agent to run `research-topic`, for [.NET](dotnet/skills/research-topic.md) or [Rust](rust/skills/research-topic.md), which answers from the opinions and the vetted sources, citing each claim:
-
-  ```text
-  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its research-topic skill to research how to pin dependency versions
-  ```
-
-- **Read the opinions and templates.** Each opinion gives its recommendation, rationale, and sources. The [.NET templates](dotnet/templates/index.md) and [Rust templates](rust/templates/index.md) encode them.
+[Usage](usage.md) has more prompts, and shows how to install a single ecosystem or a house profile.
 
 To understand how sources are vetted and how opinions stay current, see [How it works](how-it-works.md).
 

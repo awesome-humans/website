@@ -80,12 +80,21 @@ sources:
 build-site:
     uv run zensical build --strict -f build/zensical.toml
 
+# Write each ecosystem's consumer skills, and their indexes for `npx skills add`, into build/public/
+skills:
+    uv run scripts/publish_skills.py
+
+# Check that the pinned skills CLI lists every skill at each index in build/public/. Run build first
+test-skills:
+    uv run scripts/test_skills.py
+
 # Stage, merge, and build the site, each <id>=<path> from that checkout. Run fetch first
 build *locals:
     just stage "$@"
     just nav
     just sources
     just build-site
+    just skills
 
 # Stage, merge, and serve the site locally, each <id>=<path> from that checkout. Run fetch first
 serve *locals:

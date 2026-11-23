@@ -10,7 +10,7 @@ import os
 import re
 import sys
 import tomllib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
@@ -59,6 +59,7 @@ class Ecosystem:
     stage: str
     status: str
     scope: str
+    skills: list[str] = field(default_factory=list[str])
 
 
 @dataclass(frozen=True)
@@ -80,6 +81,8 @@ def houses(errors: list[str]) -> list[House]:
             errors.append(f"{HOUSES}: {house.id} isn't a profile id: use lowercase words joined by hyphens")
         elif house.id == NO_PROFILE:
             errors.append(f"{HOUSES}: {NO_PROFILE} is reserved for the default, which has no house opinions")
+        elif house.id in ids:
+            errors.append(f"{HOUSES}: {house.id} is an ecosystem's id, and both would be served at /{house.id}/")
         if house.kind not in ("person", "organisation"):
             errors.append(f"{HOUSES}: {house.id} has kind {house.kind}, not person or organisation")
         for ecosystem in house.ecosystems:

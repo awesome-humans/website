@@ -18,6 +18,7 @@
     "markdownlint-cli2": "0.24.1",
     "prettier": "3.10.1",
     "pyright": "1.1.414",
+    "skills": "1.9.0",
     "stylelint": "18.0.0",
     "stylelint-config-recommended": "19.0.0"
   },

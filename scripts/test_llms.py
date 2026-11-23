@@ -2,15 +2,15 @@
 # requires-python = ">=3.14"
 # dependencies = []
 # ///
-"""Run an agent from the home page's prompt, and check that it read every opinion and template.
+"""Run an agent from the Usage page's prompt, and check that it read every opinion and template.
 
     uv run scripts/test_llms.py [--local] [--as-written] [--budget <usd>] [<id>]...
 
 For each live ecosystem, or each one named, it starts an agent in an empty directory and
 asks it to read each of the ecosystem's opinions and templates in full, and to list each
 with its last-reviewed date and one sentence on what it recommends.
-The prompt opens as the home page's prompts do, with the fetch instruction from
-pages/index.md. The task has one right answer, so the run can fail. It reads the agent's
+The prompt opens as the Usage page's prompts do, with the fetch instruction from
+pages/usage.md. The task has one right answer, so the run can fail. It reads the agent's
 transcript and its answer, and reports:
 
 - Whether the agent got the root llms.txt and the ecosystem's in full, or as a summary.
@@ -25,7 +25,7 @@ An opinion or template that the agent didn't read in full, or didn't list with t
 date, is a finding.
 
 --as-written asks a different question: which files does an agent pick for itself? It
-runs the home page's review-project prompt unchanged, aimed at the ecosystem's own
+runs the Usage page's review-project prompt unchanged, aimed at the ecosystem's own
 checkout in build/repos/<id>/, so run `just fetch` first. No project uses every opinion,
 so it only reports the ones left unread. The checkout holds the opinions and templates the
 site links, so it also reports each one the agent read from there, house opinions included.
@@ -37,7 +37,7 @@ The agent is Claude Code in print mode: no other harness writes a transcript thi
 reads. Its tools read, and `curl` can also write a file, so --as-written aims it at a copy
 of the checkout, which the run deletes. An agent run costs about a dollar and its reading varies from
 run to run, so this isn't in `just check` or CI. Run it after a change to the reading rules
-in stage.py, to the prompts in pages/index.md, or to a review-project skill. Each
+in stage.py, to the prompts in pages/usage.md, or to a review-project skill. Each
 transcript and answer stays in build/llms-test/.
 
 Exit codes: 0 every agent read each llms.txt and every opinion and template in full, from
@@ -70,7 +70,7 @@ PUBLIC = BUILD / "public"
 RESULTS = BUILD / "llms-test"
 SITE_CONFIG = Path("zensical.toml")
 
-# The home page's review-project prompt, and the fetch instruction that opens each of its
+# The Usage page's review-project prompt, and the fetch instruction that opens each of its
 # prompts, so the test follows a change to either.
 PROMPT = re.compile(
     r"^\s*(?P<prompt>(?P<opening>Fetch \S+/llms\.txt .*?, then )use its review-project skill on <repository>)$",
@@ -395,7 +395,7 @@ def report(ecosystem: Ecosystem, origin: str, transcript: Transcript, every: boo
 
 def main() -> int:
     require_root()
-    parser = argparse.ArgumentParser(description="Run an agent from the home page's prompt, and check its reading.")
+    parser = argparse.ArgumentParser(description="Run an agent from the Usage page's prompt, and check its reading.")
     parser.add_argument("--local", action="store_true", help="test build/public/ instead of the deployed site")
     parser.add_argument("--as-written", action="store_true", help="run the review-project prompt unchanged")
     parser.add_argument("--budget", default="5", metavar="USD", help="the most one agent run can cost")
@@ -418,9 +418,9 @@ def main() -> int:
     with SITE_CONFIG.open("rb") as file:
         site_url: str = tomllib.load(file)["project"]["site_url"]
     host = site_url.removeprefix("https://").rstrip("/")
-    prompt = PROMPT.search((PAGES / "index.md").read_text(encoding="utf-8"))
+    prompt = PROMPT.search((PAGES / "usage.md").read_text(encoding="utf-8"))
     if prompt is None or f"{host}/llms.txt" not in prompt["prompt"]:
-        print(f"{PAGES / 'index.md'}: no review-project prompt that fetches {host}/llms.txt", file=sys.stderr)
+        print(f"{PAGES / 'usage.md'}: no review-project prompt that fetches {host}/llms.txt", file=sys.stderr)
         return 2
 
     origin, address = site_url, host

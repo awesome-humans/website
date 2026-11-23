@@ -31,6 +31,7 @@ SITE_CONFIG = Path("zensical.toml")
 # so the navigation and the root llms.txt list them in the same order.
 SITE_NAV: list[dict] = [
     {"Home": "index.md"},
+    {"Usage": "usage.md"},
     {
         "How it works": [
             {"Overview": "how-it-works.md"},
