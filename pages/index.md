@@ -49,7 +49,7 @@ Each ecosystem includes:
   npx skills add https://awesome-humans.net
   ```
 
-[Usage](usage.md) has the prompts for following the opinions and researching a topic, and the addresses for one ecosystem or a house profile.
+[Usage](usage.md) has more prompts, and shows how to install a single ecosystem or a house profile.
 
 To understand how sources are vetted and how opinions stay current, see [How it works](how-it-works.md).
 
