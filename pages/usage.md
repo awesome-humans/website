@@ -26,10 +26,26 @@ Nothing to install. Your coding agent fetches the opinions and skills from the s
   Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its review-project skill on <repository>, focus on logging and testing, skip CI, use the simon-mckenna house profile
   ```
 
+  Name the topics your ecosystem's opinions cover. For a Rust project:
+
+  ```text
+  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its review-project skill on <repository>, focus on panics and lints, skip the edition
+  ```
+
 - **Research a topic.** Ask your agent to run `research-topic`, for [.NET](dotnet/skills/research-topic.md) or [Rust](rust/skills/research-topic.md), which answers from the opinions and the vetted sources, citing each claim:
 
   ```text
   Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its research-topic skill to research how to pin dependency versions
+  ```
+
+  The question can be about one ecosystem, such as a .NET feature or a Rust tool:
+
+  ```text
+  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its research-topic skill to research whether to turn on runtime async
+  ```
+
+  ```text
+  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its research-topic skill to research whether to adopt cargo-nextest
   ```
 
 ## Install it in your project
