@@ -52,7 +52,13 @@ Nothing to install. Your coding agent fetches the opinions and skills from the s
 
 Install the skills in your project. Your agent then reads the opinions and templates from the project's own copy, with nothing to fetch.
 
-Each ecosystem installs three skills, such as `follow-dotnet-opinions`, `research-dotnet-topic`, and `review-dotnet-project`. Your agent follows the opinions as it writes code, answers a question from them, and checks a project against them.
+Each ecosystem installs three skills, named for the ecosystem:
+
+| .NET                                                         | Rust                                                     | What your agent does with it                                                |
+| ------------------------------------------------------------ | -------------------------------------------------------- | --------------------------------------------------------------------------- |
+| [`follow-dotnet-opinions`](dotnet/skills/follow-opinions.md) | [`follow-rust-opinions`](rust/skills/follow-opinions.md) | Applies the opinions and templates while it writes or changes code          |
+| [`research-dotnet-topic`](dotnet/skills/research-topic.md)   | [`research-rust-topic`](rust/skills/research-topic.md)   | Answers a question from the opinions and vetted sources, citing each claim  |
+| [`review-dotnet-project`](dotnet/skills/review-project.md)   | [`review-rust-project`](rust/skills/review-project.md)   | Checks a project against the opinions and templates, and reports deviations |
 
 Choose one address to suit your needs:
 
