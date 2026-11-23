@@ -134,6 +134,22 @@ just check   # what CI checks on a pull request: formatting, linting, types, and
 
 To build the site, you also need each live ecosystem's toolchain: the .NET SDK for `dotnet`, and rustup for `rust`.
 
+## Skill drift
+
+Each ecosystem keeps its own copy of the maintenance skills, and five of them are mostly the same text in every copy: `harvest-sources`, `resolve-research`, `stage-research`, `vet-source`, and `weave-house-opinion`. A change to that text belongs in every copy. `just skills-drift` runs [`scripts/skills_drift.py`](scripts/skills_drift.py), which fails when one copy changes and the others don't:
+
+- **It compares each ecosystem's copy with the first live ecosystem's,** line by line, from the checkouts `just fetch` left in `build/repos/`. It writes each ecosystem's id, name, and repository as placeholders first, so a line that differs only by those isn't a difference.
+- **[`skills-drift/<id>/<skill>.diff`](skills-drift/) records the lines that differ,** such as an ecosystem's own example. The check fails when the lines that differ aren't the ones recorded. A file holds no line numbers, so the same change to both copies moves nothing.
+- **The skills it checks are the ones with a file there.** To add one, run `just skills-drift --update <skill>`.
+
+When it fails, make the same change to the other ecosystem's copy. If the difference belongs to one ecosystem, run `just skills-drift --update`, read the change to the recorded file, and commit it. To check a change before you push it, pass your checkouts:
+
+```sh
+just skills-drift --local dotnet=../../dotnet/main --local rust=../../rust/main
+```
+
+The `Skills drift` workflow runs it on a pull request here, after a push to an ecosystem's `main`, and weekly. It's separate from the `Site` workflow, so a copy that drifts doesn't stop the site deploying. A pull request in an ecosystem doesn't run it, because the first of a pair of pull requests would always fail.
+
 ## Build the site
 
 The `Site` workflow runs the same recipes through [`build.yml`](.github/workflows/build.yml), so a local build matches CI:
@@ -175,7 +191,7 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 
 ```text
 ├── .github/ISSUE_TEMPLATE/ ← the Suggest a source and Opt out issue forms
-├── .github/workflows/      ← build.yml and deploy.yml, which ecosystems call too, site.yml, intake.yml, markdown.yml, and attribution.yml
+├── .github/workflows/      ← build.yml and deploy.yml, which ecosystems call too, site.yml, skills-drift.yml, intake.yml, markdown.yml, and attribution.yml
 ├── AGENTS.md               ← how agents work in this repository
 ├── DESIGN.md               ← the design rules for the site, and the tokens they use
 ├── REVIEW.md               ← how agents review a pull request here
@@ -188,6 +204,7 @@ Every build takes every live ecosystem at `main`, except the one a preview names
 ├── pyproject.toml          ← the site's Python dependencies, and its package of Markdown extensions
 ├── schemas/                ← the staging contract's JSON schemas
 ├── scripts/                ← stage, draw the How it works diagrams, merge the navigation, collate the sources, and route intake issues
+├── skills-drift/           ← the recorded differences between the ecosystems' copies of a skill
 ├── src/                    ← the site's Markdown extensions, which zensical.toml loads
 ├── wrangler.jsonc          ← the Cloudflare Worker that serves the site
 └── zensical.toml           ← the site configuration

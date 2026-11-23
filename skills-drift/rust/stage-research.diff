@@ -1,0 +1,38 @@
+--- awesome-humans/dotnet: skills/stage-research/SKILL.md
++++ awesome-humans/rust: skills/stage-research/SKILL.md
+@@
+-description: Research a <name> topic and save it in this repository as a cited research topic under research/, on its own branch with a pull request, for resolve-research to promote or discard. Follows research-topic's steps, compiles every code sample, checks each recommended package for advisories, and closes with what the research reveals about the repository (a missing opinion, a stale aside, or a feature that reached GA). Use in a checkout of this repository when a question should become or change an opinion, such as "stage research on runtime async", or when research-topic found a gap worth saving.
++description: Research a <name> topic and save it in <repository> as a cited research topic under research/, on its own branch with a pull request, for resolve-research to promote or discard. Follows research-topic's steps, compiles every code example, checks each recommended crate for advisories, and closes with what the research reveals about the repository (a missing opinion, a stale aside, or a feature that reached stable). Use in a checkout of this repository when a question should become or change an opinion, such as "stage research on async closures", or when research-topic found a gap worth saving.
+@@
+-2. **Look for a saved topic, then start a worktree.** Use the repository's existing kebab-case name for the topic (`union-types`, not `union-type`), so the branch, topic, and opinions share one search term. Before you create anything, look for the topic in two places:
++2. **Look for a saved topic, then start a worktree.** Use the repository's existing kebab-case name for the topic (`error-handling`, not `errors`), so the branch, topic, and opinions share one search term. Before you create anything, look for the topic in two places:
+@@
+-   - **No saved topic:** Start it on the new branch `research/<topic-slug>`, such as `research/union-types`.
++   - **No saved topic:** Start it on the new branch `research/<topic-slug>`, such as `research/async-closures`.
+@@
+-4. **Write the research topic,** as step 4 of `research-topic` writes its answer, with these differences. The last two replace its bullets on code samples and package versions, which only ask you to say what you checked:
++4. **Write the research topic,** as step 4 of `research-topic` writes its answer, with these differences. The last two replace its bullets on code examples and crate versions, which only ask you to say what you checked:
+@@
+-   - **Compile every code sample** against the declared `targets` before you save the topic, as [agents/writing-opinions.md](../../agents/writing-opinions.md) asks of an opinion. Under the sample, record the SDK, the package versions, and the date you compiled it. For a fragment that can't compile alone, compile the smallest complete example that hosts it, and say so. CI doesn't compile research, so a sample you didn't build reaches `resolve-research` unchecked.
+-   - **Check every package the topic recommends for security advisories** at the version it names. Run `<id> list package --vulnerable` in the project you compiled the samples in, or look the package up in the [GitHub Advisory Database](https://github.com/advisories). Record the date, and if an advisory is open, say so in the topic.
++   - **Compile every code example** on the declared `targets` before you save the topic, as [agents/writing-opinions.md](../../agents/writing-opinions.md) asks of an opinion: it passes `CARGO_BUILD_WARNINGS=deny cargo check` and `CARGO_BUILD_WARNINGS=deny cargo clippy`. Under the example, record the toolchain, the crate versions, and the date you compiled it. For a fragment that can't compile alone, compile the smallest complete example that hosts it, and say so. CI doesn't compile research, so an example you didn't build reaches `resolve-research` unchecked.
++   - **Check every crate the topic recommends for security advisories** at the version it names. Run `cargo deny check advisories` in a project whose `Cargo.lock` resolves the crate to that version, such as the one you compiled the examples in, or look the crate up in the [<name>Sec Advisory Database](https://rustsec.org/). Record the date, and if an advisory is open, say so in the topic.
+@@
+-   | Finding                                                               | Recommendation                                                           |
+-   | --------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+-   | The topic has no opinion file or coverage                             | `resolve-research`, which decides between an existing file and a new one |
+-   | A note or opinion is stale: a feature reached GA, or guidance changed | `refresh-<id>-versions` or `harvest-sources`                           |
+-   | A strong source from outside the roster supported the research        | `vet-source`                                                             |
+-   | The repository already answers the question fully                     | Say so. `resolve-research` can discard the topic                         |
++   | Finding                                                                   | Recommendation                                                           |
++   | ------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
++   | The topic has no opinion file or coverage                                 | `resolve-research`, which decides between an existing file and a new one |
++   | A note or opinion is stale: a feature reached stable, or guidance changed | `refresh-<id>-versions` or `harvest-sources`                             |
++   | A strong source from outside the roster supported the research            | `vet-source`                                                             |
++   | The repository already answers the question fully                         | Say so. `resolve-research` can discard the topic                         |
+@@
+-**Title the commit and pull request `research: <topic>`,** such as `research: runtime async`, not `docs: research <topic>`. The separate type keeps staged research apart from settled opinion changes in `git log`, and lists every topic researched. `resolve-research` sets the type of the resolution commits.
++**Title the commit and pull request `research: <topic>`,** such as `research: async closures`, not `docs: research <topic>`. The separate type keeps staged research apart from settled opinion changes in `git log`, and lists every topic researched. `resolve-research` sets the type of the resolution commits.
+@@
+-- **Three edge cases of `research-topic` apply here too:** a preview-only topic, a topic outside <name>, and a conflict between house and community positions.
++- **Three edge cases of `research-topic` apply here too:** a nightly-only topic, a topic outside <name>, and a conflict between house and community positions.

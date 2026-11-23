@@ -1,0 +1,42 @@
+name: Skills drift
+
+# Checks that the maintenance skills the ecosystems copy from each other differ only where
+# skills-drift/ records (README.md: Skill drift). It's a workflow of its own, not a step in
+# build.yml, so that a change to one ecosystem's copy fails here and the site still deploys.
+on:
+  pull_request:
+  # Each ecosystem's site-dispatch.yml sends this after a push to its main, which is when
+  # one copy can change without the other.
+  repository_dispatch:
+    types: [ecosystem-updated]
+  schedule:
+    # Weekly, Mondays 06:00 UTC, catching anything a dispatch missed.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+
+      # Pinned to a release at least two weeks old when chosen, as in awesome-humans/dotnet.
+      # The justfile is every entry point, so the steps below call its recipes, never uv.
+      - uses: taiki-e/install-action@75a7c0f87bd666af3cdb75c5b9e9d03ab6044e6f # v2.90.6
+        with:
+          tool: just@1.58.0
+
+      # Every live ecosystem at main. The check reads the skills as written, so it needs
+      # no ecosystem's toolchain.
+      - name: Fetch the ecosystems
+        run: just fetch
+
+      - name: Check that the copied skills differ only as recorded
+        run: just skills-drift

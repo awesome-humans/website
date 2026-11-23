@@ -1,0 +1,17 @@
+--- awesome-humans/dotnet: skills/weave-house-opinion/SKILL.md
++++ awesome-humans/rust: skills/weave-house-opinion/SKILL.md
+@@
+-"This repository" in this skill means [<repository>](https://github.com/<repository>). Run the skill in a checkout, where each path in it, such as `opinions/` or `templates/Directory.Build.props`, is relative to the repository's root.
++"This repository" in this skill means [<repository>](https://github.com/<repository>). Run the skill in a checkout, where each path in it, such as `opinions/` or `templates/Cargo.toml`, is relative to the repository's root.
+@@
+-2. **Find where it belongs:** the matching `opinions/` file, and the matching `templates/` file if the opinion changes scaffolding, such as an `.editorconfig` rule or a build property. If no opinion file covers it, create one under the usual rules, including its `README.md` Scope bullet and Repository layout entry, which CI enforces.
++2. **Find where it belongs:** the matching `opinions/` file, and the matching `templates/` file if the opinion changes scaffolding, such as a `[workspace.lints]` entry or a `rustfmt.toml` setting. If no opinion file covers it, create one under the usual rules, including its `README.md` Scope bullet and Repository layout entry, which CI enforces.
+@@
+-   - **In `templates/`:** Make the change between `house:<profile> begin` and `house:<profile> end` comment lines, in the file's comment syntax, and add `house:<profile>` to the `sources:` list in the comment header. Put a `**House:**` comment inside the region on the changed setting. The template must still build with the region removed.
++   - **In `templates/`:** Make the change between `house:<profile> begin` and `house:<profile> end` comment lines, in the file's comment syntax: `#` in TOML and `//` in <name>. Add `house:<profile>` to the `sources:` list in the comment header. Put a `**House:**` comment inside the region on the changed setting. The template must still build with the region removed.
+@@
+-- **House opinions need no source, but they need the same quality.** Code must compile against the declared `targets`, and the opinion must give one recommendation.
++- **House opinions need no source, but they need the same quality.** Code must pass `CARGO_BUILD_WARNINGS=deny cargo check` and `CARGO_BUILD_WARNINGS=deny cargo clippy` on the declared `targets`, and the opinion must give one recommendation.
+@@
+-- **A house opinion becomes obsolete,** for example because the framework now does it automatically: Mark it as superseded inside its block, name the release that made it obsolete, and cite the source.
++- **A house opinion becomes obsolete,** for example because the compiler or Clippy now does it by default: Mark it as superseded inside its block, name the release that made it obsolete, and cite the source.
