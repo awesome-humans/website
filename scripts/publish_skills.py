@@ -46,6 +46,8 @@ import gzip
 import hashlib
 import io
 import json
+import os
+import posixpath
 import re
 import shutil
 import sys
@@ -54,7 +56,7 @@ import tomllib
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 
-from ecosystems import BUILD, DOCS, NO_PROFILE, Ecosystem, built, report, require_root
+from ecosystems import BUILD, DOCS, NO_PROFILE, PREVIEW, Ecosystem, built, report, require_root
 
 PUBLIC = BUILD / "public"
 SITE_CONFIG = Path("zensical.toml")
@@ -82,8 +84,9 @@ MAX_NAME = 64
 MAX_DESCRIPTION = 1024
 # A Markdown link's target.
 MARKDOWN_LINK = re.compile(r"\]\((?P<target>[^)\s]+)\)")
-# A copy's path under raw/<profile>/, which is the same for every profile's copy of a file.
-RAW = re.compile(r"/raw/[^/]+/(?P<path>.+)$")
+# A copy's path under raw/<profile>/, which is the same for every profile's copy of a file,
+# and the fragment a link to it might end with.
+RAW = re.compile(r"/raw/[^/]+/(?P<path>[^#]+)(?P<fragment>#.*)?$")
 
 # What a published skill says about the files it carries. It goes before the skill's first
 # section, as stage.py puts the reading rules into each llms.txt, and its two reading rules
@@ -178,9 +181,29 @@ def linked(llms: Path, site_url: str, errors: list[str]) -> dict[str, tuple[str,
     return found
 
 
+def staged_skill(ecosystem: Ecosystem, skill: str) -> Path:
+    """Where stage.py left a skill's text."""
+    return DOCS / ecosystem.id / "raw" / NO_PROFILE / "skills" / skill / "SKILL.md.txt"
+
+
+def relinked(text: str, base: str, local: dict[str, str], prefix: str) -> str:
+    """Markdown with each link to a carried file pointing at its copy, relative to base, the
+    directory of the file the text is in. A link keeps its fragment. Any other link stays."""
+
+    def carried(link: re.Match[str]) -> str:
+        target = link["target"]
+        raw = RAW.search(target) if target.startswith(prefix) else None
+        if not raw or raw["path"] not in local:
+            return link[0]
+        return f"]({posixpath.relpath(local[raw['path']], base)}{raw['fragment'] or ''})"
+
+    return MARKDOWN_LINK.sub(carried, text)
+
+
 def skill_text(
     ecosystem: Ecosystem,
     skill: str,
+    skills: list[str],
     profile: str,
     files: dict[str, tuple[str, Path]],
     site_url: str,
@@ -188,7 +211,7 @@ def skill_text(
 ) -> tuple[str, str, str] | None:
     """A skill's published name, description, and text: renamed, with the section on the
     files it carries, and with each link to one of them pointing at the copy beside it."""
-    staged = DOCS / ecosystem.id / "raw" / NO_PROFILE / "skills" / skill / "SKILL.md.txt"
+    staged = staged_skill(ecosystem, skill)
     if not staged.is_file():
         errors.append(f"{ecosystem.id}: ecosystems.toml lists the skill {skill}, but nothing staged {staged}")
         return None
@@ -213,16 +236,14 @@ def skill_text(
     # file this archive carries by its path under raw/<profile>/, not by its whole address.
     # An ecosystem's first skill carries the files, and each other skill reads that one's copy,
     # so a project holds every opinion once however many skills it installs.
-    holder = consumer_name(ecosystem.skills[0], ecosystem.id)
+    holder = consumer_name(skills[0], ecosystem.id)
     prefix = "" if name == holder else f"../{holder}/"
     local = {raw["path"]: f"{prefix}{path}" for path, (url, _) in files.items() if (raw := RAW.search(url))}
-
-    def carried(link: re.Match[str]) -> str:
-        target = link["target"]
-        raw = RAW.search(target) if target.startswith(f"{site_url}{ecosystem.id}/") else None
-        return f"]({local[raw['path']] if raw and raw['path'] in local else target})"
-
-    body = MARKDOWN_LINK.sub(carried, body)
+    body = relinked(body, ".", local, f"{site_url}{ecosystem.id}/")
+    # A skill names the others as its repository does, such as `review-project`. A project
+    # holds them under their published names, so the text has to use those.
+    for other in skills:
+        body = body.replace(f"`{other}`", f"`{consumer_name(other, ecosystem.id)}`")
 
     if profile == NO_PROFILE:
         carries = "with no house opinions"
@@ -283,13 +304,29 @@ def publish(ecosystem: Ecosystem, profile: str, site_url: str, errors: list[str]
     files = linked(llms, site_url, errors)
     scope = PurePosixPath(ecosystem.id) if profile == NO_PROFILE else PurePosixPath(ecosystem.id, profile)
     published: list[Published] = []
-    for skill in ecosystem.skills:
-        if not (written := skill_text(ecosystem, skill, profile, files, site_url, errors)):
+    skills = ecosystem.skills
+    # An ecosystem's pull request previews its own branch against this site's main. A branch
+    # older than a skill ecosystems.toml lists doesn't hold it, so its preview goes without.
+    if os.environ.get(PREVIEW, "") == ecosystem.id:
+        missing = [skill for skill in skills if not staged_skill(ecosystem, skill).is_file()]
+        if missing and profile == NO_PROFILE:
+            print(f"{ecosystem.id}: this preview's branch has no {', '.join(missing)}, so the preview leaves them out")
+        skills = [skill for skill in skills if skill not in missing]
+    # Each carried Markdown file links the others at the site. Point those links at the
+    # copies beside it, so an agent that follows one reads from disk too.
+    local = {raw["path"]: path for path, (url, _) in files.items() if (raw := RAW.search(url))}
+    for skill in skills:
+        if not (written := skill_text(ecosystem, skill, skills, profile, files, site_url, errors)):
             continue
         name, description, text = written
         contents = {"SKILL.md": text.encode("utf-8")}
-        if skill == ecosystem.skills[0]:
-            contents |= {path: staged.read_bytes() for path, (_, staged) in files.items()}
+        if skill == skills[0]:
+            for path, (_, staged) in files.items():
+                data = staged.read_bytes()
+                if path.endswith(".md"):
+                    base = posixpath.dirname(path)
+                    data = relinked(data.decode("utf-8"), base, local, f"{site_url}{ecosystem.id}/").encode("utf-8")
+                contents[path] = data
         try:
             data = archive(contents)
         except ValueError as error:

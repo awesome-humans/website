@@ -40,6 +40,8 @@ WELL_KNOWN = ".well-known/agent-skills"
 COLOUR = re.compile(r"\x1b\[[0-9;]*[A-Za-z]")
 # A path under the site that has no index, to check that the CLI refuses it.
 NO_INDEX = "conventions"
+# The longest one run of the CLI takes, in seconds. It reads a local server, so a slow run is stuck.
+TIMEOUT = 120
 
 
 class Quiet(http.server.SimpleHTTPRequestHandler):
@@ -56,15 +58,20 @@ def serve() -> str:
 
 def listed(address: str) -> str:
     """What the CLI prints for `skills add <address> --list`, without colours."""
-    result = subprocess.run(
-        ["npm", "exec", "--no", "--", "skills", "add", address, "--list"],
-        capture_output=True,
-        text=True,
-        check=False,
-        stdin=subprocess.DEVNULL,
-        # The CLI reports each run to its maker unless told not to, and prompts unless CI is set.
-        env={**os.environ, "DISABLE_TELEMETRY": "1", "DO_NOT_TRACK": "1", "CI": "1"},
-    )
+    try:
+        result = subprocess.run(
+            ["npm", "exec", "--no", "--", "skills", "add", address, "--list"],
+            capture_output=True,
+            text=True,
+            check=False,
+            stdin=subprocess.DEVNULL,
+            timeout=TIMEOUT,
+            # The CLI reports each run to its maker unless told not to, and prompts unless CI is set.
+            env={**os.environ, "DISABLE_TELEMETRY": "1", "DO_NOT_TRACK": "1", "CI": "1"},
+        )
+    except subprocess.TimeoutExpired:
+        # No skill's name is in this, so the caller reports the address as failed.
+        return f"The skills CLI gave no answer within {TIMEOUT} seconds."
     return COLOUR.sub("", result.stdout + result.stderr)
 
 
