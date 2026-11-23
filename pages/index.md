@@ -38,7 +38,7 @@ Each ecosystem includes:
 
 ### Try it once
 
-Nothing to install. Your coding agent fetches the opinions and skills from the site each time. Each prompt asks for raw text, because an agent's fetch tool otherwise gives it a summary of the rules.
+Nothing to install. Your coding agent fetches the opinions and skills from the site each time. Each prompt asks for raw text, so your agent reads the rules in full and not a summary of them.
 
 - **Follow the opinions.** Tell your agent to follow them when it writes code:
 
@@ -46,7 +46,7 @@ Nothing to install. Your coding agent fetches the opinions and skills from the s
   Fetch awesome-humans.net/llms.txt and every file it links as raw text, then follow its conventions when writing code
   ```
 
-  The agent picks the ecosystem from your project's files, such as `Cargo.toml` or a `.csproj`. For an empty project, name the ecosystem in the prompt, such as `when writing Rust code`.
+  The agent picks the ecosystem from your project's files, such as `Cargo.toml` or a `.csproj`.
 
 - **Check an existing project.** Ask your agent to run `review-project`, for [.NET](dotnet/skills/review-project.md) or [Rust](rust/skills/review-project.md):
 
@@ -66,11 +66,9 @@ Nothing to install. Your coding agent fetches the opinions and skills from the s
   Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its research-topic skill to research how to pin dependency versions
   ```
 
-- **Read the opinions and templates.** Each opinion gives its recommendation, rationale, and sources. The [.NET templates](dotnet/templates/index.md) and [Rust templates](rust/templates/index.md) encode them.
-
 ### Use it in your project
 
-Install the skills in your project. Your agent then reads the opinions and templates from the project's own copy, with nothing to fetch, and every session reads the same copy.
+Install the skills in your project. Your agent then reads the opinions and templates from the project's own copy, with nothing to fetch.
 
 Each ecosystem installs three skills, such as `follow-dotnet-opinions`, `research-dotnet-topic`, and `review-dotnet-project`. Your agent follows the opinions as it writes code, answers a question from them, and checks a project against them.
 
