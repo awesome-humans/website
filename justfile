@@ -110,7 +110,7 @@ serve *locals:
 
 # `just --list` shows only the last comment line, so the flags come first:
 #   --local       tests build/public/ instead of the deployed site.
-#   --as-written  runs the home page's review-project prompt on the ecosystem's checkout. Run fetch first.
+#   --as-written  runs the Usage page's review-project prompt on the ecosystem's checkout. Run fetch first.
 #   --installed   adds the ecosystem's skills to a scratch project, as `npx skills add` does, and
 #                 reviews the ecosystem's templates with the review skill it added. Run fetch first.
 # Ask an agent to read each ecosystem's opinions and templates, and fail unless it read each in full
