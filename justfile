@@ -110,8 +110,9 @@ serve *locals:
 
 # Ask an agent to read and list each opinion and template of each ecosystem, or those named,
 # and fail unless it read every one in full. --local tests build/public/. --as-written runs the home
-# page's review-project prompt on the ecosystem's checkout instead, after fetch. --installed installs
-# the ecosystem's skills with the skills CLI, and runs the installed review skill on the checkout's templates
+# page's review-project prompt on the ecosystem's checkout instead, after fetch. --installed adds the
+# ecosystem's skills to a scratch project, as `npx skills add` does, and has the agent review the
+# ecosystem's templates with the review skill it added
 test-llms *args:
     uv run scripts/test_llms.py "$@"
 
