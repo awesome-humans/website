@@ -4,7 +4,7 @@
 # ///
 """Run an agent from the Usage page's prompt, and check that it read every opinion and template.
 
-    uv run scripts/test_llms.py [--local] [--as-written] [--budget <usd>] [<id>]...
+    uv run scripts/test_llms.py [--local] [--as-written | --installed] [--budget <usd>] [<id>]...
 
 For each live ecosystem, or each one named, it starts an agent in an empty directory and
 asks it to read each of the ecosystem's opinions and templates in full, and to list each
@@ -30,19 +30,32 @@ checkout in build/repos/<id>/, so run `just fetch` first. No project uses every 
 so it only reports the ones left unread. The checkout holds the opinions and templates the
 site links, so it also reports each one the agent read from there, house opinions included.
 
+--installed asks the same question of the other route, where nothing is fetched. It
+installs the ecosystem's skills from the site into a scratch project with the pinned skills
+CLI, as `npx skills add` does, and asks the agent there to run the installed review skill on
+a copy of the checkout's templates/, which is the nearest thing to a project every ecosystem
+holds. The installed skill reviews a project, and stops when its target is the repository
+the opinions come from. It reports each opinion and template the agent read from the
+installed copy, and fails on the same grounds as --as-written, so the two compare run for
+run: a file opened but not read in full, a file read from the checkout, or no opinion read
+in full. It also fails on a file fetched from the site, which the installed skill says not
+to do. Run `just fetch` and `just install` first.
+
 --local tests a change before it deploys. It serves build/public/, which `just build`
 writes, on a local port, with the site's address in each llms.txt changed to that port.
+With --installed, the skills install from that port too.
 
 The agent is Claude Code in print mode: no other harness writes a transcript this script
 reads. Its tools read, and `curl` can also write a file, so --as-written aims it at a copy
 of the checkout, which the run deletes. An agent run costs about a dollar and its reading varies from
 run to run, so this isn't in `just check` or CI. Run it after a change to the reading rules
-in stage.py, to the prompts in pages/usage.md, or to a review-project skill. Each
+in stage.py, to the prompts in pages/usage.md, or to a review-project skill, and with
+--installed after a change to what publish_skills.py puts in a skill. Each
 transcript and answer stays in build/llms-test/.
 
 Exit codes: 0 every agent read each llms.txt and every opinion and template in full, from
 the site, and listed each with its date, or with --as-written each llms.txt and at least
-one opinion, 1 one didn't, or the agent failed, 2 not run from the repository root, bad
+one opinion, or with --installed at least one opinion from the installed copy, 1 one didn't, or the agent failed, 2 not run from the repository root, bad
 arguments, or nothing to test against.
 """
 
@@ -50,6 +63,7 @@ import argparse
 import functools
 import http.server
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -64,6 +78,7 @@ from pathlib import Path
 from typing import Any
 
 from ecosystems import BUILD, REPOS, Ecosystem, built, require_root
+from publish_skills import consumer_name
 
 PAGES = Path("pages")
 PUBLIC = BUILD / "public"
@@ -112,6 +127,11 @@ TOOLS = [
     ),
     *(f"Bash({command}:*)" for command in ("tail", "wc", "git log", "git rev-parse", "git status", "git ls-files")),
 ]
+# The skill --installed asks for, and where the pinned skills CLI and its installs are.
+REVIEW = "review-project"
+SKILLS_CLI = Path("node_modules/.bin/skills")
+INSTALLED = Path(".claude/skills")
+TEMPLATES = "templates"
 # Tool calls that fetch from the site, as opposed to reading the checkout.
 FETCHES = re.compile(r"\b(curl|wget)\b")
 
@@ -135,6 +155,7 @@ class Transcript:
     returned: str = ""
     local_reads: set[str] = field(default_factory=set[str])
     local_calls: str = ""
+    installed_calls: str = ""
     answer: str = ""
     failed: str = ""
     turns: int = 0
@@ -223,9 +244,10 @@ def result_text(content: Any) -> str:
     return ""
 
 
-def read_transcript(path: Path, target: Path | None) -> Transcript:
+def read_transcript(path: Path, target: Path | None, project: Path | None = None) -> Transcript:
     """Sort an agent's stream-json transcript into what it asked the site for, what its
-    tools returned, and which of the target's files it read."""
+    tools returned, and which of the target's files it read. With a project, it also keeps
+    each call that names a file of an installed skill, whose result counts as returned."""
     transcript = Transcript()
     # A tool call that reads the target's own files, so its result doesn't count as the site's.
     local: set[str] = set()
@@ -258,6 +280,8 @@ def read_transcript(path: Path, target: Path | None) -> Transcript:
                     transcript.local_calls += json.dumps(call) + "\n"
                 elif fetch:
                     transcript.fetched += json.dumps(call) + "\n"
+                elif project and str(project / INSTALLED) in json.dumps(call):
+                    transcript.installed_calls += json.dumps(call) + "\n"
         elif event.get("type") == "user" and isinstance(message.get("content"), list):
             for block in message["content"]:
                 if block.get("type") == "tool_result" and block.get("tool_use_id") not in local:
@@ -298,6 +322,31 @@ def from_checkout(file: Linked, transcript: Transcript) -> bool:
     return bool(path) and (path in transcript.local_reads or path in transcript.local_calls)
 
 
+def installed_path(file: Linked) -> str:
+    """The file's path in the skill that carries it, as publish_skills.py names it."""
+    name = file.title if file.kind == "templates" else file.url.rsplit("/", 1)[-1].removesuffix(".txt")
+    return f"references/{file.kind}/{name}"
+
+
+def install(ecosystem: Ecosystem, address: str, project: Path) -> str:
+    """Install an ecosystem's skills into a project with the pinned skills CLI, and return
+    what went wrong, or nothing."""
+    result = subprocess.run(
+        [str(SKILLS_CLI.resolve()), "add", f"{address}/{ecosystem.id}", "--agent", "claude-code", "--yes"],
+        cwd=project,
+        capture_output=True,
+        text=True,
+        check=False,
+        stdin=subprocess.DEVNULL,
+        # The CLI reports each run to its maker unless told not to, and prompts unless CI is set.
+        env={**os.environ, "DISABLE_TELEMETRY": "1", "DO_NOT_TRACK": "1", "CI": "1"},
+    )
+    skill = project / INSTALLED / consumer_name(REVIEW, ecosystem.id) / "SKILL.md"
+    if result.returncode or not skill.is_file():
+        return f"{ecosystem.id}: the skills CLI didn't install {skill.parent.name} from {address}/{ecosystem.id}"
+    return ""
+
+
 def repository_path(file: Linked) -> str:
     raw = RAW.search(file.url)
     return raw["path"].removesuffix(".txt") if raw and raw["path"].endswith(".md.txt") else raw["path"] if raw else ""
@@ -311,9 +360,9 @@ def listed(file: Linked, answer: str) -> bool:
     return any(file.reviewed in line and any(name in line.lower() for name in names) for line in answer.splitlines())
 
 
-def run(ecosystem: Ecosystem, prompt: str, budget: str, target: Path | None) -> Path:
+def run(ecosystem: Ecosystem, prompt: str, budget: str, target: Path | None, project: Path | None = None) -> Path:
     """Run the agent from an empty directory, so a checkout is only ever its target, and
-    return its transcript."""
+    return its transcript. With a project, run it there, with the skills it holds."""
     RESULTS.mkdir(parents=True, exist_ok=True)
     transcript = RESULTS / f"{ecosystem.id}.jsonl"
     command = [
@@ -333,17 +382,21 @@ def run(ecosystem: Ecosystem, prompt: str, budget: str, target: Path | None) -> 
         *(["--add-dir", str(target)] if target else []),
         "--allowedTools",
         *TOOLS,
+        *(["Skill"] if project else []),
     ]
     print(f"{ecosystem.id}: running the agent with: {prompt}", flush=True)
     with tempfile.TemporaryDirectory() as empty, transcript.open("w", encoding="utf-8") as output:
-        subprocess.run(command, cwd=empty, stdin=subprocess.DEVNULL, stdout=output, check=False)
+        subprocess.run(command, cwd=project or empty, stdin=subprocess.DEVNULL, stdout=output, check=False)
     return transcript
 
 
-def report(ecosystem: Ecosystem, origin: str, transcript: Transcript, every: bool, errors: list[str]) -> None:
+def report(
+    ecosystem: Ecosystem, origin: str, transcript: Transcript, every: bool, project: Path | None, errors: list[str]
+) -> None:
     """Print what the agent read, and record each way it read less than the site serves.
     When the prompt asked for every opinion and template, each one left unread, or missing
-    from the answer, is one."""
+    from the answer, is one. With installed skills, the copy it reads is the installed one,
+    and a fetch from the site is a finding."""
     id = ecosystem.id
     print(
         f"{id}: {transcript.turns} turns, largest context {transcript.peak:,} tokens,"
@@ -353,7 +406,9 @@ def report(ecosystem: Ecosystem, origin: str, transcript: Transcript, every: boo
         errors.append(f"{id}: the agent stopped with {transcript.failed}. See {RESULTS / f'{id}.jsonl'}")
         return
 
-    for url in (f"{origin}llms.txt", f"{origin}{id}/llms.txt"):
+    installed = project is not None
+    copy = "the installed copy" if installed else "the site"
+    for url in () if installed else (f"{origin}llms.txt", f"{origin}{id}/llms.txt"):
         if index := linked(url, url, "", errors):
             full = in_full(index, transcript)
             print(f"  {url}: {'in full' if full else 'as a summary, or not at all'}")
@@ -361,24 +416,39 @@ def report(ecosystem: Ecosystem, origin: str, transcript: Transcript, every: boo
                 errors.append(f"{id}: the agent didn't get {url} in full")
 
     files = links(f"{origin}{id}/llms.txt", errors)
+    if project:
+        # A carried file links the copies beside it, where the site's links the site. So a
+        # file is read in full when the agent got the installed file's lines, not the site's.
+        for file in files:
+            carried = sorted((project / INSTALLED).glob(f"*/{installed_path(file)}"))
+            if carried:
+                file.lines = long_lines(carried[0].read_text(encoding="utf-8"))
+            else:
+                errors.append(f"{id}: no installed skill carries {installed_path(file)}")
     for kind in KINDS:
         of_kind = [file for file in files if file.kind == kind]
         full = [file for file in of_kind if in_full(file, transcript)]
-        summarised = [file for file in of_kind if file not in full and asked_for(file, transcript)]
+        fetched = [file for file in of_kind if asked_for(file, transcript)]
+        opened = fetched if not installed else [f for f in of_kind if installed_path(f) in transcript.installed_calls]
+        summarised = [file for file in opened if file not in full]
         local = [file for file in of_kind if from_checkout(file, transcript)]
         unread = [file for file in of_kind if file not in full and file not in summarised and file not in local]
-        print(f"  {kind}: {len(full)} of {len(of_kind)} read in full from the site")
+        print(f"  {kind}: {len(full)} of {len(of_kind)} read in full from {copy}")
         for label, group in (
-            ("Fetched, but not read in full", summarised),
+            ("Opened, but not read in full" if installed else "Fetched, but not read in full", summarised),
             ("From the checkout", local),
+            ("Fetched from the site", fetched if installed else []),
             ("Not read", unread),
         ):
             if group:
                 print(f"    {label}: {', '.join(file.title for file in group)}")
         if summarised:
-            errors.append(f"{id}: the agent fetched {len(summarised)} of the {kind}, but didn't read them in full")
+            verb = "opened" if installed else "fetched"
+            errors.append(f"{id}: the agent {verb} {len(summarised)} of the {kind}, but didn't read them in full")
         if local:
-            errors.append(f"{id}: the agent read {len(local)} of the {kind} from the checkout, not the site")
+            errors.append(f"{id}: the agent read {len(local)} of the {kind} from the checkout, not {copy}")
+        if installed and fetched:
+            errors.append(f"{id}: the agent fetched {len(fetched)} of the {kind} from the site, not {copy}")
         unlisted = [file for file in of_kind if every and not listed(file, transcript.answer)]
         if unlisted:
             print(f"    Not in the answer with its date: {', '.join(file.title for file in unlisted)}")
@@ -386,7 +456,7 @@ def report(ecosystem: Ecosystem, origin: str, transcript: Transcript, every: boo
         if every and unread:
             errors.append(f"{id}: the agent didn't read {len(unread)} of the {kind}")
         elif kind == "opinions" and of_kind and not full:
-            errors.append(f"{id}: the agent read no opinion in full from the site")
+            errors.append(f"{id}: the agent read no opinion in full from {copy}")
 
     answer = RESULTS / f"{id}.md"
     answer.write_text(transcript.answer, encoding="utf-8")
@@ -397,7 +467,9 @@ def main() -> int:
     require_root()
     parser = argparse.ArgumentParser(description="Run an agent from the Usage page's prompt, and check its reading.")
     parser.add_argument("--local", action="store_true", help="test build/public/ instead of the deployed site")
-    parser.add_argument("--as-written", action="store_true", help="run the review-project prompt unchanged")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--as-written", action="store_true", help="run the review-project prompt unchanged")
+    mode.add_argument("--installed", action="store_true", help="install the skills, and run the installed review skill")
     parser.add_argument("--budget", default="5", metavar="USD", help="the most one agent run can cost")
     parser.add_argument("ids", nargs="*", metavar="ID", help="an ecosystem to test. The default is every live one")
     args = parser.parse_args()
@@ -408,8 +480,17 @@ def main() -> int:
         return 2
     ecosystems = [ecosystem for ecosystem in ecosystems if not args.ids or ecosystem.id in args.ids]
     checkouts = [ecosystem.id for ecosystem in ecosystems if not (REPOS / ecosystem.id).is_dir()]
-    if args.as_written and (missing := checkouts):
+    if (args.as_written or args.installed) and (missing := checkouts):
         print(f"No checkout of {', '.join(missing)} in {REPOS}/. Run `just fetch` first", file=sys.stderr)
+        return 2
+    if args.installed and (bare := [e.id for e in ecosystems if not (REPOS / e.id / TEMPLATES).is_dir()]):
+        print(f"{', '.join(bare)}: no {TEMPLATES}/ in the checkout to review", file=sys.stderr)
+        return 2
+    if args.installed and not SKILLS_CLI.is_file():
+        print("The skills CLI isn't installed. Run `just install` first.", file=sys.stderr)
+        return 2
+    if args.installed and (without := [ecosystem.id for ecosystem in ecosystems if REVIEW not in ecosystem.skills]):
+        print(f"{', '.join(without)}: ecosystems.toml lists no {REVIEW} skill to install", file=sys.stderr)
         return 2
     if shutil.which("claude") is None:
         print("The agent is Claude Code, and `claude` isn't on the path", file=sys.stderr)
@@ -437,14 +518,27 @@ def main() -> int:
     errors: list[str] = []
     for ecosystem in ecosystems:
         with tempfile.TemporaryDirectory() as scratch:
-            target = None
+            target = project = None
             asked = prompt["opening"] + LIST.format(name=ecosystem.name)
             if args.as_written:
                 target = Path(scratch).resolve() / ecosystem.id
                 shutil.copytree(REPOS / ecosystem.id, target, symlinks=True)
                 asked = prompt["prompt"].replace("<repository>", str(target))
-            transcript = run(ecosystem, asked.replace(host, address), args.budget, target)
-            report(ecosystem, origin, read_transcript(transcript, target), target is None, errors)
+            if args.installed:
+                # The templates alone, as a project: the skill won't review its own repository.
+                target = Path(scratch).resolve() / "example"
+                shutil.copytree(REPOS / ecosystem.id / TEMPLATES, target, symlinks=True)
+                project = Path(scratch).resolve() / "project"
+                project.mkdir()
+                if failed := install(ecosystem, origin.rstrip("/"), project):
+                    errors.append(failed)
+                    continue
+                # A template's house regions name a profile, and the skill asks before it follows
+                # one the user didn't name. Nobody can answer in print mode, so settle it here.
+                asked = f"Use the {consumer_name(REVIEW, ecosystem.id)} skill on {target}, with no house profile"
+            transcript = run(ecosystem, asked.replace(host, address), args.budget, target, project)
+            read = read_transcript(transcript, target, project)
+            report(ecosystem, origin, read, target is None, project, errors)
     for error in errors:
         print(error, file=sys.stderr)
     return 1 if errors else 0
