@@ -26,7 +26,8 @@ It writes a discovery index, which the skills CLI reads from
 
 A profile's address is its id alone, as raw/<profile>/ is. So this fails when a profile's
 id is also a page or a directory at either place, and ecosystems.py rejects a profile
-named after an ecosystem.
+named after an ecosystem. It also writes a page at each profile's address, which sends a
+reader who opens the address to the site with the profile chosen.
 
 Run it after `zensical build`, which drops every path that starts with a dot, and from
 what `just stage` left in build/docs/. An archive's bytes depend only on the files in it,
@@ -44,6 +45,7 @@ nothing is staged or built.
 
 import gzip
 import hashlib
+import html
 import io
 import json
 import os
@@ -125,6 +127,27 @@ SHARES = (
     '\n\n**If `../{holder}/SKILL.md` doesn\'t describe its copy as "{profile}", stop as well.** That copy came from'
     " another address, so its opinions aren't the ones this skill follows. Tell the user to run the same command."
 )
+
+# The page at a house profile's address. The skills CLI reads only the index under the
+# address, so without a page a reader who opens the address gets the site's 404. It sends
+# them to a page with the profile chosen, and its first line marks it as this script's, so a
+# later run can tell it from a page that took the address.
+PAGE_MARK = "<!-- Written by publish_skills.py for a house profile's address. -->"
+PAGE = """<!doctype html>
+{mark}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="refresh" content="0; url={target}">
+    <title>{title}</title>
+  </head>
+  <body>
+    <p>This address installs {title}: <code>npx skills add {address}</code></p>
+    <p><a href="{target}">Read the opinions with the profile chosen.</a></p>
+  </body>
+</html>
+"""
 
 
 @dataclass(frozen=True)
@@ -359,6 +382,23 @@ def write_index(scope: PurePosixPath, skills: list[Published]) -> Path:
     return path
 
 
+def ours(page: Path) -> bool:
+    """Whether a page is one write_page() left at a profile's address."""
+    return page.is_file() and PAGE_MARK in page.read_text(encoding="utf-8", errors="replace")[:500]
+
+
+def write_page(scope: PurePosixPath, profile: str, what: str, site_url: str) -> None:
+    """Write the page at a profile's address, which sends a reader to the page above it
+    with the profile chosen. The target is relative, so it also works on a preview."""
+    target = f"../?house={profile}" if len(scope.parts) > 1 else f"../house-profiles/?house={profile}"
+    title = f"the {what} skills, with the {profile} house profile's opinions"
+    (PUBLIC / scope).mkdir(parents=True, exist_ok=True)
+    (PUBLIC / scope / "index.html").write_text(
+        PAGE.format(mark=PAGE_MARK, target=target, title=html.escape(title), address=f"{site_url}{scope}"),
+        encoding="utf-8",
+    )
+
+
 def unexpected(written: set[Path]) -> list[str]:
     """Every hidden path in build/public/ that this run didn't write. The site artifact
     includes hidden files for the indexes' sake, so anything else hidden would deploy too."""
@@ -387,9 +427,16 @@ def main() -> int:
         shutil.rmtree(stale)
         if not any(stale.parent.iterdir()):
             stale.parent.rmdir()
+    # A profile's page from an earlier run, at /<profile>/ or /<id>/<profile>/.
+    for page in sorted((*PUBLIC.glob("*/index.html"), *PUBLIC.glob("*/*/index.html"))):
+        if ours(page):
+            page.unlink()
+            if not any(page.parent.iterdir()):
+                page.parent.rmdir()
 
     errors: list[str] = []
     ecosystems = [ecosystem for ecosystem in built() if ecosystem.skills]
+    names = {ecosystem.id: ecosystem.name for ecosystem in ecosystems}
     # Each ecosystem's skills by profile. An ecosystem staged an llms-<profile>.txt for each
     # profile it holds opinions for, and stage.py checked each against houses.toml.
     default: dict[str, list[Published]] = {}
@@ -417,10 +464,12 @@ def main() -> int:
     for profile, found in house.items():
         for id, skills in found.items():
             written.add(write_index(PurePosixPath(id, profile), skills))
+            write_page(PurePosixPath(id, profile), profile, names[id], site_url)
         # A project with several ecosystems installs from one address. An ecosystem with
         # no opinions for the profile gives its default copy, which is all the profile has there.
         every = [skill for id in default for skill in found.get(id, default[id])]
         written.add(write_index(PurePosixPath(profile), every))
+        write_page(PurePosixPath(profile), profile, "awesome-humans", site_url)
     if default:
         written.add(write_index(PurePosixPath(), [skill for skills in default.values() for skill in skills]))
     return report(unexpected(written))

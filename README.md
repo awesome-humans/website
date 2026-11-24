@@ -107,6 +107,7 @@ The address needs `https://`. Without it, the skills CLI reads a GitHub reposito
 - **One copy of the opinions and templates for each ecosystem.** The archive of the first skill listed also holds every opinion and template the ecosystem's `llms.txt` links, and the roster and house opinions record from its Optional section, under `references/`. Each other skill reads that copy from `../<first skill>/references/`, because skills install side by side. If the first skill isn't installed, or holds another profile's copy, the other stops and gives the command that installs it.
 - **An archive for each house profile** the ecosystem staged an `llms-<profile>.txt` for, with that profile's copies.
 - **An index at `.well-known/agent-skills/index.json`** under `/`, `/<id>/`, `/<profile>/`, and `/<id>/<profile>/`. A profile's root index gives the default copy for an ecosystem that holds none of its opinions. A profile's address is its id alone, so the build fails when a page or an ecosystem has the same one.
+- **A page at each profile's address,** which sends a reader who opens the address in a browser to the site with the profile chosen. The skills CLI reads only the index under it.
 
 The site changes three things in a published skill:
 
