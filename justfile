@@ -108,11 +108,12 @@ serve *locals:
     just sources
     uv run zensical serve -f build/zensical.toml
 
-# Ask an agent to read and list each opinion and template of each ecosystem, or those named,
-# and fail unless it read every one in full. --local tests build/public/. --as-written runs the home
-# page's review-project prompt on the ecosystem's checkout instead, after fetch. --installed adds the
-# ecosystem's skills to a scratch project, as `npx skills add` does, and has the agent review the
-# ecosystem's templates with the review skill it added
+# `just --list` shows only the last comment line, so the flags come first:
+#   --local       tests build/public/ instead of the deployed site.
+#   --as-written  runs the home page's review-project prompt on the ecosystem's checkout. Run fetch first.
+#   --installed   adds the ecosystem's skills to a scratch project, as `npx skills add` does, and
+#                 reviews the ecosystem's templates with the review skill it added. Run fetch first.
+# Ask an agent to read each ecosystem's opinions and templates, and fail unless it read each in full
 test-llms *args:
     uv run scripts/test_llms.py "$@"
 
