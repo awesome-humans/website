@@ -6,14 +6,6 @@ Try the opinions and skills from the site without installing anything, or instal
 
 Nothing to install. Your coding agent fetches the opinions and skills from the site each time. Each prompt asks for raw text, so your agent reads the rules in full and not a summary of them.
 
-- **Follow the opinions.** Tell your agent to follow them when it writes code:
-
-  ```text
-  Fetch awesome-humans.net/llms.txt and every file it links as raw text, then follow its conventions when writing code
-  ```
-
-  The agent picks the ecosystem from your project's files, such as `Cargo.toml` or a `.csproj`.
-
 - **Check an existing project.** Ask your agent to run `review-project`, for [.NET](dotnet/skills/review-project.md) or [Rust](rust/skills/review-project.md):
 
   ```text
@@ -47,6 +39,8 @@ Nothing to install. Your coding agent fetches the opinions and skills from the s
   ```text
   Fetch awesome-humans.net/llms.txt and every file it links as raw text, then use its research-topic skill to research whether to adopt cargo-nextest
   ```
+
+To have your agent follow the opinions every time it writes code, [install the skills](#install-it-in-your-project). If your agent can't install skills, end the prompt with "then follow its conventions when writing code" instead. It picks the ecosystem from your project's files, such as `Cargo.toml` or a `.csproj`, but you need to repeat the prompt in each session.
 
 ## Install it in your project
 
