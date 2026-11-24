@@ -15,7 +15,7 @@
 - Site scripts live in `scripts/` as Python, and each has a recipe. To run one directly, use `uv run scripts/<name>.py` from the repository root. Each declares its dependencies inline ([PEP 723](https://peps.python.org/pep-0723/)), with exact pins.
 - A script's inline dependencies also go in the dev group in `pyproject.toml`, at the same pin, so pyright can resolve its imports.
 - Python is Zensical's own language, so the site needs one toolchain. Don't add a script in an ecosystem's language here: the ecosystems dogfood their own languages in their own repositories.
-- `just test-llms` runs an agent on each ecosystem and checks what it read. The agent is Claude Code, because the script reads its transcript.
+- `just test-llms` runs an agent on each ecosystem and checks what it read.
   - **With no flag,** the prompt opens as the Usage page's prompts do, and then asks the agent to read every opinion and template in full, and to list each with its last-reviewed date and one sentence on what it recommends. It fails on any the agent didn't read in full from the site, or didn't list with the right date. It reports the tokens that reading them all used.
   - **With `--as-written`,** it runs the Usage page's `review-project` prompt on the ecosystem's checkout, and reports which opinions and templates the agent picked.
   - **With `--installed`,** it adds the ecosystem's skills to a scratch project, as `npx skills add` does, and has the agent review a copy of the ecosystem's `templates/` with the review skill it added. It reports which opinions and templates the agent read from the installed copy. It fails on the same grounds as `--as-written`, and on a file fetched from the site, so the two routes compare run for run.
