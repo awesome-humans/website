@@ -83,12 +83,10 @@ Each command installs into the project you run it in, and records what it instal
 
 ### Install it for every project on your machine
 
-To install once for every project, add `--global`:
-
 ```sh
 npx skills add https://awesome-humans.net/dotnet --global
 ```
 
-- **Nothing is added to a project.** The skills go in your agent's own directory, such as `~/.claude/skills/`, so a collaborator or a CI agent doesn't get them. For those, install in the project.
-- **One copy serves every project.** A house profile's skills have the same names as the default ones, so installing a second address for an ecosystem replaces the first.
+- **A collaborator or a CI agent doesn't get the skills.** When they need them, install in the project.
+- **Install one address for each ecosystem.** A house profile's skills have the same names as the default ones, so a second install replaces the first.
 - **`npx skills check` covers a global install too.** To fetch a changed opinion, run `npx skills update --global`. To uninstall, run `npx skills remove --global`.
