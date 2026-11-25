@@ -77,6 +77,16 @@ Choose one address to suit your needs:
 
 The CLI asks which skills to install. Keep the `follow-<ecosystem>-opinions` skill selected, because it carries the opinions and templates the other two read.
 
-Each command installs into the project you run it in, and records what it installed in `skills-lock.json`. To install for every project on your machine, add `--global`.
+Each command installs into the project you run it in, and records what it installed in `skills-lock.json`.
 
 `npx skills check` tells you when an opinion has changed, and `npx skills update` fetches it.
+
+### Install it for every project on your machine
+
+```sh
+npx skills add https://awesome-humans.net/dotnet --global
+```
+
+- **A collaborator or a CI agent doesn't get the skills.** When they need them, install in the project.
+- **Choose the default opinions or a house profile.** Their skills have the same names, so a second install replaces the first.
+- **Add `--global` to the other commands too.** `npx skills check --global` tells you when an opinion has changed, `npx skills update --global` fetches it, and `npx skills remove awesome-humans.net --global` uninstalls.
