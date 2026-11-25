@@ -88,5 +88,5 @@ npx skills add https://awesome-humans.net/dotnet --global
 ```
 
 - **A collaborator or a CI agent doesn't get the skills.** When they need them, install in the project.
-- **Install one address for each ecosystem.** A house profile's skills have the same names as the default ones, so a second install replaces the first.
+- **Choose the default opinions or a house profile.** Their skills have the same names, so a second install replaces the first.
 - **`npx skills check` covers a global install too.** To fetch a changed opinion, run `npx skills update --global`. To uninstall, run `npx skills remove awesome-humans.net --global`.
