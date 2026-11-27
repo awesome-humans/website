@@ -32,7 +32,7 @@ custom_dir = "../overrides"
 # The look follows DESIGN.md, through stylesheets/awesome-humans.css, which fills the modern variant's header with each
 # section's accent and keeps the tabs on the page background.
 variant = "modern"
-# IBM Plex, self-hosted by awesome-humans.css. The default loads Roboto from Google
+# Geist Mono, self-hosted by awesome-humans.css. The default loads Roboto from Google
 # Fonts, a third-party request on every page view.
 font = false
 logo = "assets/brand/mark-cited-human.svg"

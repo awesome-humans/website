@@ -7,14 +7,14 @@ A port of dotnet's scripts/export-diagrams.cs, with neutral labels: "version ref
 for each ecosystem's refresh-*-versions skill, and placeholders for branches, never an
 ecosystem's name. Each ecosystem keeps its own diagrams for its README, where its names
 belong. Keep the layout here in step with that script, with two differences: columns
-here fit IBM Plex, which the site always loads, where the script leaves room for wider
+here fit Geist Mono, which the site always loads, where the script leaves room for wider
 fallback fonts, and the skill column fits "version refresh" rather than an ecosystem's
 longer skill name.
 
 Each diagram is data at the top of its function, rows or nodes with their labels, and
 layout code below. The SVG has classes and no colours or fonts: the .ah-diagram rules
 in awesome-humans.css colour them from the theme's tokens, so the theme toggle switches
-them and the text is IBM Plex.
+them and the text is Geist Mono.
 """
 
 from html import escape
