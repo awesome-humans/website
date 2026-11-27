@@ -22,7 +22,7 @@ The brand is crisp and technical: a reference you trust because every claim is c
 ## Type
 
 - **Use Geist Mono for all text.** One family sets the prose and the code.
-- **Set everything read through `--ah-font-sans`,** from the hero to small print. Headings are weight 600 with slight negative tracking. Body text is weight 400. The content column runs wide on a large screen so the widest diagram fits, so cap the measure where prose stands alone: the hero's text, and prose beside a diagram.
+- **Set everything read through `--ah-font-sans`,** from the hero to small print. Headings are weight 600 with slight negative tracking. Body text is weight 400, at the size of tables and notes: a monospaced face reads larger than a proportional one at the same size. The content column runs wide on a large screen so the widest diagram fits, so cap the measure where prose stands alone: the hero's text, and prose beside a diagram.
 - **Set everything machine-shaped through `--ah-font-mono`:** code, chips, and uppercase labels. Both tokens name the same family, and a rule still says which kind of text it sets.
 - **Serve the fonts from `pages/assets/fonts/`.** Don't load them from a font CDN. The site serves upstream Geist Mono, not a Nerd Font build of it: the patch adds only icon glyphs, and the site's icons are SVG.
 
