@@ -7,14 +7,14 @@ A port of dotnet's scripts/export-diagrams.cs, with neutral labels: "version ref
 for each ecosystem's refresh-*-versions skill, and placeholders for branches, never an
 ecosystem's name. Each ecosystem keeps its own diagrams for its README, where its names
 belong. Keep the layout here in step with that script, with two differences: columns
-here fit IBM Plex, which the site always loads, where the script leaves room for wider
+here fit Geist Mono, which the site always loads, where the script leaves room for wider
 fallback fonts, and the skill column fits "version refresh" rather than an ecosystem's
 longer skill name.
 
 Each diagram is data at the top of its function, rows or nodes with their labels, and
 layout code below. The SVG has classes and no colours or fonts: the .ah-diagram rules
 in awesome-humans.css colour them from the theme's tokens, so the theme toggle switches
-them and the text is IBM Plex.
+them and the text is Geist Mono.
 """
 
 from html import escape
@@ -144,13 +144,13 @@ def pipeline() -> str:
     d = Drawing("maintenance-pipeline")
     x_band, w_band = 12, 96
     x_bracket = 118
-    x_picks_up, w_picks_up = 128, 192
-    x_skill, w_skill = 344, 204
-    x_agent_gate, w_agent_gate = 572, 116
+    x_picks_up, w_picks_up = 128, 220
+    x_skill, w_skill = 372, 204
+    x_agent_gate, w_agent_gate = 600, 116
     gate_half = 20
-    x_human_gate = 732
-    x_lands_in, w_lands_in = 878, 184
-    width = 1074
+    x_human_gate = 760
+    x_lands_in, w_lands_in = 906, 184
+    width = 1102
     row_height = 66
 
     # Rows stack with a gap between lanes.
@@ -229,7 +229,7 @@ def pipeline() -> str:
     # The loop: a report's findings, with the scheduled workflows and the maintainer, start the
     # next run in whichever row it belongs to.
     loop_y = rows_bottom + 56
-    start_x, start_width = 440, 372
+    start_x, start_width = 476, 424
     d.add(
         d.path_arrow(
             f"M{n(x_lands_in + w_lands_in / 2)} {n(rows_bottom - 4)}V{n(loop_y)}H{n(start_x + start_width + 2)}"
@@ -270,11 +270,11 @@ def standing() -> str:
     d = Drawing("source-standing")
     # The candidate sits above vet-source, and each marking's rule sits under it, so the
     # diagram is narrow enough for its text to render at the pipeline's size.
-    candidate_x, candidate_y, candidate_width = 20, 20, 212
-    vet_x, vet_y, vet_half = 126, 196, 38
+    candidate_x, candidate_y, candidate_width = 20, 20, 240
+    vet_x, vet_y, vet_half = 140, 196, 38
     spine_x = 256
-    out_x, out_width = 462, 372
-    loop_x = 966
+    out_x, out_width = 504, 436
+    loop_x = 1066
 
     d.add(
         node(candidate_x, candidate_y, candidate_width, 64, "Candidate source", "blog, docs, book, newsletter"),
@@ -351,10 +351,10 @@ def research() -> str:
     # stage-research sits above the topic it saves, so the diagram is narrow enough for its
     # text to render at the pipeline's size.
     center_y = 182
-    topic_x, topic_y, topic_width = 20, 20, 212
-    resolve_x, resolve_half = 320, 38
-    spine_x = 404
-    out_x, out_width, out_height = 428, 356, 60
+    topic_x, topic_y, topic_width = 20, 20, 228
+    resolve_x, resolve_half = 336, 38
+    spine_x = 420
+    out_x, out_width, out_height = 444, 400, 60
     loop_y = 328
 
     d.add(
@@ -423,9 +423,9 @@ def repositories() -> str:
     # The site's own diagram, with no counterpart in an ecosystem's README: an ecosystem
     # never draws the repositories around it.
     top, height = 44, 220
-    eco_x, eco_width = 20, 256
-    site_x, site_width = 540, 250
-    out_x, out_width = 930, 210
+    eco_x, eco_width = 20, 272
+    site_x, site_width = 556, 236
+    out_x, out_width = 932, 210
     shared_y = 340
 
     d.add(

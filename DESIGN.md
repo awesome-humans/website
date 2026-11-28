@@ -21,9 +21,10 @@ The brand is crisp and technical: a reference you trust because every claim is c
 
 ## Type
 
-- **Use IBM Plex Sans for everything read,** from the hero to small print, through `--ah-font-sans`. Headings are weight 600 with slight negative tracking. Body text is weight 400. The content column runs wide on a large screen so the widest diagram fits, so cap the measure where prose stands alone: the hero's text, and prose beside a diagram.
-- **Use IBM Plex Mono for everything machine-shaped,** through `--ah-font-mono`: code, chips, and uppercase labels.
-- **Serve the fonts from `pages/assets/fonts/`.** Don't load them from a font CDN.
+- **Use Geist Mono for all text.** One family sets the prose and the code.
+- **Set everything read through `--ah-font-sans`,** from the hero to small print. Headings are weight 600 with slight negative tracking. Body text is weight 400, at the size of tables, notes, and the navigation: a monospaced face reads larger than a proportional one at the same size. The content column runs wide on a large screen so the widest diagram fits, so cap the measure where prose stands alone: the hero's text, and prose beside a diagram.
+- **Set everything machine-shaped through `--ah-font-mono`:** code, chips, and uppercase labels. Both tokens name the same family, and a rule still says which kind of text it sets.
+- **Serve the fonts from `pages/assets/fonts/`.** Don't load them from a font CDN. The site serves upstream Geist Mono, not a Nerd Font build of it: the patch adds only icon glyphs, and the site's icons are SVG.
 
 ## Space and shape
 
@@ -34,7 +35,7 @@ The brand is crisp and technical: a reference you trust because every claim is c
 
 ## Logo and icons
 
-- **The logo is the cited human:** a person inside square brackets, which reads as both a citation and code. Use [`pages/assets/brand/mark-cited-human.svg`](pages/assets/brand/mark-cited-human.svg) in `--ah-brand-mark`, beside the name in IBM Plex Sans 600.
+- **The logo is the cited human:** a person inside square brackets, which reads as both a citation and code. Use [`pages/assets/brand/mark-cited-human.svg`](pages/assets/brand/mark-cited-human.svg) in `--ah-brand-mark`, beside the name in Geist Mono 600.
 - **On the header bar, reverse the mark out in white,** in both themes. Its green would disappear on the green bar of a page outside an ecosystem.
 - **Use Zensical's bundled Lucide icons** (`lucide/...`) at 16px to 20px in `--ah-ink-2`, stroke style only. The header's repository link is the one exception: it shows Git's own logo, `fontawesome/brands/git-alt`, which `zensical.toml` sets as `icon.repo`. The mark's brackets can appear as the literal text `[ ]` in the hero kicker. Don't build other icons from them.
 

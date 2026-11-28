@@ -5,138 +5,43 @@
    Light follows Zensical's default scheme and dark its slate scheme, on the modern
    variant. */
 
-/* ---- Fonts: IBM Plex, self-hosted, Latin-1 subsets as IBM ships them ---- */
+/* ---- Fonts: Geist Mono, self-hosted, one variable file a style, cut down to the
+   Latin-1 subset ---- */
 @font-face {
-  font-family: "IBM Plex Sans";
+  font-family: "Geist Mono";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("../assets/fonts/IBMPlexSans-Regular-Latin1.woff2") format("woff2");
-  unicode-range:
-    U+0000, U+000D, U+0020-007E, U+00A0-00A3, U+00A4-00FF, U+0131, U+0152-0153,
-    U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022,
-    U+2026, U+2030, U+2039-203A, U+2044, U+2074, U+20AC, U+2122, U+2212,
-    U+FB01-FB02;
-}
-@font-face {
-  font-family: "IBM Plex Sans";
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url("../assets/fonts/IBMPlexSans-Italic-Latin1.woff2") format("woff2");
-  unicode-range:
-    U+0000, U+000D, U+0020-007E, U+00A0-00A3, U+00A4-00FF, U+0131, U+0152-0153,
-    U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022,
-    U+2026, U+2030, U+2039-203A, U+2044, U+2074, U+20AC, U+2122, U+2212,
-    U+FB01-FB02;
-}
-@font-face {
-  font-family: "IBM Plex Sans";
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("../assets/fonts/IBMPlexSans-Medium-Latin1.woff2") format("woff2");
-  unicode-range:
-    U+0000, U+000D, U+0020-007E, U+00A0-00A3, U+00A4-00FF, U+0131, U+0152-0153,
-    U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022,
-    U+2026, U+2030, U+2039-203A, U+2044, U+2074, U+20AC, U+2122, U+2212,
-    U+FB01-FB02;
-}
-@font-face {
-  font-family: "IBM Plex Sans";
-  font-style: normal;
-  font-weight: 600 700;
-  font-display: swap;
-  src: url("../assets/fonts/IBMPlexSans-SemiBold-Latin1.woff2") format("woff2");
-  unicode-range:
-    U+0000, U+000D, U+0020-007E, U+00A0-00A3, U+00A4-00FF, U+0131, U+0152-0153,
-    U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022,
-    U+2026, U+2030, U+2039-203A, U+2044, U+2074, U+20AC, U+2122, U+2212,
-    U+FB01-FB02;
-}
-@font-face {
-  font-family: "IBM Plex Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("../assets/fonts/IBMPlexMono-Regular-Latin1.woff2") format("woff2");
+  src: url("../assets/fonts/GeistMono-Variable-Latin1.woff2") format("woff2");
   unicode-range:
     U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC,
     U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022, U+2026, U+2030,
     U+2039-203A, U+2044, U+20AC, U+2122, U+2212, U+FB01-FB02;
 }
 @font-face {
-  font-family: "IBM Plex Mono";
-  font-style: normal;
-  font-weight: 500 700;
+  font-family: "Geist Mono";
+  font-style: italic;
+  font-weight: 100 900;
   font-display: swap;
-  src: url("../assets/fonts/IBMPlexMono-Medium-Latin1.woff2") format("woff2");
+  src: url("../assets/fonts/GeistMono-Italic-Variable-Latin1.woff2")
+    format("woff2");
   unicode-range:
     U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC,
     U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022, U+2026, U+2030,
     U+2039-203A, U+2044, U+20AC, U+2122, U+2212, U+FB01-FB02;
 }
 
-/* ---- Fallbacks: Arial and Courier New, resized to IBM Plex's metrics ----
-   Text draws in these until IBM Plex loads, so the swap doesn't move the text.
-   size-adjust matches each weight's average letter width, weighted by English letter
-   frequency, and the overrides match Plex's ascent and descent at that size.
-   Liberation Sans and Arimo share Arial's metrics, and Liberation Mono and Cousine
-   Courier New's. Each face covers only Plex's own characters, so others still fall
-   through to system-ui. */
+/* ---- Fallback: Courier New, set to Geist Mono's metrics ----
+   Text draws in it until Geist Mono loads, so the swap doesn't move the text.
+   Courier New is 0.6em wide, as Geist Mono is, so only the vertical metrics change.
+   Liberation Mono and Cousine share Courier New's metrics. The face covers only
+   Geist Mono's own characters, so others still fall through to ui-monospace. */
 @font-face {
-  font-family: "IBM Plex Sans Fallback";
-  font-weight: 400;
-  src:
-    local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
-  size-adjust: 101.2%;
-  ascent-override: 101.3%;
-  descent-override: 27.2%;
-  line-gap-override: 0%;
-  unicode-range:
-    U+0000, U+000D, U+0020-007E, U+00A0-00A3, U+00A4-00FF, U+0131, U+0152-0153,
-    U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022,
-    U+2026, U+2030, U+2039-203A, U+2044, U+2074, U+20AC, U+2122, U+2212,
-    U+FB01-FB02;
-}
-@font-face {
-  font-family: "IBM Plex Sans Fallback";
-  font-weight: 500;
-  src:
-    local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Arimo");
-  size-adjust: 103.4%;
-  ascent-override: 99.1%;
-  descent-override: 26.6%;
-  line-gap-override: 0%;
-  unicode-range:
-    U+0000, U+000D, U+0020-007E, U+00A0-00A3, U+00A4-00FF, U+0131, U+0152-0153,
-    U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022,
-    U+2026, U+2030, U+2039-203A, U+2044, U+2074, U+20AC, U+2122, U+2212,
-    U+FB01-FB02;
-}
-@font-face {
-  font-family: "IBM Plex Sans Fallback";
-  font-weight: 600 700;
-  src:
-    local("Arial Bold"), local("Arial-BoldMT"), local("Liberation Sans Bold"),
-    local("Arimo Bold");
-  size-adjust: 96.9%;
-  ascent-override: 105.8%;
-  descent-override: 28.4%;
-  line-gap-override: 0%;
-  unicode-range:
-    U+0000, U+000D, U+0020-007E, U+00A0-00A3, U+00A4-00FF, U+0131, U+0152-0153,
-    U+02C6, U+02DA, U+02DC, U+2013-2014, U+2018-201A, U+201C-201E, U+2020-2022,
-    U+2026, U+2030, U+2039-203A, U+2044, U+2074, U+20AC, U+2122, U+2212,
-    U+FB01-FB02;
-}
-/* Courier New is 0.6em wide, as Plex Mono is, so only the vertical metrics change. */
-@font-face {
-  font-family: "IBM Plex Mono Fallback";
-  font-weight: 400 700;
+  font-family: "Geist Mono Fallback";
+  font-weight: 100 900;
   src: local("Courier New"), local("Liberation Mono"), local("Cousine");
-  ascent-override: 102.5%;
-  descent-override: 27.5%;
+  ascent-override: 100.5%;
+  descent-override: 29.5%;
   line-gap-override: 0%;
   unicode-range:
     U+0020-007E, U+00A0-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC,
@@ -146,12 +51,12 @@
 
 /* ---- Tokens ---- */
 :root {
+  /* One family for prose and code. Both tokens stay, so a rule still says which
+     kind of text it sets. */
   --ah-font-sans:
-    "IBM Plex Sans", "IBM Plex Sans Fallback", system-ui, -apple-system,
-    "Segoe UI", sans-serif;
-  --ah-font-mono:
-    "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, "SFMono-Regular",
-    Menlo, Consolas, monospace;
+    "Geist Mono", "Geist Mono Fallback", ui-monospace, "SFMono-Regular", Menlo,
+    Consolas, monospace;
+  --ah-font-mono: var(--ah-font-sans);
 
   --ah-space-1: 4px;
   --ah-space-2: 8px;
@@ -292,18 +197,29 @@
 }
 
 /* ---- Type ---- */
+/* 0.65rem is 13px at Zensical's default root size. A monospaced face is 0.6em a
+   character, wider than a proportional one, so it reads as large at 0.65rem as IBM Plex
+   Sans did at Zensical's 0.8rem. The navigation and the tabs take the same size, where
+   Zensical sets them at 0.7rem. */
 .md-typeset {
-  font-size: 0.8rem;
+  font-size: 0.65rem;
   line-height: 1.625;
 }
-/* Zensical sets tables, admonitions, and details at 0.64rem, which reads small beside
-   0.8rem body text. Raise them to 0.7rem: 14px at Zensical's default root size, the size
-   of the house and preview admonitions and the metadata strip. In rem, they still grow
-   with the body text on a wide screen. */
+.md-nav,
+.md-nav__link .md-typeset,
+.md-tabs__link {
+  font-size: 0.65rem;
+}
+/* Zensical sets tables, admonitions, and details at 0.64rem, and code at 0.85em. With
+   one family, each reads small beside the body text, so all take its size. In rem and
+   em, they still grow with the body text on a wide screen. */
 .md-typeset table:not([class]),
 .md-typeset .admonition,
 .md-typeset details {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
+}
+.md-typeset code {
+  font-size: 1em;
 }
 .md-typeset h1,
 .md-typeset h2,
@@ -532,18 +448,17 @@
   margin: 0 0 var(--ah-space-3);
   padding: 0;
   border: 0;
-  font-size: 42px;
-  line-height: 46px;
+  font-size: 36px;
+  line-height: 40px;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
 .md-typeset .ah-hero p {
-  font-size: 17px;
-  line-height: 28px;
+  font-size: 14px;
+  line-height: 24px;
   color: var(--ah-ink-2);
-  /* 62ch in IBM Plex Sans, whose digits are 0.6em wide. In ch, the box would narrow
-     while the fallback draws, and the swap would rewrap the text. */
-  max-width: 37.2em;
+  /* 76 characters of Geist Mono, which is 0.6em wide: the first line fits. */
+  max-width: 45.6em;
   margin: 0 0 var(--ah-space-6);
   text-wrap: pretty;
 }
@@ -555,8 +470,8 @@
     padding: var(--ah-space-6) var(--ah-space-4);
   }
   .md-typeset .ah-hero h1 {
-    font-size: 32px;
-    line-height: 38px;
+    font-size: 28px;
+    line-height: 34px;
   }
 }
 
@@ -568,7 +483,7 @@
   padding: 6px 14px;
   border: var(--ah-hairline) solid var(--ah-line);
   border-radius: var(--ah-radius-sm);
-  font: 500 14px/22px var(--ah-font-sans);
+  font: 500 13px/20px var(--ah-font-sans);
   color: var(--ah-ink);
   background: var(--ah-bg);
   text-decoration: none;
@@ -615,8 +530,8 @@
 }
 .md-typeset .ah-card p {
   margin: 0;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 13px;
+  line-height: 20px;
   color: var(--ah-ink-2);
 }
 /* Ecosystem logos, on each card and under each section index's title. Never smaller
@@ -701,8 +616,8 @@
   background: var(--ah-surface);
   border: var(--ah-hairline) solid var(--ah-line);
   border-radius: var(--ah-radius-sm);
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 13px;
+  line-height: 20px;
   color: var(--ah-ink-2);
 }
 .ah-meta__item {
@@ -737,8 +652,8 @@
   border-left-width: var(--ah-tick);
   border-radius: var(--ah-radius-sm);
   box-shadow: none;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 13px;
+  line-height: 20px;
 }
 .md-typeset .house > .admonition-title,
 .md-typeset .house > summary,
@@ -946,16 +861,13 @@
 .ah-diagram .tb,
 .ah-diagram .tm {
   fill: var(--ah-ink);
-  font-size: 16px;
+  font-size: 14px;
 }
 .ah-diagram .t {
   font-weight: 500;
 }
 .ah-diagram .tb {
   font-weight: 600;
-}
-.ah-diagram .tm {
-  font-size: 15px;
 }
 .ah-diagram .tm,
 .ah-diagram .th {
@@ -964,7 +876,7 @@
 }
 .ah-diagram .ts {
   fill: var(--ah-muted);
-  font-size: 14px;
+  font-size: 12px;
 }
 /* On a light surface, muted reads too faint at subtitle size, so light takes ink-2. */
 [data-md-color-scheme="default"] .ah-diagram .ts {
@@ -1003,7 +915,7 @@
 .ah-diagram .gate-t,
 .ah-diagram .check-t {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
 }
 .ah-diagram .gate-t {
   fill: var(--ah-house);

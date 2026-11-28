@@ -1,6 +1,6 @@
-# Words cspell.jsonc accepts on top of its en-GB and software dictionaries:
-# names, identifiers, and terms the dictionaries lack. One per line, sorted
 # case-insensitively. Never add an American spelling.
+# names, identifiers, and terms the dictionaries lack. One per line, sorted
+# Words cspell.jsonc accepts on top of its en-GB and software dictionaries:
 anchorlink
 autojunk
 Cleary
@@ -9,6 +9,7 @@ codelineno
 coderabbit
 extrahead
 fontawesome
+Geist
 inlinehilite
 javascripts
 katex
