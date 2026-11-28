@@ -18,5 +18,5 @@ The site's source, and every ecosystem's opinions, templates, and skills, are li
 
 ## Fonts and software
 
-- **[Geist Mono](https://vercel.com/font):** copyright Vercel, in collaboration with basement.studio, licensed under the [SIL Open Font License 1.1](https://github.com/awesome-humans/website/blob/main/pages/assets/fonts/OFL.txt). The site serves a Latin-1 subset.
+- **[Geist and Geist Mono](https://vercel.com/font):** copyright Vercel, in collaboration with basement.studio, licensed under the [SIL Open Font License 1.1](https://github.com/awesome-humans/website/blob/main/pages/assets/fonts/OFL.txt). The site serves a Latin-1 subset.
 - **[Zensical](https://zensical.org):** builds the site, under the MIT License.
