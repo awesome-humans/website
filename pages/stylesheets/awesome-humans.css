@@ -197,12 +197,18 @@
 }
 
 /* ---- Type ---- */
-/* 0.7rem is 14px at Zensical's default root size. A monospaced face is 0.6em a
-   character, wider than a proportional one, so it reads as large at 0.7rem as IBM Plex
-   Sans did at Zensical's 0.8rem. */
+/* 0.65rem is 13px at Zensical's default root size. A monospaced face is 0.6em a
+   character, wider than a proportional one, so it reads as large at 0.65rem as IBM Plex
+   Sans did at Zensical's 0.8rem. The navigation and the tabs take the same size, where
+   Zensical sets them at 0.7rem. */
 .md-typeset {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   line-height: 1.625;
+}
+.md-nav,
+.md-nav__link .md-typeset,
+.md-tabs__link {
+  font-size: 0.65rem;
 }
 /* Zensical sets tables, admonitions, and details at 0.64rem, and code at 0.85em. With
    one family, each reads small beside the body text, so all take its size. In rem and
@@ -210,7 +216,7 @@
 .md-typeset table:not([class]),
 .md-typeset .admonition,
 .md-typeset details {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
 }
 .md-typeset code {
   font-size: 1em;
@@ -448,8 +454,8 @@
   text-wrap: balance;
 }
 .md-typeset .ah-hero p {
-  font-size: 15px;
-  line-height: 26px;
+  font-size: 14px;
+  line-height: 24px;
   color: var(--ah-ink-2);
   /* 76 characters of Geist Mono, which is 0.6em wide: the first line fits. */
   max-width: 45.6em;
@@ -477,7 +483,7 @@
   padding: 6px 14px;
   border: var(--ah-hairline) solid var(--ah-line);
   border-radius: var(--ah-radius-sm);
-  font: 500 14px/22px var(--ah-font-sans);
+  font: 500 13px/20px var(--ah-font-sans);
   color: var(--ah-ink);
   background: var(--ah-bg);
   text-decoration: none;
@@ -524,8 +530,8 @@
 }
 .md-typeset .ah-card p {
   margin: 0;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 13px;
+  line-height: 20px;
   color: var(--ah-ink-2);
 }
 /* Ecosystem logos, on each card and under each section index's title. Never smaller
@@ -610,8 +616,8 @@
   background: var(--ah-surface);
   border: var(--ah-hairline) solid var(--ah-line);
   border-radius: var(--ah-radius-sm);
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 13px;
+  line-height: 20px;
   color: var(--ah-ink-2);
 }
 .ah-meta__item {
@@ -646,8 +652,8 @@
   border-left-width: var(--ah-tick);
   border-radius: var(--ah-radius-sm);
   box-shadow: none;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: 13px;
+  line-height: 20px;
 }
 .md-typeset .house > .admonition-title,
 .md-typeset .house > summary,
